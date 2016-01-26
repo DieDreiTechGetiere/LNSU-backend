@@ -8,7 +8,8 @@ CREATE TABLE tblUser
 	uLoginName varchar(25),
 	uIngameName varchar(25),
 	uPassword varchar(25),
-	uFreigeschaltet BIT 
+	uFreigeschaltet BIT,
+	uRole int
 ); 
 
 CREATE TABLE tblMatch
@@ -36,6 +37,7 @@ CREATE TABLE tblMatchSteps
 CREATE TABLE tblShipPosition
 (
 	spID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	sStepNumber int NOT NULL,
 	spLength int NOT NULL,
 	spMatchID int NOT NULL,
 	spUserID int NOT NULL,
