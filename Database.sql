@@ -17,7 +17,7 @@ CREATE TABLE tblMatch
 	matchID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	mUser1 int NOT NULL,
 	mUser2 int NOT NULL,
-	mTimestamp TIMESTAMP,
+	mTimestamp datetime,
 	FOREIGN KEY fk_User1(mUser1) REFERENCES tblUser(uID),
 	FOREIGN KEY fk_User2(mUser2) REFERENCES tblUser(uID)
 );
@@ -25,6 +25,7 @@ CREATE TABLE tblMatch
 CREATE TABLE tblMatchSteps
 (
 	msID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	msDateTime datetime,
 	mMatchID int NOT NULL,
 	mUserID int NOT NULL,
 	mRow int NOT NULL,
