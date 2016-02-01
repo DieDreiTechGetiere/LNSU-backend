@@ -10,7 +10,7 @@ use Zend\Crypt\Password\Bcrypt;
 class PasswordService
 { 
     public $salt = 'PegMz1CpjC807MT8jBYwev8Syo1iDw1a771Nf1ND';
-    public $method = 'sha1';
+    public $method = 'md5';
     
     public function __construct($method = null)
     {
@@ -25,8 +25,8 @@ class PasswordService
      */
     private function generateSalt($timestamp)
     {
-        $saltTimesampt = sha1($this->salt . $timestamp);
-        $this->salt = $this->salt . $saltTimesampt;
+        $saltTimestamt = md5($this->salt . $timestamp);
+        $this->salt = $this->salt . $saltTimestamt;
     }
     
     /**
