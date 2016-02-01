@@ -1,3 +1,9 @@
+LEAVE NO SHIPS UNBURNED
+
+- (JK) 01.02.2016 Integrated PHPUnit and structured the Module for LNSU 
+
+
+
 ZendSkeletonApplication
 =======================
 
