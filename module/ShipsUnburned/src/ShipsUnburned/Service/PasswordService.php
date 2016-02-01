@@ -35,8 +35,6 @@ class PasswordService
      * @param string $password
      * @param timestamp $timestamp
      * @return string
-     * 
-     * TODO Integrate generateSalt()
      */
     public function create($password, $timestamp)
     {
@@ -64,8 +62,6 @@ class PasswordService
      * @param string $hash
      * @param timestamp timestamp
      * @return boolean
-     * 
-     * TODO: Integrate generateSalt()
      */
     public function verify($password, $hash, $timestamp)
     {
