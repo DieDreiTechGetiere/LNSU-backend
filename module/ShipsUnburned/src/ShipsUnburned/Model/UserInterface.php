@@ -15,4 +15,6 @@ interface UserInterface
     public function getAktiv();
             
     public function getRole();
+    
+    public function getTimestamp();
 }

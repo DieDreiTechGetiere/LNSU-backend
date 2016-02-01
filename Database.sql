@@ -9,7 +9,8 @@ CREATE TABLE tblUser
 	uIngameName varchar(25),
 	uPassword varchar(25),
 	uFreigeschaltet BIT,
-	uRole int
+	uRole int,
+        uTimestamp timestamp
 ); 
 
 CREATE TABLE tblMatch

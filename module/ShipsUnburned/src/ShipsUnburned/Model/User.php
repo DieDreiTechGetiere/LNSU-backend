@@ -24,6 +24,7 @@ class User implements UserInterface,
     protected $password;
     protected $aktiv;
     protected $role;
+    protected $timestamp;
     protected $inputFilter;
     
     /**
@@ -35,12 +36,15 @@ class User implements UserInterface,
     public function exchangeArray($array)
     {
         $this->id           = (!empty($array['id'])) ? $array['id'] : null;
-        $this->loginName        = (!empty($array['loginName'])) ? $array['loginName'] : null;
-        $this->ingameName         = (!empty($array['ingameName'])) ? $array['ingameName'] : null;
-        $this->password        = (!empty($array['password'])) ? $array['password'] : null;
-        $this->aktiv         = (!empty($array['aktiv'])) ? $array['aktiv'] : null;
-        $this->role   = (!empty($array['role'])) ? $array['role'] : null;
+        $this->loginName    = (!empty($array['loginName'])) ? $array['loginName'] : null;
+        $this->ingameName   = (!empty($array['ingameName'])) ? $array['ingameName'] : null;
+        $this->password     = (!empty($array['password'])) ? $array['password'] : null;
+        $this->aktiv        = (!empty($array['aktiv'])) ? $array['aktiv'] : null;
+        $this->role         = (!empty($array['role'])) ? $array['role'] : null;
+        $this->timestamp    = (!empty($array['timestamp'])) ? $array['timestamp'] : null;
     }
+    
+    // Get and Set functions for the Properties
     
      /**
      * Filters for an entity
@@ -49,24 +53,16 @@ class User implements UserInterface,
      * 
      * @return inputFilter
      */
-    
-    //TODO: Umsetzen. Wirft nur Exception momentan
     public function getInputFilter()
     {
-        throw new \Exception("Not in used");
+        return $this->inputFilter;
     }
-    
-    /**
-     * 
-     * @param InputFilterInterface $inputFilter
-     * @throws \Exception
-     */
+   
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
-        throw new \Exception("Not in used");
+        $this->inputFilter = $inputFilter;
     }
     
-    // Get and Set functions for the Properties
     public function getID()
     {
         return $this->id;
@@ -97,6 +93,11 @@ class User implements UserInterface,
         return $this->role;
     }   
     
+    public function getTimestamp()
+    {
+        return $this->timestamp;
+    }
+    
     public function setID($id)
     {
         $this->id = $id;
@@ -125,5 +126,10 @@ class User implements UserInterface,
     public function setRole($role)
     {
         $this->role = $role;
-    }        
+    }      
+    
+    public function setTimestamp($timestamp)
+    {
+        $this->timestamp = $timestamp;
+    }   
 }
