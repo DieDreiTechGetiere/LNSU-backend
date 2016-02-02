@@ -2,12 +2,12 @@
 
 namespace ShipsUnburned\Controller;
 
-use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
 /**
  * Controller for all actions regarding the userhandling
  */
-class UserController extends AbstractActionController
+class UserController extends AbstractRestfulController 
 {
     protected $userTable;
     
@@ -19,12 +19,12 @@ class UserController extends AbstractActionController
      * Actionfunction for user who try to login
      * @return JsonModel
      */
-    public function loginAction()
+    public function getLogin()
     {
         $request = $this->getRequest();
         $result = 0;
         
-        if ($request->isPost())
+        if ($request->isGet())
         {
             $data = Zend_Json::decode($request->getPost());
             
