@@ -10,7 +10,7 @@ interface UserInterface
     
     public function getIngameName();
             
-    public function getPassword();
+    public function getHashedPassword();
             
     public function getAktiv();
             

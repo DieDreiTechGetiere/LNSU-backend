@@ -21,7 +21,7 @@ class User implements UserInterface,
     protected $id;
     protected $loginName;
     protected $ingameName;
-    protected $password;
+    protected $hashedPassword;
     protected $aktiv;
     protected $role;
     protected $timestamp;
@@ -35,13 +35,13 @@ class User implements UserInterface,
      */
     public function exchangeArray($array)
     {
-        $this->id           = (!empty($array['id'])) ? $array['id'] : null;
-        $this->loginName    = (!empty($array['loginName'])) ? $array['loginName'] : null;
-        $this->ingameName   = (!empty($array['ingameName'])) ? $array['ingameName'] : null;
-        $this->password     = (!empty($array['password'])) ? $array['password'] : null;
-        $this->aktiv        = (!empty($array['aktiv'])) ? $array['aktiv'] : null;
-        $this->role         = (!empty($array['role'])) ? $array['role'] : null;
-        $this->timestamp    = (!empty($array['timestamp'])) ? $array['timestamp'] : null;
+        $this->id               = (!empty($array['id'])) ? $array['id'] : null;
+        $this->loginName        = (!empty($array['loginName'])) ? $array['loginName'] : null;
+        $this->ingameName       = (!empty($array['ingameName'])) ? $array['ingameName'] : null;
+        $this->hashedPassword   = (!empty($array['hashedPassword'])) ? $array['hashedPassword'] : null;
+        $this->aktiv            = (!empty($array['aktiv'])) ? $array['aktiv'] : null;
+        $this->role             = (!empty($array['role'])) ? $array['role'] : null;
+        $this->timestamp        = (!empty($array['timestamp'])) ? $array['timestamp'] : null;
     }
     
     // Get and Set functions for the Properties
@@ -78,9 +78,9 @@ class User implements UserInterface,
         return $this->ingameName;
     }
 
-    public function getPassword()
+    public function getHashedPassword()
     {
-        return $this->password;
+        return $this->hashedPassword;
     }
 
     public function getAktiv()
@@ -113,9 +113,9 @@ class User implements UserInterface,
         $this->ingameName = $ingameName;
     }
 
-    public function setPassword($password)
+    public function setHashedPassword($hashedPassword)
     {
-        $this->password = $password;
+        $this->hashedPassword = $hashedPassword;
     }
 
     public function setAktiv($aktiv)

@@ -5,7 +5,7 @@ USE LeaveNoShipsUnburned;
 CREATE TABLE tblUser
 (
 	uID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	uLoginName varchar(25),
+	uLoginName varchar(25) UNIQUE,
 	uIngameName varchar(25),
 	uPassword varchar(25),
 	uFreigeschaltet BIT,

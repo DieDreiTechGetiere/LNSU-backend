@@ -25,8 +25,8 @@ class PasswordService
      */
     private function generateSalt($timestamp)
     {
-        $saltTimestamt = md5($this->salt . $timestamp);
-        $this->salt = $this->salt . $saltTimestamt;
+        $saltTimestamp = md5($this->salt . $timestamp);
+        $this->salt = $this->salt . $saltTimestamp;
     }
     
     /**
@@ -73,7 +73,7 @@ class PasswordService
         }
         elseif ($this->method == 'sha1')
         {
-            return $hash = sha1($this->method == 'sha1');
+            return $hash == sha1($this->method == 'sha1');
         }
         elseif ($this->method == 'bcrypt')
         {
