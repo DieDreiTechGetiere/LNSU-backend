@@ -51,15 +51,51 @@ class UserTable
         {
             $result = $this->hydrator->hydrate($result->current(), $this->userPrototype);
             
-            if ($this->passwordService->verify($password, $result->getHashedPassword(), $result->getTimestamp()) && $result->getAktiv() == 1)
+            if ($this->passwordService->verify($password, $result->getHashedPassword(), $result->getTimestamp()))
             {
-                return true;
+                if( $result->getAktiv() == 1 )
+                {    
+                    return array('login-success' => 1,
+                                 'error-object' => array(
+                                    'error-message' => 'no error'
+                                    ));
+                }
+                else
+                {
+                    return array('login-success' => 0,
+                                 'error-object' => array(
+                                    'error-message' => 'User nicht aktiv'
+                                ));
+                }
             }
             else
             {
-                throw new \InvalidArgumentException("Falsches Passwort");
+                return array('login-success' => 0,
+                             'error-object' => array(
+                                 'error-message' => 'Falsches Passwort'
+                             ));
             }
         }
-        throw new \InvalidArgumentException("User mit diesem Namen ist nicht existent!");            
+        return array('login-success' => 0,
+                     'error-object' => array(
+                        'error-message' => 'User nicht bekannt'
+                    ));         
+    }
+    
+    public function registerUserByLoginName($array)
+    {
+        $array["password"] = $this->passwordService->create($array["password"], $array["timestamp"]);
+        
+        $action = new Insert('tbluser');
+        $action->values($array);
+        
+        $sql = new Sql($this->dbAdapter);
+        $stmt= $sql->prepareStatementForSqlObject($action);
+        $result = $stmt->execute();
+        
+        if ($result instanceof ResultInterface)
+        {
+            
+        }
     }
 }

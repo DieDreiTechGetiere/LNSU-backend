@@ -16,15 +16,14 @@ class UserController extends AbstractRestfulController
         $this->userTable = $userTable;
     }    
     /**
-     * Actionfunction for user who try to login
+     * create function for user who try to login
      * @return JsonModel
      */
-    public function getLogin()
+    public function createLogin()
     {
         $request = $this->getRequest();
-        $result = 0;
         
-        if ($request->isGet())
+        if ($request->isPost())
         {
             $data = Zend_Json::decode($request->getPost());
             
@@ -33,19 +32,23 @@ class UserController extends AbstractRestfulController
                 $result = $this->userTable->verifyLoginByLoginNameAndPassword($data["loginName"], $data["password"]);
             }
         }
-        
-        return new JsonModel(array(
-            'user' => $result
-        ));
-    }
+        return new JsonModel($result);
+    }    
     
-    public function logoutAction()
+    public function createRegister()
     {
+        $request = $this->getRequest();
         
-    }
-    
-    public function registerAction()
-    {
-        
+        if ($request->isPost())
+        {
+            $data = Zend_Json::decode($request->getPost());
+            
+            if ($data != null)
+            {
+                $result = $this->userTable->registerUserByLoginName($data);
+            }
+        }
+        return new JsonModel($result);
+        }
     }
 }
