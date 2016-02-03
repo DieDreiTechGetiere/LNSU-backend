@@ -10,6 +10,7 @@ use Zend\View\Model\JsonModel;
 class UserController extends AbstractRestfulController 
 {
     protected $userTable;
+    //TODO add UserForm as Property and to the Factory. Construct UserFilter too
     
     public function __construct(UserTable $userTable)
     {
