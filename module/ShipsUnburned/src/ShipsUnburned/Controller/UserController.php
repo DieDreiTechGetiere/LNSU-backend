@@ -49,6 +49,5 @@ class UserController extends AbstractRestfulController
             }
         }
         return new JsonModel($result);
-        }
     }
 }

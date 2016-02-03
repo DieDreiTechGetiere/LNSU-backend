@@ -55,33 +55,40 @@ class UserTable
             {
                 if( $result->getAktiv() == 1 )
                 {    
-                    return array('login-success' => 1,
-                                 'error-object' => array(
-                                    'error-message' => 'no error'
+                    return array('id' => $result->getID(),
+                                 'accountName' => $result->getIngameName(),
+                                 'loginSuccess' => true,
+                                 'errors' => array(
+                                    'errorMessage' => 'no error'
                                     ));
                 }
                 else
                 {
-                    return array('login-success' => 0,
-                                 'error-object' => array(
-                                    'error-message' => 'User nicht aktiv'
+                    return array('loginSuccess' => false,
+                                 'errors' => array(
+                                    'errorMessage' => 'User nicht aktiv'
                                 ));
                 }
             }
             else
             {
-                return array('login-success' => 0,
-                             'error-object' => array(
-                                 'error-message' => 'Falsches Passwort'
+                return array('loginSuccess' => false,
+                             'errors' => array(
+                                 'errorMessage' => 'Falsches Passwort'
                              ));
             }
         }
-        return array('login-success' => 0,
-                     'error-object' => array(
-                        'error-message' => 'User nicht bekannt'
+        return array('loginSuccess' => false,
+                     'errors' => array(
+                        'errorMessage' => 'User nicht bekannt'
                     ));         
     }
-    
+    /**
+     * Method to Insert a new User into the Database
+     * 
+     * @param array $array
+     * @return array
+     */
     public function registerUserByLoginName($array)
     {
         $array["password"] = $this->passwordService->create($array["password"], $array["timestamp"]);
@@ -95,7 +102,14 @@ class UserTable
         
         if ($result instanceof ResultInterface)
         {
-            
+            if($newID = $result->getGeneratedValue())
+            {
+                return array('registerSuccess' => true);
+            }
         }
+        return array('registerSuccess' => false,
+                     'errors' => array(
+                         'errorMessage' => 'Database error'
+                    ));
     }
 }
