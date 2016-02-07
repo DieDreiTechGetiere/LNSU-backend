@@ -58,9 +58,7 @@ class UserTable
                     return array('id' => $result->getID(),
                                  'accountName' => $result->getIngameName(),
                                  'loginSuccess' => true,
-                                 'errors' => array(
-                                    'errorMessage' => 'no error'
-                                    ));
+                                 'errors' => array());
                 }
                 else
                 {

@@ -15,6 +15,27 @@ return array(
         'factories' => array(
             'ShipsUnburned\Controller\User' => 'ShipsUnburned\Factory\UserControllerFactory'
         )
-    )
-);    
+    ),
+    'router' => array(
+        'routes' => array(
+            'user' => array(
+                'type'    => 'literal',
+                'options' => array(
+                    'route'    => '/login',
+                    'defaults' => array(
+                        'controller' => 'ShipsUnburned\Controller\UserController',
+                        'action' => 'login'
+                    ),
+                ),
+                'type'    => 'literal',
+                'options' => array(
+                    'route'    => '/register',
+                    'defaults' => array(
+                        'controller' => 'ShipsUnburned\Controller\UserController',
+                        'action' => 'register'
+                    ),
+                ),
+            ),
+        ),
+    ) 
 );    
