@@ -15,9 +15,6 @@ return array(
         'invokables' => array(
             'ShipsUnburned\Controller\User' => 'ShipsUnburned\Controller\UserController'
         ),
-        'factories' => array(
-            'ShipsUnburned\Controller\User' => 'ShipsUnburned\Factory\UserControllerFactory'
-        )
     ),
     'router' => array(
         'routes' => array(
