@@ -89,6 +89,7 @@ class UserTable
      */
     public function registerUserByLoginName($array)
     {
+        print_r($array);
         $array["password"] = $this->passwordService->create($array["password"], $array["timestamp"]);
         
         $action = new Insert('tbluser');
