@@ -28,7 +28,7 @@ return array(
                     ),
                 ),
             ),
-            'user' => array(
+            'login' => array(
                 'type'    => 'segment',
                 'options' => array(
                     'route'    => '/user/login',
@@ -37,7 +37,7 @@ return array(
                     ),
                 ),
             ),
-            'user' => array(
+            'register' => array(
                 'type'    => 'segment',
                 'options' => array(
                     'route'    => '/user/register',
