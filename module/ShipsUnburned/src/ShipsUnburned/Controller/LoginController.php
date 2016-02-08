@@ -15,8 +15,6 @@ class LoginController extends AbstractRestfulController
 
     public function __construct()
     {
-        $realServiceLocator = new ServiceLocator();
-        $this->userTable    = $realServiceLocator->get('ShipsUnburned\Model\UserTable');  
     } 
 
     /**
@@ -25,6 +23,9 @@ class LoginController extends AbstractRestfulController
      */
     public function create()
     {
+        $sm = $this->getServiceLocator();
+        $this->userTable = $sm->get('ShipsUnburned\Model\UserTable');        
+        
         //for testing purpose only:
         return new JsonModel(array('data' => array('id'=> 3, 'name' => 'New Album', 'band' => 'New Band')));
 

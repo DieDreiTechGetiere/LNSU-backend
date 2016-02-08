@@ -4,12 +4,6 @@ namespace ShipsUnburned\Controller;
 
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
-use Zend\Di\ServiceLocator;
-use ShipsUnburned\Service\PasswordService;
-use ShipsUnburned\Model\UserTable;
-use ShipsUnburned\Model\User;
-use Zend\Stdlib\Hydrator\ClassMethods;
-
 /**
  * Controller for all actions regarding the userhandling
  */
