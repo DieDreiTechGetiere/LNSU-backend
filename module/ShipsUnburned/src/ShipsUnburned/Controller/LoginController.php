@@ -4,7 +4,6 @@ namespace ShipsUnburned\Controller;
 
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
-use Zend\Di\ServiceLocator;
 /**
  * Controller for all actions regarding the userhandling
  */
