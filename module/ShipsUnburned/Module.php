@@ -36,8 +36,7 @@ class Module implements
     public function getServiceConfig()
     {
         return array(
-            
-            //Stellt automatisch ein TabelGateway bereit für jeden UserTable
+            //Stellt automatisch ein TableAdapter bereit für jeden UserTable
             'factories' => array(
                 'ShipsUnburned\Model\UserTable' => function($sm) {
                     $tableGateway = $sm->get('Zend\Db\Adapter\Adapter');
@@ -47,27 +46,4 @@ class Module implements
             ),
         );           
     }
-    
-//    public function getServiceConfig()
-//    {
-//        return array(
-//            
-//            //Stellt automatisch ein TabelGateway bereit für jeden NewsTable
-//            'factories' => array(
-//                'MedSurv\Model\NewsTable' => function($sm) {
-//                    $tableGateway = $sm->get('NewsTableGateway');
-//                    $table = new NewsTable($tableGateway);
-//                    return $table;
-//                },
-//            
-//            //Alle ResultSets im NewsTable werden automatisch zu News-Entitäten umgewandelt            
-//            'NewsTableGateway' => function($sm) {
-//                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-//                    $resultSetPrototype = new ResultSet();
-//                    $resultSetPrototype->setArrayObjectPrototype(new News());
-//                    return new TableGateway('news', $dbAdapter, null, $resultSetPrototype);
-//                },
-//            ),
-//        );           
-//    }    
 }
