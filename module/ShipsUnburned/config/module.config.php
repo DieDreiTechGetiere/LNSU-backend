@@ -18,22 +18,24 @@ return array(
     ),
     'router' => array(
         'routes' => array(
-            'user' => array(
-                'type'    => 'literal',
+            'home' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route'    => '/login',
+                    'route'    => '/',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Index',
+                    ),
+                ),
+            ),
+            'album' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/login'
+                    ),
                     'defaults' => array(
                         'controller' => 'ShipsUnburned\Controller\UserController',
                     ),
                 ),
-//                'type'    => 'literal',
-//                'options' => array(
-//                    'route'    => '/register',
-//                    'defaults' => array(
-//                        'controller' => 'ShipsUnburned\Controller\UserController',
-//                    ),
-//                ),
             ),
         ),
-    ) 
 );    
