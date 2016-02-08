@@ -12,17 +12,11 @@ class UserController extends AbstractRestfulController
     protected $userTable;
     //TODO add UserForm as Property and to the Factory. Construct UserFilter too
 
-    /*
     public function __construct(UserTable $userTable)
     {
-        $this->userTable = $userTable;
-    } */
-
-    public function __construct()
-    {
-
-    }
-
+        $realServiceLocator = new ServiceLocator();
+        $userTable          = $realServiceLocator->get('ShipsUnburned\Model\UserTable');  
+    } 
 
     /**
      * create function for user who try to login
