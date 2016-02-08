@@ -15,7 +15,7 @@ class UserController extends AbstractRestfulController
     public function __construct(UserTable $userTable)
     {
         $realServiceLocator = new ServiceLocator();
-        $userTable          = $realServiceLocator->get('ShipsUnburned\Model\UserTable');  
+        $this->userTable          = $realServiceLocator->get('ShipsUnburned\Model\UserTable');  
     } 
 
     /**
