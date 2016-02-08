@@ -20,7 +20,7 @@ class UserController extends AbstractRestfulController
      * create function for user who try to login
      * @return JsonModel
      */
-    public function loginAction()
+    public function createLogin()
     {
         $request = $this->getRequest();
         
@@ -35,8 +35,8 @@ class UserController extends AbstractRestfulController
         }
         return new JsonModel($result);
     }    
-    
-    public function registerAction()
+    /* Muss ausgelagert werden in einen eigenen Controller
+    public function createRegister()
     {
         $request = $this->getRequest();
         
@@ -51,4 +51,6 @@ class UserController extends AbstractRestfulController
         }
         return new JsonModel($result);
     }
+    */
+     
 }

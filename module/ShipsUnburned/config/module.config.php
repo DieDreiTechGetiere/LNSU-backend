@@ -24,17 +24,15 @@ return array(
                     'route'    => '/login',
                     'defaults' => array(
                         'controller' => 'ShipsUnburned\Controller\UserController',
-                        'action' => 'login'
                     ),
                 ),
-                'type'    => 'literal',
-                'options' => array(
-                    'route'    => '/register',
-                    'defaults' => array(
-                        'controller' => 'ShipsUnburned\Controller\UserController',
-                        'action' => 'register'
-                    ),
-                ),
+//                'type'    => 'literal',
+//                'options' => array(
+//                    'route'    => '/register',
+//                    'defaults' => array(
+//                        'controller' => 'ShipsUnburned\Controller\UserController',
+//                    ),
+//                ),
             ),
         ),
     ) 
