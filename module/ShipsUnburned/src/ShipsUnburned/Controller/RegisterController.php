@@ -21,11 +21,11 @@ class RegisterController extends AbstractRestfulController
     public function create()
     {
         $request = $this->getRequest();
-
+        
         if ($request->isPost())
         {
-            $data = Zend_Json::decode($request->getPost());
-
+            $data = \Zend\Json\Json::decode($request->getContent());
+            
             if ($data != null)
             {
                 $result = $this->userTable->registerUserByLoginName($data);

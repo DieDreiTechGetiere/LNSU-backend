@@ -32,7 +32,7 @@ class LoginController extends AbstractRestfulController
         
         if ($request->isPost())
         {
-            $data = Zend_Json::decode($request->getPost());
+            $data = \Zend\Json\Json::decode($request->getPost());
             
             if ($data != null)
             {
