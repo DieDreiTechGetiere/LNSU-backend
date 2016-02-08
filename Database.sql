@@ -10,7 +10,7 @@ CREATE TABLE tblUser
 	uPassword varchar(25),
 	uFreigeschaltet BIT,
 	uRole int,
-        uTimestamp timestamp
+        uTimestamp varchar(100)
 ); 
 
 CREATE TABLE tblMatch
