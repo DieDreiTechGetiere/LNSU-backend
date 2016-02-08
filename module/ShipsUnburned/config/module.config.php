@@ -12,6 +12,9 @@ return array(
         ),
     ), 
     'controllers' => array(
+        'invokables' => array(
+            'ShipsUnburned\Controller\User' => 'ShipsUnburned\Controller\UserController'
+        ),
         'factories' => array(
             'ShipsUnburned\Controller\User' => 'ShipsUnburned\Factory\UserControllerFactory'
         )
@@ -27,15 +30,16 @@ return array(
                     ),
                 ),
             ),
-            'album' => array(
+            'user' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/login'
-                    ),
+                    'route'    => '/user/login',
                     'defaults' => array(
-                        'controller' => 'ShipsUnburned\Controller\UserController',
+                        'controller' => 'ShipsUnburned\Controller\User',
                     ),
                 ),
+
             ),
         ),
+    ),
 );    
