@@ -43,7 +43,7 @@ class UserTable
     {
         $sql = new Sql($this->dbAdapter);
         $select = $sql->select('tbluser');
-        $select->where(array('uLoginName = ?'=> $loginName));
+        $select->where(array('loginName = ?'=> $loginName));
 
         $stmt = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
@@ -90,16 +90,14 @@ class UserTable
      */
     public function registerUserByLoginName($array)
     {
-        print_r($array);
         $array["password"] = $this->passwordService->create($array["password"], $array["timestamp"]);
         $values["password"] = $array["password"];
         $values["loginName"] = $array["loginName"];
         $values["ingameName"] = $array["ingameName"];
         $values["timestamp"] = $array["timestamp"];
         
-        
         $action = new Insert('tbluser');
-        $action->values($array);
+        $action->values($values);
         
         $sql = new Sql($this->dbAdapter);
         $stmt= $sql->prepareStatementForSqlObject($action);
@@ -109,7 +107,8 @@ class UserTable
         {
             if($newID = $result->getGeneratedValue())
             {
-                return array('registerSuccess' => true);
+                return array('registerSuccess' => true
+                            );
             }
         }
         return array('registerSuccess' => false,
