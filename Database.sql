@@ -2,16 +2,21 @@ CREATE DATABASE LeaveNoShipsUnburned;
 
 USE LeaveNoShipsUnburned;
 
-CREATE TABLE tblUser
-(
-	id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	loginName varchar(25) UNIQUE,
-	ingameName varchar(25),
-	password varchar(25),
-	freigeschaltet BIT,
-	role int,
-        timestamp varchar(100)
-); 
+CREATE TABLE `tbluser` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`role` INT(11) NOT NULL DEFAULT '0',
+	`timestamp` VARCHAR(100) NOT NULL DEFAULT '0',
+	`loginName` VARCHAR(25) NULL DEFAULT NULL,
+	`ingameName` VARCHAR(25) NULL DEFAULT NULL,
+	`password` VARCHAR(25) NULL DEFAULT NULL,
+	`freigeschaltet` BIT(1) NULL DEFAULT NULL,
+	PRIMARY KEY (`id`),
+	UNIQUE INDEX `uLoginName` (`loginName`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=80
+;
 
 CREATE TABLE tblMatch
 (
