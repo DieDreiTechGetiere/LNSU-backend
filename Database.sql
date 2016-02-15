@@ -4,13 +4,13 @@ USE LeaveNoShipsUnburned;
 
 CREATE TABLE tblUser
 (
-	uID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	uLoginName varchar(25) UNIQUE,
-	uIngameName varchar(25),
-	uPassword varchar(25),
-	uFreigeschaltet BIT,
-	uRole int,
-    uTimestamp varchar(100)
+	id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	loginName varchar(25) UNIQUE,
+	ingameName varchar(25),
+	password varchar(25),
+	freigeschaltet BIT,
+	role int,
+        timestamp varchar(100)
 ); 
 
 CREATE TABLE tblMatch
