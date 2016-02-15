@@ -53,7 +53,7 @@ class UserTable
             $user = new User();
             $user->exchangeArray($result->current());
             
-            \Zend\Debug\Debug::dump($password, $label = null, $echo = true);
+            //\Zend\Debug\Debug::dump($password, $label = null, $echo = true);
             if ($this->passwordService->verify($password, $user->getHashedPassword(), $user->getTimestamp()))
             {
                 if( $user->getAktiv() == 1 )
