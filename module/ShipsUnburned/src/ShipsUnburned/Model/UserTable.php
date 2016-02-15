@@ -9,6 +9,7 @@ use Zend\Db\Sql\Insert;
 use Zend\Db\Sql\Delete;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Stdlib\Hydrator\HydratorInterface;
+use Zend\Db\Adapter\Driver\ResultInterface;
 
 /**
  * Class that opens DB-Connections and gets responses from it
