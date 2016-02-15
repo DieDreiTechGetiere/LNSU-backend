@@ -50,14 +50,16 @@ class UserTable
         
         if ($result instanceof ResultInterface && $result->isQueryResult() && $result->getAffectedRows())
         {
-            $result = $this->hydrator->hydrate($result->current(), $this->userPrototype);
+            $user = new User();
+            $user->exchangeArray($result->current());
             
-            if ($this->passwordService->verify($password, $result->getHashedPassword(), $result->getTimestamp()))
+            \Zend\Debug\Debug::dump($password, $label = null, $echo = true);
+            if ($this->passwordService->verify($password, $user->getHashedPassword(), $user->getTimestamp()))
             {
-                if( $result->getAktiv() == 1 )
+                if( $user->getAktiv() == 1 )
                 {    
                     return array('id' => $result->getID(),
-                                 'accountName' => $result->getIngameName(),
+                                 'accountName' => $user->getIngameName(),
                                  'loginSuccess' => true,
                                  'errors' => array());
                 }
@@ -73,13 +75,13 @@ class UserTable
             {
                 return array('loginSuccess' => false,
                              'errors' => array(
-                                 'errorMessage' => 'Falsches Passwort'
+                                 'errorMessage' => 'wrong username or password'
                              ));
             }
         }
         return array('loginSuccess' => false,
                      'errors' => array(
-                        'errorMessage' => 'User nicht bekannt'
+                        'errorMessage' => 'wrong username or password'
                     ));         
     }
     /**
