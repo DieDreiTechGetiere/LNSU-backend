@@ -92,6 +92,11 @@ class UserTable
     {
         print_r($array);
         $array["password"] = $this->passwordService->create($array["password"], $array["timestamp"]);
+        $values["password"] = $array["password"];
+        $values["loginName"] = $array["loginName"];
+        $values["ingameName"] = $array["ingameName"];
+        $values["timestamp"] = $array["timestamp"];
+        
         
         $action = new Insert('tbluser');
         $action->values($array);
