@@ -26,7 +26,7 @@ class PasswordService
     private function generateSalt($timestamp)
     {
         $saltTimestamp = md5($this->salt . $timestamp);
-        $this->salt = $this->salt . $saltTimestamp;
+        return $this->salt . $saltTimestamp;
     }
     
     /**
@@ -38,21 +38,21 @@ class PasswordService
      */
     public function create($password, $timestamp)
     {
-        $this->generateSalt($timestamp);
+        $salt = $this->generateSalt($timestamp);
         
         if ($this->method == 'md5')
         {
-            return md5($this->salt . $password);
+            return md5($salt . $password);
         }
         elseif ($this->method == 'sha1')
         {
-            return sha1($this->salt . $password);
+            return sha1($salt . $password);
         }
         elseif ($this->method == 'bcrypt')
         {
             $bcrypt = new Bcrypt();
             $bcrypt->setCost(14);
-            return $bcrypt->create($password);
+            return $bcrypt->create($password, $timestamp);
         }
     }
     
@@ -65,21 +65,22 @@ class PasswordService
      */
     public function verify($password, $hash, $timestamp)
     {
-        $this->generateSalt($timestamp);
-        
+        $salt = $this->generateSalt($timestamp);
+        //\Zend\Debug\Debug::dump(md5($salt . $password), $label = null, $echo = true);
+        //\Zend\Debug\Debug::dump($this->salt, $label = null, $echo = true);
         if ($this->method == 'md5')
         {
-            return $hash == md5($this->salt . $password);
+            return $hash == md5($salt . $password);
         }
         elseif ($this->method == 'sha1')
         {
-            return $hash == sha1($this->method == 'sha1');
+            return $hash == sha1($salt == 'sha1');
         }
         elseif ($this->method == 'bcrypt')
         {
             $bcrypt = new Bcrypt();
             $bcrypt->setCost(14);
-            return $bcrypt->verify($password, $hash);            
+            return $bcrypt->verify($password, $hash, $timestamp);            
         }
     }
 }
