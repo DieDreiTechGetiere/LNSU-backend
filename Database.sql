@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `tbluser` (
   `timestamp` varchar(100) NOT NULL DEFAULT '0',
   `loginName` varchar(25) DEFAULT NULL,
   `ingameName` varchar(25) DEFAULT NULL,
-  `password` varchar(25) DEFAULT NULL,
+  `password` varchar(10000) DEFAULT NULL,
   `freigeschaltet` bit(1) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uLoginName` (`loginName`)
