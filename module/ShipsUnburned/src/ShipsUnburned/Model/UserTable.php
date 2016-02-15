@@ -58,7 +58,7 @@ class UserTable
             {
                 if( $user->getAktiv() == 1 )
                 {    
-                    return array('id' => $result->getID(),
+                    return array('id' => $user->getID(),
                                  'accountName' => $user->getIngameName(),
                                  'loginSuccess' => true,
                                  'errors' => array());
