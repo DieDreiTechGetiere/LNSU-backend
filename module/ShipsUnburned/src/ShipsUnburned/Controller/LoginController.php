@@ -26,18 +26,16 @@ class LoginController extends AbstractRestfulController
         $this->userTable = $sm->get('ShipsUnburned\Model\UserTable');        
         
         //for testing purpose only:
-        return new JsonModel(array('data' => array('id'=> 3, 'name' => 'New Album', 'band' => 'New Band')));
+        //new JsonModel(array('data' => array('id'=> 3, 'name' => 'New Album', 'band' => 'New Band')));
+        
 
         $request = $this->getRequest();
         
         if ($request->isPost())
         {
-            $data = \Zend\Json\Json::decode($request->getContent());
-            
-            if ($data != null)
-            {
-                $result = $this->userTable->verifyLoginByLoginNameAndPassword($data["loginName"], $data["password"]);
-            }
+            $request = json_decode(file_get_contents('php://input'), true);
+            //\Zend\Debug\Debug::dump($data, $label = null, $echo = true);
+            $result = $this->userTable->verifyLoginByLoginNameAndPassword($request["loginName"], $request["password"]);
         }
         return new JsonModel($result);
     }      
