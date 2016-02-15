@@ -19,16 +19,18 @@ class RegisterController extends AbstractRestfulController
         $sm = $this->getServiceLocator();
         $this->userTable = $sm->get('ShipsUnburned\Model\UserTable');
         
+        //for testing purpose only:
+        //return new JsonModel(array('data' => array('id'=> 3, 'name' => 'New Album', 'band' => 'New Band')));        
+        
         $request = $this->getRequest();
         
         if ($request->isPost())
         {
-            $data = \Zend\Json\Json::decode($request->getContent());
-            
-            if ($data != null)
-            {
-                $result = $this->userTable->registerUserByLoginName($data);
-            }
+            $request = $request->getPost();
+            $request = json_decode(file_get_contents('php://input'), true);
+//            \Zend\Debug\Debug::dump( $request['username'], $label = null, $echo = true);  
+            $result = $this->userTable->registerUserByLoginName($request);
+
         }
         return new JsonModel($result);
     }

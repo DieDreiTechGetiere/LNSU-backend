@@ -35,13 +35,13 @@ class User implements UserInterface,
      */
     public function exchangeArray($array)
     {
-        $this->id               = (!empty($array['uID'])) ? $array['uID'] : null;
-        $this->loginName        = (!empty($array['uLoginName'])) ? $array['uLoginName'] : null;
-        $this->ingameName       = (!empty($array['uIngameName'])) ? $array['uIngameName'] : null;
-        $this->hashedPassword   = (!empty($array['uPassword'])) ? $array['uPassword'] : null;
-        $this->aktiv            = (!empty($array['uFreigeschaltet'])) ? $array['uFreigeschaltet'] : null;
-        $this->role             = (!empty($array['uRole'])) ? $array['uRole'] : null;
-        $this->timestamp        = (!empty($array['uTimestamp'])) ? $array['uTimestamp'] : null;
+        $this->id               = (!empty($array['id'])) ? $array['id'] : null;
+        $this->loginName        = (!empty($array['loginName'])) ? $array['loginName'] : null;
+        $this->ingameName       = (!empty($array['ingameName'])) ? $array['ingameName'] : null;
+        $this->hashedPassword   = (!empty($array['password'])) ? $array['password'] : null;
+        $this->aktiv            = (!empty($array['freigeschaltet'])) ? $array['freigeschaltet'] : null;
+        $this->role             = (!empty($array['role'])) ? $array['role'] : null;
+        $this->timestamp        = (!empty($array['timestamp'])) ? $array['timestamp'] : null;
     }
     
     // Get and Set functions for the Properties

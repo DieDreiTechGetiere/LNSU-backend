@@ -9,6 +9,7 @@ use Zend\Db\Sql\Insert;
 use Zend\Db\Sql\Delete;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Stdlib\Hydrator\HydratorInterface;
+use Zend\Db\Adapter\Driver\ResultInterface;
 
 /**
  * Class that opens DB-Connections and gets responses from it
@@ -89,7 +90,6 @@ class UserTable
      */
     public function registerUserByLoginName($array)
     {
-        print_r($array);
         $array["password"] = $this->passwordService->create($array["password"], $array["timestamp"]);
         
         $action = new Insert('tbluser');
@@ -103,7 +103,8 @@ class UserTable
         {
             if($newID = $result->getGeneratedValue())
             {
-                return array('registerSuccess' => true);
+                return array('registerSuccess' => true
+                            );
             }
         }
         return array('registerSuccess' => false,
