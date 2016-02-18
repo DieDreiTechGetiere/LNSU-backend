@@ -2,7 +2,6 @@
 return array(
     'service_manager' => array(
         'factories' => array(
-        //    'ShipsUnburned\Model\UserTable' => 'ShipsUnburned\Factory\ShipsUnburnedFactory',
             'Zend\Db\Adapter\Adapter' => 'Zend\Db\Adapter\AdapterServiceFactory'
         )
     ),
@@ -14,7 +13,8 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'ShipsUnburned\Controller\Login' => 'ShipsUnburned\Controller\LoginController',
-            'ShipsUnburned\Controller\Register' => 'ShipsUnburned\Controller\RegisterController'
+            'ShipsUnburned\Controller\Register' => 'ShipsUnburned\Controller\RegisterController',
+            'ShipsUnburned\Controller\Dashboard' => 'ShipsUnburned\Controller\DashboardController'
         ),
     ),
     'router' => array(
@@ -45,7 +45,16 @@ return array(
                         'controller' => 'ShipsUnburned\Controller\Register',
                     ),
                 ),
-            ),            
+            ),
+            'dashboard' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/dashboard',
+                    'defaults' => array(
+                        'controller' => 'ShipsUnburned\Controller\Dashboard',
+                    ),
+                ),
+            ),             
         ),
     ),
 ); 
