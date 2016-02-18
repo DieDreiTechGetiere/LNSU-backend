@@ -1,6 +1,6 @@
 <?php
 
-namespace ShipsUnburned\Model;
+namespace ShipsUnburned\Model\Entity;
 
 interface UserInterface
 {

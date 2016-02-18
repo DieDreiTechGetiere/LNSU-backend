@@ -10,21 +10,6 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
-CREATE TABLE `tbluser` (
-	`id` INT(11) NOT NULL AUTO_INCREMENT,
-	`role` INT(11) NOT NULL DEFAULT '0',
-	`timestamp` VARCHAR(100) NOT NULL DEFAULT '0',
-	`loginName` VARCHAR(25) NULL DEFAULT NULL,
-	`ingameName` VARCHAR(25) NULL DEFAULT NULL,
-	`password` VARCHAR(25) NULL DEFAULT NULL,
-	`freigeschaltet` BIT(1) NULL DEFAULT NULL,
-	PRIMARY KEY (`id`),
-	UNIQUE INDEX `uLoginName` (`loginName`)
-)
-COLLATE='latin1_swedish_ci'
-ENGINE=InnoDB
-AUTO_INCREMENT=80
-;
 -- Exportiere Datenbank Struktur für leavenoshipsunburned
 DROP DATABASE IF EXISTS `leavenoshipsunburned`;
 CREATE DATABASE IF NOT EXISTS `leavenoshipsunburned` /*!40100 DEFAULT CHARACTER SET latin1 */;

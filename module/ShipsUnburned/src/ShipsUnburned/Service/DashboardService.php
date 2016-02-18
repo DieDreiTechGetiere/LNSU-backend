@@ -2,11 +2,11 @@
 
 namespace ShipsUnburned\Service;
 
-use ShipsUnburned\Model\DashboardTable;
-use ShipsUnburned\Model\MatchList;
-use ShipsUnburned\Model\HighscoreList;
-use ShipsUnburned\Model\Dashboard;
-use ShipsUnburned\Model\Stats;
+use ShipsUnburned\Model\Table\DashboardTable;
+use ShipsUnburned\Model\Entity\MatchList;
+use ShipsUnburned\Model\Entity\HighscoreList;
+use ShipsUnburned\Model\Entity\Dashboard;
+use ShipsUnburned\Model\Entity\Stats;
 
 class DashboardService
 {

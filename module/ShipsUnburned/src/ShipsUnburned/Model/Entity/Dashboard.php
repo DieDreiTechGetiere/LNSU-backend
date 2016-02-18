@@ -1,10 +1,10 @@
 <?php
 
-namespace ShipsUnburned\Model;
+namespace ShipsUnburned\Model\Entity;
 
-use ShipsUnburned\Model\MatchList;
-use ShipsUnburned\Model\HighscoreList;
-use ShipsUnburned\Model\Stats;
+use ShipsUnburned\Model\Entity\MatchList;
+use ShipsUnburned\Model\Entity\HighscoreList;
+use ShipsUnburned\Model\Entity\Stats;
 
 class Dashboard implements DashboardInterface
 {

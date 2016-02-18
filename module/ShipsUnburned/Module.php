@@ -2,13 +2,11 @@
 
 namespace ShipsUnburned;
 
-//use Zend\Db\ResultSet\ResultSet;
-//use Zend\Db\TableGateway\TableGateway;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
-use ShipsUnburned\Model\UserTable;
+use ShipsUnburned\Model\Table\UserTable;
 use ShipsUnburned\Service\PasswordService;
-use ShipsUnburned\Model\User;
+use ShipsUnburned\Model\Entity\User;
 use Zend\Stdlib\Hydrator\ClassMethods;
 
 class Module implements 
@@ -36,13 +34,19 @@ class Module implements
     public function getServiceConfig()
     {
         return array(
-            //Stellt automatisch ein TableAdapter bereit für jeden UserTable
+            //Stellt automatisch TableAdapter bereit
             'factories' => array(
-                'ShipsUnburned\Model\UserTable' => function($sm) {
+                'ShipsUnburned\Model\Table\UserTable' => function($sm) {
                     $tableGateway = $sm->get('Zend\Db\Adapter\Adapter');
                     $table = new UserTable($tableGateway, new ClassMethods(false), new User(), new PasswordService());
                     return $table;
                 },
+                'ShipsUnburned\Model\Table\DashboardTable' => function($sm) {
+                    $tableGateway = $sm->get('Zend\Db\Adapter\Adapter');
+                    //TODO Create DashboardTable class and change construct Parameters
+                    $table = new DashboardTable($tableGateway, new ClassMethods(false), new User(), new PasswordService());
+                    return $table;
+                },                        
             ),
         );           
     }

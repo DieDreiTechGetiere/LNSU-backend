@@ -1,25 +1,25 @@
 <?php
 
 
-namespace ShipsUnburned\Model;
+namespace ShipsUnburned\Model\Entity;
 
 
 
 class MatchList
 {
+    protected $Match0;
     protected $Match1;
     protected $Match2;
     protected $Match3;
     protected $Match4;
-    protected $Match5;
     
     //Matches need to be ordered by Date from the Table
-    //TODO Test if this Works!!!!
     public function addMatchesFromTable($array)
     {
-        for($i = 0; $i < $array.length(); $i++)
+        for($i = 0; $i < count($array); $i++)
         {
-            ${'this->Match' . $i} = $array[$i];
+            //Dynamically push array results into Properties!
+            $this->{'Match' . $i} = $array[$i];
         }
     }
 }

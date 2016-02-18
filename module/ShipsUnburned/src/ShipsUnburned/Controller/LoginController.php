@@ -23,11 +23,11 @@ class LoginController extends AbstractRestfulController
     public function create()
     {
         $sm = $this->getServiceLocator();
-        $this->userTable = $sm->get('ShipsUnburned\Model\UserTable');        
+        $this->userTable = $sm->get('ShipsUnburned\Model\Table\UserTable');        
         
         //for testing purpose only:
         //new JsonModel(array('data' => array('id'=> 3, 'name' => 'New Album', 'band' => 'New Band')));
-        
+        //TODO: Usermodel zurückgeben
 
         $request = $this->getRequest();
         

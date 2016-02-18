@@ -1,10 +1,9 @@
 <?php
 
-namespace ShipsUnburned\Model;
+namespace ShipsUnburned\Model\Entity;
 
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
-use Zend\InputFilter\InputFilter;
 
 /**
  * Entity for an object of the table tblUser
@@ -18,9 +17,9 @@ class User implements UserInterface,
      *
      * @var string 
      */
-    protected $id;
-    protected $loginName;
-    protected $ingameName;
+    public $id;
+    public $loginName;
+    public $ingameName;
     protected $hashedPassword;
     protected $aktiv;
     protected $role;
@@ -44,6 +43,9 @@ class User implements UserInterface,
         $this->timestamp        = (!empty($array['timestamp'])) ? $array['timestamp'] : null;
     }
     
+    public function toJson()
+    {
+    }
     // Get and Set functions for the Properties
     
      /**

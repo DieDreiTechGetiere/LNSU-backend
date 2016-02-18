@@ -1,15 +1,15 @@
 <?php
 
-namespace ShipsUnburned\Model;
+namespace ShipsUnburned\Model\Table;
 
 use ShipsUnburned\Service\PasswordService;
 use Zend\Db\Sql\Sql;
-use Zend\Db\Sql\Update;
 use Zend\Db\Sql\Insert;
-use Zend\Db\Sql\Delete;
 use Zend\Db\Adapter\AdapterInterface;
 use Zend\Stdlib\Hydrator\HydratorInterface;
 use Zend\Db\Adapter\Driver\ResultInterface;
+use Shipsunburned\Model\Entity\UserInterface;
+use ShipsUnburned\Model\Entity\User;
 
 /**
  * Class that opens DB-Connections and gets responses from it
@@ -57,9 +57,9 @@ class UserTable
             if ($this->passwordService->verify($password, $user->getHashedPassword(), $user->getTimestamp()))
             {
                 if( $user->getAktiv() == 1 )
-                {    
-                    return array('id' => $user->getID(),
-                                 'accountName' => $user->getIngameName(),
+                {   
+                    
+                    return array('user' => json_encode($user, JSON_FORCE_OBJECT),
                                  'loginSuccess' => true,
                                  'errors' => array());
                 }
