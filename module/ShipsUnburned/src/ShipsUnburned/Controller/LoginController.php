@@ -33,9 +33,9 @@ class LoginController extends AbstractRestfulController
         
         if ($request->isPost())
         {
-            $data = json_decode ($request->getContent(), true);
+            $request = json_decode(file_get_contents('php://input'), true);
             //\Zend\Debug\Debug::dump($data, $label = null, $echo = true);
-            $result = $this->userTable->verifyLoginByLoginNameAndPassword($data["loginName"], $data["password"]);
+            $result = $this->userTable->verifyLoginByLoginNameAndPassword($request["loginName"], $request["password"]);
         }
         return new JsonModel($result);
     }      

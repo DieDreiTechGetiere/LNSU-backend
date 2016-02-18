@@ -43,21 +43,23 @@ class UserTable
     {
         $sql = new Sql($this->dbAdapter);
         $select = $sql->select('tbluser');
-        $select->where(array('uLoginName = ?'=> $loginName));
+        $select->where(array('loginName = ?'=> $loginName));
 
         $stmt = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
         
         if ($result instanceof ResultInterface && $result->isQueryResult() && $result->getAffectedRows())
         {
-            $result = $this->hydrator->hydrate($result->current(), $this->userPrototype);
+            $user = new User();
+            $user->exchangeArray($result->current());
             
-            if ($this->passwordService->verify($password, $result->getHashedPassword(), $result->getTimestamp()))
+            //\Zend\Debug\Debug::dump($password, $label = null, $echo = true);
+            if ($this->passwordService->verify($password, $user->getHashedPassword(), $user->getTimestamp()))
             {
-                if( $result->getAktiv() == 1 )
+                if( $user->getAktiv() == 1 )
                 {    
-                    return array('id' => $result->getID(),
-                                 'accountName' => $result->getIngameName(),
+                    return array('id' => $user->getID(),
+                                 'accountName' => $user->getIngameName(),
                                  'loginSuccess' => true,
                                  'errors' => array());
                 }
@@ -73,13 +75,13 @@ class UserTable
             {
                 return array('loginSuccess' => false,
                              'errors' => array(
-                                 'errorMessage' => 'Falsches Passwort'
+                                 'errorMessage' => 'wrong username or password'
                              ));
             }
         }
         return array('loginSuccess' => false,
                      'errors' => array(
-                        'errorMessage' => 'User nicht bekannt'
+                        'errorMessage' => 'wrong username or password'
                     ));         
     }
     /**
@@ -91,9 +93,13 @@ class UserTable
     public function registerUserByLoginName($array)
     {
         $array["password"] = $this->passwordService->create($array["password"], $array["timestamp"]);
+        $values["password"] = $array["password"];
+        $values["loginName"] = $array["loginName"];
+        $values["ingameName"] = $array["ingameName"];
+        $values["timestamp"] = $array["timestamp"];
         
         $action = new Insert('tbluser');
-        $action->values($array);
+        $action->values($values);
         
         $sql = new Sql($this->dbAdapter);
         $stmt= $sql->prepareStatementForSqlObject($action);
