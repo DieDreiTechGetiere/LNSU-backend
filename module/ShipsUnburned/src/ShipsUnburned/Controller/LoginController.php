@@ -27,7 +27,6 @@ class LoginController extends AbstractRestfulController
         
         //for testing purpose only:
         //new JsonModel(array('data' => array('id'=> 3, 'name' => 'New Album', 'band' => 'New Band')));
-        //TODO: Usermodel zurückgeben
 
         $request = $this->getRequest();
         
