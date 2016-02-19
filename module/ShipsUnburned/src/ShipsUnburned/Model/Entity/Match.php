@@ -18,6 +18,8 @@ class Match implements MatchInterface
     public $user2;
     public $date;
     public $winner;
+    protected $user1ELO;
+    protected $user2ELO;
     
     /**
      * Function to fill the object with data from an array.
@@ -32,6 +34,8 @@ class Match implements MatchInterface
         $this->user2            = (!empty($array['User2'])) ? $array['User2'] : null;
         $this->date             = (!empty($array['Date'])) ? $array['Date'] : null;
         $this->winner           = (!empty($array['Winner'])) ? $array['Winner'] : null;
+        $this->user1ELO         = (!empty($array['User1ELO'])) ? $array['User1ELO'] : null;
+        $this->user2ELO         = (!empty($array['User2ELO'])) ? $array['User2ELO'] : null;
     }
     
     // Get and Set functions for the Properties
@@ -61,6 +65,16 @@ class Match implements MatchInterface
         return $this->winner;
     }
     
+    public function getUser1ELO()
+    {
+        return $this->user1ELO;
+    }
+
+    public function getUser2ELO()
+    {
+        return $this->user2ELO;
+    }    
+    
     public function setID($id)
     {
         $this->id = $id;
@@ -85,4 +99,14 @@ class Match implements MatchInterface
     {
         $this->winner = $winner;
     } 
+    
+    public function setUser1ELO($user1ELO)
+    {
+        $this->user1ELO = $user1ELO;
+    } 
+
+    public function setUser2ELO($user2ELO)
+    {
+        $this->user2ELO = $user2ELO;
+    }     
 }

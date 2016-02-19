@@ -13,4 +13,8 @@ interface MatchInterface
     public function getDate();
             
     public function getWinner();
+    
+    public function getUser1ELO();
+    
+    public function getUser2ELO();
 }

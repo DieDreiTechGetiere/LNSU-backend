@@ -16,7 +16,7 @@ class Stats implements StatsInterface
     public $id;
     public $totalMatches;
     public $wl;
-    public $score;
+    public $elo;
     
     /**
      * Function to fill the object with data from an array.
@@ -29,7 +29,7 @@ class Stats implements StatsInterface
         $this->id               = (!empty($array['id'])) ? $array['id'] : null;
         $this->totalMatches     = (!empty($array['totalMatches'])) ? $array['totalMatches'] : null;
         $this->wl               = (!empty($array['wl'])) ? $array['wl'] : null;
-        $this->score            = (!empty($array['score'])) ? $array['score'] : null;
+        $this->elo              = (!empty($array['ELO'])) ? $array['ELO'] : null;
     }
     
     // Get and Set functions for the Properties
@@ -49,9 +49,9 @@ class Stats implements StatsInterface
         return $this->wl;
     }
 
-    public function getScore()
+    public function getElo()
     {
-        return $this->score;
+        return $this->elo;
     }
     
     public function setID($id)
@@ -69,8 +69,8 @@ class Stats implements StatsInterface
         $this->wl = $wl;
     }
 
-    public function setScore($score)
+    public function setElo($elo)
     {
-        $this->score = $score;
+        $this->elo = $elo;
     }
 }
