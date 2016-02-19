@@ -27,7 +27,7 @@ class Highscore implements HighscoreInterface
     {
         $this->id             = (!empty($array['id'])) ? $array['id'] : null;
         $this->ingameName     = (!empty($array['ingameName'])) ? $array['ingameName'] : null;
-        $this->elo            = (!empty($array['elo'])) ? $array['elo'] : null;
+        $this->elo            = (!empty($array['ELO'])) ? $array['ELO'] : null;
     }
     
     // Get and Set functions for the Properties
