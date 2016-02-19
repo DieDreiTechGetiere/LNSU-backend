@@ -24,15 +24,15 @@ class DashboardController extends AbstractRestfulController
     public function getList()
     {
         //TODO: For Testing purpose commented!!!!
-        //$sm = $this->getServiceLocator();
-        //$this->dashboardService = $sm->get('ShipsUnburned\Service\DashboardService');        
+        $sm = $this->getServiceLocator();
+        $this->dashboardService = $sm->get('ShipsUnburned\Service\DashboardService');        
         
         //for testing purpose only:
         
-        $test = new MatchList();
-        $array = array('a', 'b', 'c', 'd');
-        $test->addMatchesFromTable($array);
-        \Zend\Debug\Debug::dump($test, $label = null, $echo = true); 
+//        $test = new MatchList();
+//        $array = array('a', 'b', 'c', 'd');
+//        $test->addMatchesFromTable($array);
+//        \Zend\Debug\Debug::dump($test, $label = null, $echo = true); 
 
         $request = $this->getRequest();
         
@@ -40,6 +40,7 @@ class DashboardController extends AbstractRestfulController
         {
             $request = json_decode(file_get_contents('php://input'), true);
             $result = $this->dashboardService->getDashboardData($request["id"]);
+             
         }
         return new JsonModel($result);
     }      

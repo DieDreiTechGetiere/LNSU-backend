@@ -8,7 +8,6 @@ use Zend\InputFilter\InputFilterInterface;
 /**
  * Entity for an object of the table tblUser
  */
-
 class User implements UserInterface,
                       InputFilterAwareInterface  
 {
@@ -43,9 +42,6 @@ class User implements UserInterface,
         $this->timestamp        = (!empty($array['timestamp'])) ? $array['timestamp'] : null;
     }
     
-    public function toJson()
-    {
-    }
     // Get and Set functions for the Properties
     
      /**
