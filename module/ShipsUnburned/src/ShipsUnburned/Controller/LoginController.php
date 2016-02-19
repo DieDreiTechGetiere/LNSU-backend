@@ -23,18 +23,16 @@ class LoginController extends AbstractRestfulController
     public function create()
     {
         $sm = $this->getServiceLocator();
-        $this->userTable = $sm->get('ShipsUnburned\Model\UserTable');        
+        $this->userTable = $sm->get('ShipsUnburned\Model\Table\UserTable');        
         
         //for testing purpose only:
         //new JsonModel(array('data' => array('id'=> 3, 'name' => 'New Album', 'band' => 'New Band')));
-        
 
         $request = $this->getRequest();
         
         if ($request->isPost())
         {
             $request = json_decode(file_get_contents('php://input'), true);
-            //\Zend\Debug\Debug::dump($data, $label = null, $echo = true);
             $result = $this->userTable->verifyLoginByLoginNameAndPassword($request["loginName"], $request["password"]);
         }
         return new JsonModel($result);
