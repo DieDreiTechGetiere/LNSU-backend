@@ -4,7 +4,6 @@
 namespace ShipsUnburned\Model\Entity;
 
 
-
 class HighscoreList
 {
     protected $Highscore0;
@@ -26,5 +25,5 @@ class HighscoreList
             //Dynamically push array results into Properties!
             $this->{'Highscore' . $i} = $array[$i];
         }
-    }
+    } 
 }

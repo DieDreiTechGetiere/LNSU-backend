@@ -4,7 +4,6 @@
 namespace ShipsUnburned\Model\Entity;
 
 
-
 class MatchList
 {
     protected $Match0;

@@ -7,6 +7,9 @@ use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use ShipsUnburned\Model\Entity\Stats;
 use ShipsUnburned\Model\Entity\Match;
+use ShipsUnburned\Model\Entity\MatchList;
+use ShipsUnburned\Model\Entity\Highscore;
+use ShipsUnburned\Model\Entity\HighscoreList;
 
 class DashboardTable
 {
@@ -18,10 +21,16 @@ class DashboardTable
         $this->dbAdapter = $dbAdapter;
     }
     
+    /**
+     * Gets the 5 last Matches for User by ID
+     * @param type $id
+     * @return MatchList
+     */
     public function getMatchList($id)
     {
         $sql = new Sql($this->dbAdapter);
-        //Creating OR Statement!!
+        
+        //Creating WHERE OR Statement!!
         $where = new \Zend\Db\Sql\Where();
         $where
             ->nest()
@@ -29,29 +38,44 @@ class DashboardTable
             ->or
             ->equalTo('tblmatch.User2', $id)
             ->unnest();
-        //Inserting Statement into Select
-        $select = $sql->select()->where($where);
+        
+        //Inserting Statement into Select with ORDER BY 'Date' DESC
+        $select = $sql->select()
+                      ->where($where)
+                      ->order('Date DESC');
 
         $stmt = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
+        
         if ($result instanceof ResultInterface && $result->isQueryResult() && $result->getAffectedRows())   
         {
-            $return = array();
+            $array = array();
             $match = new Match();
             
             $match->exchangeArray($result->current());
-            array_push($return, $match);
-            // Minus 1 Because we already pushed 1 MenuObject into the Array
+            array_push($array, $match);
+            
+            // Minus 1 Because we already pushed 1 MatchObject into the Array
             for($count = $result->count() - 1; $count > 0; $count--)
             {
                 $match = new Match();
                 $match->exchangeArray($result->next());
-                array_push($return, $match);
-            }      
-            return $return;
+                array_push($array, $match);
+            }
+            
+            //Add all Matches to the MatchList
+            $matchList = new MatchList();
+            $matchList->addMatchesFromTable($array);
+            
+            return $matchList;
         }
     }
     
+    /**
+     * Gets the stats for user by ID
+     * @param type $id
+     * @return Stats
+     */
     public function getStats($id)
     {
         $sql = new Sql($this->dbAdapter);
@@ -70,8 +94,41 @@ class DashboardTable
         }
     }
     
+    /**
+     * Gets top 10 highest ranked users
+     * @return HighscoreList
+     */
     public function getHighscoreList()
     {
-        return array();
+        $sql = new Sql($this->dbAdapter);
+        $select = $sql->select('view_Highscore');
+        //Preparing Statement with ORDER BY elo DESC and TOP 10
+        $select->order('elo DESC')->limit(10);
+
+        $stmt = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+        
+        if ($result instanceof ResultInterface && $result->isQueryResult() && $result->getAffectedRows())   
+        {
+            $array = array();
+            $highscore = new Highscore();
+            
+            $highscore->exchangeArray($result->current());
+            array_push($array, $highscore);
+            
+            // Minus 1 Because we already pushed 1 HighscoreObject into the Array
+            for($count = $result->count() - 1; $count > 0; $count--)
+            {
+                $highscore = new Match();
+                $highscore->exchangeArray($result->next());
+                array_push($array, $highscore);
+            }
+            
+            //Add all Highscores to the HighscoreList
+            $highscoreList = new HighscoreList();
+            $highscoreList->addMatchesFromTable($array);
+            
+            return $highscoreList;
+        }        
     }
 }

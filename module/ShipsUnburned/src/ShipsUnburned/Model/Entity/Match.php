@@ -4,7 +4,7 @@ namespace ShipsUnburned\Model\Entity;
 
 
 /**
- * Entity for an object of the table tblUser
+ * Entity for an object of the table tblMatch
  */
 class Match implements MatchInterface
 {
