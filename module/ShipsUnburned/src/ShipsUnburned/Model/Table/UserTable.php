@@ -6,9 +6,7 @@ use ShipsUnburned\Service\PasswordService;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\Insert;
 use Zend\Db\Adapter\AdapterInterface;
-use Zend\Stdlib\Hydrator\HydratorInterface;
 use Zend\Db\Adapter\Driver\ResultInterface;
-use Shipsunburned\Model\Entity\UserInterface;
 use ShipsUnburned\Model\Entity\User;
 
 /**
@@ -16,19 +14,13 @@ use ShipsUnburned\Model\Entity\User;
  */
 class UserTable
 {
-    protected $userPrototype;
     protected $dbAdapter;
     protected $passwordService;
-    protected $hydrator;
     
     public function __construct(AdapterInterface $dbAdapter,
-                                HydratorInterface $hydrator,
-                                UserInterface $user,
                                 PasswordService $passwordService)
     {
-        $this->hydrator = $hydrator;
         $this->dbAdapter = $dbAdapter;
-        $this->userPrototype = $user;
         $this->passwordService = $passwordService;
     }
     /**

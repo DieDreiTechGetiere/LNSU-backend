@@ -5,9 +5,9 @@ namespace ShipsUnburned;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use ShipsUnburned\Model\Table\UserTable;
+use ShipsUnburned\Model\Table\DashboardTable;
+use ShipsUnburned\Model\Table\GameTable;
 use ShipsUnburned\Service\PasswordService;
-use ShipsUnburned\Model\Entity\User;
-use Zend\Stdlib\Hydrator\ClassMethods;
 
 class Module implements 
     AutoloaderProviderInterface, 
@@ -38,15 +38,21 @@ class Module implements
             'factories' => array(
                 'ShipsUnburned\Model\Table\UserTable' => function($sm) {
                     $tableGateway = $sm->get('Zend\Db\Adapter\Adapter');
-                    $table = new UserTable($tableGateway, new ClassMethods(false), new User(), new PasswordService());
+                    $table = new UserTable($tableGateway, new PasswordService());
                     return $table;
                 },
                 'ShipsUnburned\Model\Table\DashboardTable' => function($sm) {
                     $tableGateway = $sm->get('Zend\Db\Adapter\Adapter');
                     //TODO Create DashboardTable class and change construct Parameters
-                    $table = new DashboardTable($tableGateway, new ClassMethods(false), new User(), new PasswordService());
+                    $table = new DashboardTable($tableGateway);
                     return $table;
-                },                        
+                },       
+                'ShipsUnburned\Model\Table\GameTable' => function($sm) {
+                    $tableGateway = $sm->get('Zend\Db\Adapter\Adapter');
+                    //TODO Create DashboardTable class and change construct Parameters
+                    $table = new GameTable($tableGateway);
+                    return $table;
+                },  
             ),
         );           
     }
