@@ -14,7 +14,7 @@ class DashboardServiceFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         return new DashboardService(
-                $serviceLocator->get('ShipsUnburned\Model\DashboardTable'),
+                $serviceLocator->get('ShipsUnburned\Model\Table\DashboardTable'),
                 new MatchList(),
                 new Stats(),
                 new HighscoreList()

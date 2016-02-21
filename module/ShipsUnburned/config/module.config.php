@@ -3,7 +3,8 @@ return array(
     'service_manager' => array(
         'factories' => array(
             'Zend\Db\Adapter\Adapter' => 'Zend\Db\Adapter\AdapterServiceFactory',
-            'ShipsUnburned\Service\DashboardService' => 'ShipsUnburned\Factory\DashboardServiceFactory'
+            'ShipsUnburned\Service\DashboardService' => 'ShipsUnburned\Factory\DashboardServiceFactory',
+            'ShipsUnburned\Service\GameService' => 'ShipsUnburned\Factory\GameServiceFactory'
         )
     ),
     'view_manager' => array(
@@ -15,7 +16,8 @@ return array(
         'invokables' => array(
             'ShipsUnburned\Controller\Login' => 'ShipsUnburned\Controller\LoginController',
             'ShipsUnburned\Controller\Register' => 'ShipsUnburned\Controller\RegisterController',
-            'ShipsUnburned\Controller\Dashboard' => 'ShipsUnburned\Controller\DashboardController'
+            'ShipsUnburned\Controller\Dashboard' => 'ShipsUnburned\Controller\DashboardController',
+            'ShipsUnburned\Controller\SearchGame' => 'ShipsUnburned\Controller\SearchGameController'
         ),
     ),
     'router' => array(
@@ -53,6 +55,15 @@ return array(
                     'route'    => '/dashboard',
                     'defaults' => array(
                         'controller' => 'ShipsUnburned\Controller\Dashboard',
+                    ),
+                ),
+            ), 
+            'searchgame' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/game/search',
+                    'defaults' => array(
+                        'controller' => 'ShipsUnburned\Controller\SearchGame',
                     ),
                 ),
             ),             
