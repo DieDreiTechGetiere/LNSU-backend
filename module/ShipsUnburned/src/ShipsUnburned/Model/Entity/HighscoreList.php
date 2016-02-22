@@ -6,16 +6,16 @@ namespace ShipsUnburned\Model\Entity;
 
 class HighscoreList
 {
-    protected $Highscore0;
-    protected $Highscore1;
-    protected $Highscore2;
-    protected $Highscore3;
-    protected $Highscore4;
-    protected $Highscore5;
-    protected $Highscore6;
-    protected $Highscore7;
-    protected $Highscore8;
-    protected $Highscore9;    
+    public $Highscore0;
+    public $Highscore1;
+    public $Highscore2;
+    public $Highscore3;
+    public $Highscore4;
+    public $Highscore5;
+    public $Highscore6;
+    public $Highscore7;
+    public $Highscore8;
+    public $Highscore9;    
     
     //Matches need to be ordered by Date from the Table
     public function addMatchesFromTable($array)
