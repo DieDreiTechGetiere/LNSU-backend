@@ -8,7 +8,9 @@ interface StatsInterface
             
     public function getTotalMatches();
     
-    public function getWL();
+    public function getWins();
     
-    public function getScore();
+    public function getLoses();
+    
+    public function getELO();
 }

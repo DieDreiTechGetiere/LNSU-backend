@@ -15,7 +15,8 @@ class Stats implements StatsInterface
      */
     public $id;
     public $totalMatches;
-    public $wl;
+    public $wins;
+    public $loses;
     public $elo;
     
     /**
@@ -28,7 +29,8 @@ class Stats implements StatsInterface
     {
         $this->id               = (!empty($array['id'])) ? $array['id'] : null;
         $this->totalMatches     = (!empty($array['totalMatches'])) ? $array['totalMatches'] : null;
-        $this->wl               = (!empty($array['wl'])) ? $array['wl'] : null;
+        $this->wins             = (!empty($array['wins'])) ? $array['wins'] : null;
+        $this->loses            = (!empty($array['loses'])) ? $array['loses'] : null;
         $this->elo              = (!empty($array['ELO'])) ? $array['ELO'] : null;
     }
     
@@ -44,12 +46,17 @@ class Stats implements StatsInterface
         return $this->totalMatches;
     }    
     
-    public function getWL()
+    public function getWins()
     {
-        return $this->wl;
+        return $this->wins;
     }
+    
+    public function getLoses()
+    {
+        return $this->loses;
+    }    
 
-    public function getElo()
+    public function getELO()
     {
         return $this->elo;
     }
@@ -64,12 +71,17 @@ class Stats implements StatsInterface
         $this->totalMatches = $totalMatches;
     }    
     
-    public function setWL($wl)
+    public function setWins($wins)
     {
-        $this->wl = $wl;
+        $this->wins = $wins;
     }
+    
+    public function setLoses($loses)
+    {
+        $this->loses = $loses;
+    }    
 
-    public function setElo($elo)
+    public function setELO($elo)
     {
         $this->elo = $elo;
     }

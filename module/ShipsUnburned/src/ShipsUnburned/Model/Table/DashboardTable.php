@@ -42,7 +42,8 @@ class DashboardTable
         //Inserting Statement into Select with ORDER BY 'Date' DESC
         $select = $sql->select()
                       ->where($where)
-                      ->order('Date DESC');
+                      ->order('Date DESC')
+                      ->limit(5);
 
         $stmt = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
