@@ -16,6 +16,7 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
+        $this->redirect()->toUrl('http://lnsu-frontend.maier-niklas.de/');
         return new ViewModel();
     }
 }
