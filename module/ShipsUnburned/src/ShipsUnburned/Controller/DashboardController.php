@@ -5,7 +5,7 @@ namespace ShipsUnburned\Controller;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
 //for testing purpose only!!!
-use ShipsUnburned\Model\Entity\MatchList;
+//use ShipsUnburned\Model\Entity\MatchList;
 /**
  * Controller for all actions regarding the userhandling
  */

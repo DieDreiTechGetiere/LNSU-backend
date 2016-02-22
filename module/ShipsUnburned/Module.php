@@ -43,13 +43,11 @@ class Module implements
                 },
                 'ShipsUnburned\Model\Table\DashboardTable' => function($sm) {
                     $tableGateway = $sm->get('Zend\Db\Adapter\Adapter');
-                    //TODO Create DashboardTable class and change construct Parameters
                     $table = new DashboardTable($tableGateway);
                     return $table;
                 },       
                 'ShipsUnburned\Model\Table\GameTable' => function($sm) {
                     $tableGateway = $sm->get('Zend\Db\Adapter\Adapter');
-                    //TODO Create DashboardTable class and change construct Parameters
                     $table = new GameTable($tableGateway);
                     return $table;
                 },  

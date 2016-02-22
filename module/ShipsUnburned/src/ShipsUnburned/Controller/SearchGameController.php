@@ -3,9 +3,10 @@
 
 namespace ShipsUnburned\Controller;
 
+use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
 
-class SearchGameController
+class SearchGameController extends AbstractRestfulController
 {
     protected $gameService;
     
