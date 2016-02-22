@@ -15,7 +15,7 @@ class DashboardService
     
     public function __construct(DashboardTable $dashboardTable)
     {
-        $this->dashboardTable      = $dashboardTable;
+        $this->dashboardTable = $dashboardTable;
     }
     
     public function getDashboardData($id)

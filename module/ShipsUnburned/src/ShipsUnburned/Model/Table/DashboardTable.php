@@ -39,7 +39,7 @@ class DashboardTable
             ->equalTo('tblmatch.User2', $id)
             ->unnest();
         
-        //Inserting Statement into Select with ORDER BY 'Date' DESC
+        //Inserting Statement into Select with ORDER BY 'Date' DESC and TOP 5
         $select = $sql->select('tblmatch')
                       ->where($where)
                       ->order('Date DESC')

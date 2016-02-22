@@ -39,7 +39,7 @@ class DashboardController extends AbstractRestfulController
         if ($request->isGet())
         {
             $request = json_decode(file_get_contents('php://input'), true);
-            $result = $this->dashboardService->getDashboardData($id);
+            $result = $this->dashboardService->getDashboardData($request["id"]);
         }
         return new JsonModel((array)$result);
     }      

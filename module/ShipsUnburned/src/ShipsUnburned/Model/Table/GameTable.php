@@ -31,8 +31,9 @@ class GameTable
             ->or
             ->equalTo('tblmatch.User2', NULL)
             ->unnest();        
-        $select = $sql->select()
-                      ->where($where);
+        $select = $sql->select('tblmatch')
+                      ->where($where)
+                      ->order('Date ASC');
         $stmt = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
         
