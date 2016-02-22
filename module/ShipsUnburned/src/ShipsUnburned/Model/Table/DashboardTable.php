@@ -40,7 +40,7 @@ class DashboardTable
             ->unnest();
         
         //Inserting Statement into Select with ORDER BY 'Date' DESC
-        $select = $sql->select()
+        $select = $sql->select('tblmatch')
                       ->where($where)
                       ->order('Date DESC')
                       ->limit(5);
@@ -80,7 +80,7 @@ class DashboardTable
     public function getStats($id)
     {
         $sql = new Sql($this->dbAdapter);
-        $select = $sql->select('view_Stats');
+        $select = $sql->select('view_stats');
         $select->where(array('id = ?'=> $id));
 
         $stmt = $sql->prepareStatementForSqlObject($select);
@@ -89,8 +89,7 @@ class DashboardTable
         if ($result instanceof ResultInterface && $result->isQueryResult() && $result->getAffectedRows())   
         {
             $stats = new Stats();
-            $stats->exchangeArray($result->current());           
-            
+            $stats->exchangeArray($result->current());   
             return $stats;
         }
     }
@@ -102,7 +101,7 @@ class DashboardTable
     public function getHighscoreList()
     {
         $sql = new Sql($this->dbAdapter);
-        $select = $sql->select('view_Highscore');
+        $select = $sql->select('view_highscore');
         //Preparing Statement with ORDER BY elo DESC and TOP 10
         $select->order('elo DESC')->limit(10);
 
@@ -120,7 +119,7 @@ class DashboardTable
             // Minus 1 Because we already pushed 1 HighscoreObject into the Array
             for($count = $result->count() - 1; $count > 0; $count--)
             {
-                $highscore = new Match();
+                $highscore = new Highscore();
                 $highscore->exchangeArray($result->next());
                 array_push($array, $highscore);
             }

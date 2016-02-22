@@ -23,6 +23,7 @@ class DashboardService
         $this->setRecentMatchList($id);
         $this->setYourStats($id);
         $this->setRecentHighscoreList();
+
         return new Dashboard($this->recentMatchList, $this->yourStats, $this->recentHighscoreList);
     }
     
