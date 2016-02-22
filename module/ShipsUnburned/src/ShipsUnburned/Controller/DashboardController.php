@@ -21,7 +21,7 @@ class DashboardController extends AbstractRestfulController
      * getList for getting the Dashboard-Object
      * @return JsonModel
      */
-    public function getDashboard()
+    public function getList()
     {
         //TODO: For Testing purpose commented!!!!
         $sm = $this->getServiceLocator();
