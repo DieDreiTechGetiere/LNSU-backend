@@ -8,9 +8,9 @@ use ShipsUnburned\Model\Entity\Stats;
 
 class Dashboard implements DashboardInterface
 {
-    protected $matchList;
-    protected $highscoreList;
-    protected $stats;
+    public $matchList;
+    public $highscoreList;
+    public $stats;
     
     public function __construct(MatchList $matchList, 
                                 Stats $stats, 
