@@ -110,4 +110,43 @@ class UserTable
                          'errorMessage' => 'Database error'
                     ));
     }
+    
+    /**
+     * Gets all inactive Users and returns an array of Userobjects
+     * @return array
+     */
+    public function getAllInactiveUsers()
+    {
+        $sql = new Sql($this->dbAdapter);
+        $select = $sql->select('tbluser');
+        $select->where('freigeschaltet = 1')
+               ->order('Date ASC');        
+        
+        $stmt= $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+        
+        if ($result instanceof ResultInterface && $result->isQueryResult() && $result->getAffectedRows())
+        {
+            $array = array();
+            $user = new User();
+            
+            $user->exchangeArray($result->current());
+            array_push($array, $user);
+            
+            // Minus 1 Because we already pushed 1 UserObject into the Array
+            for($count = $result->count() - 1; $count > 0; $count--)
+            {
+                $user = new User();
+                $user->exchangeArray($result->next());
+                array_push($array, $user);
+            }
+
+            return $array;
+        }
+    }
+    
+    public function setUsersActive($array)
+    {
+        return array();
+    }
 }
