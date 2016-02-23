@@ -59,7 +59,7 @@ class UserTable
                 {
                     return array('loginSuccess' => false,
                                  'errors' => array(
-                                    'errorMessage' => 'User nicht aktiv'
+                                    'errorMessage' => 'user not active'
                                 ));
                 }
             }
