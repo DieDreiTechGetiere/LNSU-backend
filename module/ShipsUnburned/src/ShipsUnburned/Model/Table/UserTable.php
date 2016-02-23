@@ -147,6 +147,21 @@ class UserTable
     
     public function setUsersActive($array)
     {
-        return array();
+        $sql = new Sql($this->dbAdapter);
+        $update = $sql->update('tbluser');
+        
+        //Set active to 1 where id IN(array)
+        $update->set(array('freigeschaltet = ?' => 1))
+                ->where->in('id', $array);
+        
+        $stmt = $sql->prepareStatementForSqlObject($update);
+        $result = $stmt->execute();
+        
+        if ($result instanceof ResultInterface && $result->isQueryResult() && $result->getAffectedRows())
+        {
+            //Return all inactive Users after update
+            return $this->getAllInactiveUsers();
+        }
+
     }
 }
