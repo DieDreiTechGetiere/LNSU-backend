@@ -21,7 +21,7 @@ class User implements UserInterface,
     public $ingameName;
     protected $hashedPassword;
     protected $aktiv;
-    protected $role;
+    public $role;
     protected $timestamp;
     protected $inputFilter;
     
