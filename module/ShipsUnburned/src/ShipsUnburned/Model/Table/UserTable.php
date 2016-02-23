@@ -145,6 +145,11 @@ class UserTable
         }
     }
     
+    /**
+     * Sets all Users with ID's in array to active and returns all inactive users
+     * @param array $array
+     * @return array
+     */
     public function setUsersActive($array)
     {
         $sql = new Sql($this->dbAdapter);
