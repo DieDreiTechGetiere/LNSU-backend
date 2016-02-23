@@ -60,6 +60,33 @@ class GameTable
         }
     }
     
+    public function checkMatch($match)
+    {
+        $sql = new Sql($this->dbAdapter);
+        $select = $sql->select('tblmatch')
+                      ->where(array('matchID = ?' => $match['matchID']));
+        
+        $stmt = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+        
+        if ($result instanceof ResultInterface && $result->isQueryResult())
+        {
+            $newMatch = new Match();
+            $newMatch->exchangeArray($result->current());
+            //Check if both player are set and the game can start
+            if ($newMatch->getUser1() && $newMatch->getUser2())
+            {
+                return array ('match' => json_encode($newMatch),
+                              'foundOpponent' => true);
+            }
+            else
+            {
+                return array ('match' => json_encode($newMatch),
+                              'foundOpponent' => false);
+            }
+        }
+    }
+    
     /**
      * Updates Match by ID
      * @param ResultSet $result
