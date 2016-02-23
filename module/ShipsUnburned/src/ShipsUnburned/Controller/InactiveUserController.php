@@ -14,7 +14,7 @@ class InactiveUserController extends AbstractRestfulController
     {
     }  
     
-    //POST Method for setting User active
+    //POST Method for setting Users active
     public function create()
     {
         $sm = $this->getServiceLocator();

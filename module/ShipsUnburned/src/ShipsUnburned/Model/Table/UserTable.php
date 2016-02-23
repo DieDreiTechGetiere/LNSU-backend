@@ -23,6 +23,7 @@ class UserTable
         $this->dbAdapter = $dbAdapter;
         $this->passwordService = $passwordService;
     }
+    
     /**
      * Verifies the Login of a User by checking it against the Database
      * 
