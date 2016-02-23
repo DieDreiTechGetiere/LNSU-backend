@@ -4,10 +4,8 @@ namespace ShipsUnburned\Controller;
 
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
-//for testing purpose only!!!
-//use ShipsUnburned\Model\Entity\MatchList;
 /**
- * Controller for all actions regarding the userhandling
+ * Controller for all actions regarding the dashboardhandling
  */
 class DashboardController extends AbstractRestfulController 
 {
@@ -23,16 +21,8 @@ class DashboardController extends AbstractRestfulController
      */
     public function getList()
     {
-        //TODO: For Testing purpose commented!!!!
         $sm = $this->getServiceLocator();
         $this->dashboardService = $sm->get('ShipsUnburned\Service\DashboardService');        
-        
-        //for testing purpose only:
-        
-//        $test = new MatchList();
-//        $array = array('a', 'b', 'c', 'd');
-//        $test->addMatchesFromTable($array);
-//        \Zend\Debug\Debug::dump($test, $label = null, $echo = true); 
 
         $request = $this->getRequest();
         
