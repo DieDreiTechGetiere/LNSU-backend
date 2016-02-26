@@ -69,6 +69,7 @@ class DashboardTable
             
             return $matchList;
         }
+        return new MatchList();
     }
     
     /**
@@ -91,6 +92,7 @@ class DashboardTable
             $stats->exchangeArray($result->current());   
             return $stats;
         }
+        return new Stats();
     }
     
     /**
@@ -128,6 +130,7 @@ class DashboardTable
             $highscoreList->addMatchesFromTable($array);
             
             return $highscoreList;
-        }        
+        }   
+        return new HighscoreList();
     }
 }

@@ -15,10 +15,13 @@ class MatchList
     //Matches need to be ordered by Date from the Table
     public function addMatchesFromTable($array)
     {
-        for($i = 0; $i < count($array); $i++)
-        {
-            //Dynamically push array results into Properties!
-            $this->{'Match' . $i} = $array[$i];
+        if ($array != null)
+        {    
+            for($i = 0; $i < count($array); $i++)
+            {
+                //Dynamically push array results into Properties!
+                $this->{'Match' . $i} = $array[$i];
+            }
         }
     }
 }
