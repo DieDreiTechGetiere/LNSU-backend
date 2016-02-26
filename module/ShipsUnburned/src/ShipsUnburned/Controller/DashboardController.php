@@ -25,7 +25,6 @@ class DashboardController extends AbstractRestfulController
         $this->dashboardService = $sm->get('ShipsUnburned\Service\DashboardService');        
 
         $request = $this->getRequest();
-        
         if ($request->isGet())
         {
             $request = json_decode(file_get_contents('php://input'), true);
