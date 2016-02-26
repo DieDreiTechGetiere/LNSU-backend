@@ -51,8 +51,7 @@ class UserTable
             {
                 if( $user->getAktiv() == 1 )
                 {   
-                    
-                    return array('user' => json_encode($user),
+                    return array('user' => $user,
                                  'loginSuccess' => true,
                                  'errors' => array());
                 }
