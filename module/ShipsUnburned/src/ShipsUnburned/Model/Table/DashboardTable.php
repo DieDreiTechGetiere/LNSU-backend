@@ -47,7 +47,6 @@ class DashboardTable
 
         $stmt = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
-        
         if ($result instanceof ResultInterface && $result->isQueryResult() && $result->getAffectedRows())   
         {
             $array = array();
