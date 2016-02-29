@@ -19,7 +19,7 @@ class GameTable
     
     public function searchGame($id)
     {
-        $user = getUser($id);
+        $user = $this->getUser($id);
         
         $sql = new Sql($this->dbAdapter);
         
