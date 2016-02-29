@@ -60,11 +60,11 @@ class GameTable
         }
     }
     
-    public function checkMatch($match)
+    public function checkMatch($id)
     {
         $sql = new Sql($this->dbAdapter);
         $select = $sql->select('tblmatch')
-                      ->where(array('matchID = ?' => $match['matchID']));
+                      ->where(array('matchID = ?' => $id));
         
         $stmt = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();

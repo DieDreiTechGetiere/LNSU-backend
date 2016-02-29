@@ -19,8 +19,8 @@ class GameService
         return $this->gameTable->searchGame($id);
     }
     
-    public function checkMatch($match)
+    public function checkMatch($id)
     {
-        return $this->gameTable->checkMatch($match);
+        return $this->gameTable->checkMatch($id);
     }
 }
