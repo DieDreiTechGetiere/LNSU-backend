@@ -28,7 +28,7 @@ class SearchGameController extends AbstractRestfulController
         if ($request->isPost())
         {
             $request = json_decode(file_get_contents('php://input'), true);
-            $result = $this->gameService->searchGame($request["id"]);
+            $result = $this->gameService->searchGame($request["userId"]);
         }
         return new JsonModel($result);
     }
