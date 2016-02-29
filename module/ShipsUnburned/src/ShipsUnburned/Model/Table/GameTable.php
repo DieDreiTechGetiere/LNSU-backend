@@ -154,9 +154,10 @@ class GameTable
         $select->where(array('id = ?'=> $id));
         
         $stmt = $sql->prepareStatementForSqlObject($select);
-        $result = $stmt->execute();        
+        $result = $stmt->execute();
         
         $user = new User();
-        return $user->exchangeArray($result->current());
+        $user->exchangeArray($result->current());
+        return $user;
     }
 }

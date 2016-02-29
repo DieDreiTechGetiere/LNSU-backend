@@ -129,5 +129,10 @@ class User implements UserInterface,
     public function setTimestamp($timestamp)
     {
         $this->timestamp = $timestamp;
-    }   
+    }
+    
+    public function getELO()
+    {
+        
+    } 
 }

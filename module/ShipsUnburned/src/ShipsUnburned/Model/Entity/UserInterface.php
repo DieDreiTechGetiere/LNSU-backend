@@ -16,5 +16,7 @@ interface UserInterface
             
     public function getRole();
     
+    public function getELO();
+    
     public function getTimestamp();
 }
