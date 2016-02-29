@@ -40,13 +40,10 @@ class SearchGameController extends AbstractRestfulController
         $this->gameService = $sm->get('ShipsUnburned\Service\GameService');
         
         $request = $this->getRequest();
-        
-        if ($request->isGet())
-        {
+
             $request = json_decode(file_get_contents('php://input'), true);
             $result = $this->gameService->checkMatch($matchID);
-        }
-        
+
         return new JsonModel($result);
     }    
 }
