@@ -43,7 +43,7 @@ class GameTable
             if ($result->getAffectedRows() > 0)
             {
                 //Update that match with current userID and ELO
-                $match = insertUserIDifMatchExists($result, $user);
+                $match = $this->insertUserIDifMatchExists($result, $user);
                 //Match can start
                 return array('match' => json_encode($match),
                              'foundOpponent' => true);                
@@ -51,7 +51,7 @@ class GameTable
             else
             {
                 //Insert new Match with current userID, ELO and Date
-                $match = createNewMatch($user);
+                $match = $this->createNewMatch($user);
                 //Need to wait for an opponent
                 return array('match' => json_encode($match),
                              'foundOpponent' => false);
