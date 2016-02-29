@@ -10,6 +10,6 @@ class GameServiceFactory implements FactoryInterface
 {
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return new GameService($serviceLocator->get('ShipsUnburned\Model\GameTable'));
+        return new GameService($serviceLocator->get('ShipsUnburned\Model\Table\GameTable'));
     }
 }
