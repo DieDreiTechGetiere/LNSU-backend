@@ -33,8 +33,8 @@ class SearchGameController extends AbstractRestfulController
         return new JsonModel($result);
     }
 
-    //GET Method for polling!
-    public function get($matchID)
+    //PUT Method for polling!
+    public function update($matchID)
     {
         $sm = $this->getServiceLocator();
         $this->gameService = $sm->get('ShipsUnburned\Service\GameService');
