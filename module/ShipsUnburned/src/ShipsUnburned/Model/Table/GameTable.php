@@ -126,7 +126,7 @@ class GameTable
      * @param User $user
      * @return Match
      */
-    protected function createNewMatch($user)
+    protected function createNewMatch(User $user)
     {
         $match = new Match();
         
