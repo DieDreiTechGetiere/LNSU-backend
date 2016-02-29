@@ -15,7 +15,7 @@ class SearchGameController extends AbstractRestfulController
     }  
     
     //POST Method initial Gamesearch
-    public function update()
+    public function create()
     {
         $sm = $this->getServiceLocator();
         $this->gameService = $sm->get('ShipsUnburned\Service\GameService');        
@@ -23,11 +23,13 @@ class SearchGameController extends AbstractRestfulController
         //for testing purpose only:
         //new JsonModel(array('data' => array('id'=> 3, 'name' => 'New Album', 'band' => 'New Band')));
 
+        $request = $this->getRequest();
         
-
-        $request = json_decode(file_get_contents('php://input'), true);
-        $result = $this->gameService->searchGame($request["id"]);
-
+        if ($request->isPost())
+        {
+            $request = json_decode(file_get_contents('php://input'), true);
+            $result = $this->gameService->searchGame($request["id"]);
+        }
         return new JsonModel($result);
     }
 
