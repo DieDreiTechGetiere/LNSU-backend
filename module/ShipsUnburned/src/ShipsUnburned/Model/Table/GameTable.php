@@ -157,6 +157,6 @@ class GameTable
         $result = $stmt->execute();        
         
         $user = new User();
-        return $user->exchangeArray($result->current);
+        return $user->exchangeArray($result->current());
     }
 }
