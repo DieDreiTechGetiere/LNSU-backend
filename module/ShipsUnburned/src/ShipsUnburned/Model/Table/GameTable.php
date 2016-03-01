@@ -132,10 +132,11 @@ class GameTable
         
         $sql = new Sql($this->dbAdapter);
         $insert = $sql->insert('tblmatch');
-        $insert->columns(array('User1' => $user->getID(),
+        $insert->values(array('User1' => $user->getID(),
                                 'User1ELO' => $user->getELO(),
-                                'Date' => new \DateTime()->format('Y-m-d')));
+                                'Date' => new \Zend\Db\Sql\Expression("NOW()")));
         
+		print_r($insert);
         $stmt = $sql->prepareStatementForSqlObject($insert);
         $newMatch = $stmt->execute();
         
