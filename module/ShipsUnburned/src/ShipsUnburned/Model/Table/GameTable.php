@@ -134,7 +134,7 @@ class GameTable
         $insert = $sql->insert('tblmatch');
         $insert->columns(array('User1' => $user->getID(),
                                 'User1ELO' => $user->getELO(),
-                                'Date' => new \DateTime()->('Y-m-d')));
+                                'Date' => new \DateTime()->format('Y-m-d')));
         
         $stmt = $sql->prepareStatementForSqlObject($insert);
         $newMatch = $stmt->execute();
