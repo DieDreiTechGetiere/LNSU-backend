@@ -139,8 +139,8 @@ class GameTable
 		print_r($insert);
         $stmt = $sql->prepareStatementForSqlObject($insert);
         $newMatch = $stmt->execute();
-        
-        return $match->exchangeArray($newMatch->getGeneratedValue());
+        $match->exchangeArray($newMatch->getGeneratedValue());
+        return $match;
     }
     
     /**
