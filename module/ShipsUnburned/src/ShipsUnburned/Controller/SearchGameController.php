@@ -49,4 +49,15 @@ class SearchGameController extends AbstractRestfulController
         
         return new JsonModel($result);
     }    
+    
+    //DELETE Method for cancelling a Match
+    public function delete($matchID)
+    {
+        $sm = $this->getServiceLocator();
+        $this->gameService = $sm->get('ShipsUnburned\Service\GameService');
+        
+        $result = $this->gameService->cancelMatch($matchID);
+        
+        return new JsonModel($result);
+    }
 }

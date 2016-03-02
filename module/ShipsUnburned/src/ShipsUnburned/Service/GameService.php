@@ -23,4 +23,9 @@ class GameService
     {
         return $this->gameTable->checkMatch($id);
     }
+    
+    public function cancelMatch($id)
+    {
+        return $this->gameTable->cancelMatch($id);
+    }
 }

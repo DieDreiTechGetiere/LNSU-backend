@@ -61,30 +61,42 @@ class GameTable
     }
     
     public function checkMatch($id)
+    {   
+        $match = $this->getMatch($id);
+        
+        //Check if both player are set and the game can start
+        if ($match->getUser1() && $match->getUser2())
+        {
+            return array ('match' => $match,
+                          'foundOpponent' => true);
+        }
+        else
+        {
+            return array ('match' => $match,
+                          'foundOpponent' => false);
+        }
+    }
+    
+    /**
+     * Delete current Match for cancelation
+     * @param Integer $id
+     * @return array
+     */
+    public function cancelMatch($id)
     {
         $sql = new Sql($this->dbAdapter);
-        $select = $sql->select('tblmatch')
-                      ->where(array('matchID = ?' => $id));
+        $delete = $sql->delete('tblmatch');
+        $delete->where(array('matchID = ?' => $id));
         
-        $stmt = $sql->prepareStatementForSqlObject($select);
+        $stmt = $sql->prepareStatementForSqlObject($delete);
         $result = $stmt->execute();
         
         if ($result instanceof ResultInterface && $result->isQueryResult())
         {
-            $newMatch = new Match();
-            $newMatch->exchangeArray($result->current());
-            //Check if both player are set and the game can start
-            if ($newMatch->getUser1() && $newMatch->getUser2())
-            {
-                return array ('match' => json_encode($newMatch),
-                              'foundOpponent' => true);
-            }
-            else
-            {
-                return array ('match' => json_encode($newMatch),
-                              'foundOpponent' => false);
-            }
+            return array('canceled' => true);
         }
+        
+        return array('canceled' => false);
     }
     
     /**
