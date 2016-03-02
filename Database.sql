@@ -11,7 +11,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Exportiere Struktur von Tabelle leavenoshipsunburned.tblmatch
-DROP TABLE IF EXISTS `tblmatch`;
 CREATE TABLE IF NOT EXISTS `tblmatch` (
   `matchID` int(11) NOT NULL AUTO_INCREMENT,
   `User1` int(11) NOT NULL,
@@ -20,14 +19,8 @@ CREATE TABLE IF NOT EXISTS `tblmatch` (
   `Winner` int(11) NOT NULL,
   `User2ELO` int(11) NOT NULL,
   `User1ELO` int(11) DEFAULT NULL,
-  PRIMARY KEY (`matchID`),
-  KEY `fk_User1` (`User1`),
-  KEY `fk_User2` (`User2`),
-  KEY `fk_Winner` (`Winner`),
-  CONSTRAINT `fk_User1` FOREIGN KEY (`User1`) REFERENCES `tbluser` (`id`),
-  CONSTRAINT `fk_User2` FOREIGN KEY (`User2`) REFERENCES `tbluser` (`id`),
-  CONSTRAINT `fk_Winner` FOREIGN KEY (`Winner`) REFERENCES `tbluser` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`matchID`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 
 -- Exportiere Daten aus Tabelle leavenoshipsunburned.tblmatch: ~5 rows (ungefähr)
 DELETE FROM `tblmatch`;
@@ -42,11 +35,38 @@ INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO
 	(7, 84, 88, '2016-02-19', 84, 0, NULL);
 INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO`, `User1ELO`) VALUES
 	(8, 92, 84, '2016-02-19', 92, 0, NULL);
+INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO`, `User1ELO`) VALUES
+	(11, 97, 97, '2016-03-02', 0, 1000, NULL);
+INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO`, `User1ELO`) VALUES
+	(12, 97, 97, '2016-03-02', 0, 1000, NULL);
+INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO`, `User1ELO`) VALUES
+	(13, 97, 97, '2016-03-02', 0, 1000, NULL);
+INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO`, `User1ELO`) VALUES
+	(14, 97, 97, '2016-03-02', 0, 1000, NULL);
+INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO`, `User1ELO`) VALUES
+	(15, 97, 97, '2016-03-02', 0, 1000, NULL);
+INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO`, `User1ELO`) VALUES
+	(16, 97, 97, '2016-03-02', 0, 1000, NULL);
+INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO`, `User1ELO`) VALUES
+	(17, 97, 97, '2016-03-02', 0, 1000, 1000);
+INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO`, `User1ELO`) VALUES
+	(18, 97, 97, '2016-03-02', 0, 1000, 1000);
+INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO`, `User1ELO`) VALUES
+	(19, 97, 97, '2016-03-02', 0, 1000, 1000);
+INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO`, `User1ELO`) VALUES
+	(20, 97, 97, '2016-03-02', 0, 1000, 1000);
+INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO`, `User1ELO`) VALUES
+	(21, 97, 97, '2016-03-02', 0, 1000, 1000);
+INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO`, `User1ELO`) VALUES
+	(22, 97, 97, '2016-03-02', 0, 1000, 1000);
+INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO`, `User1ELO`) VALUES
+	(23, 91, 97, '2016-03-02', 0, 1000, 1000);
+INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO`, `User1ELO`) VALUES
+	(24, 97, 97, '2016-03-02', 0, 1000, 1000);
 /*!40000 ALTER TABLE `tblmatch` ENABLE KEYS */;
 
 
 -- Exportiere Struktur von Tabelle leavenoshipsunburned.tblmatchsteps
-DROP TABLE IF EXISTS `tblmatchsteps`;
 CREATE TABLE IF NOT EXISTS `tblmatchsteps` (
   `msID` int(11) NOT NULL AUTO_INCREMENT,
   `mMatchID` int(11) NOT NULL,
@@ -68,7 +88,6 @@ DELETE FROM `tblmatchsteps`;
 
 
 -- Exportiere Struktur von Tabelle leavenoshipsunburned.tblshipposition
-DROP TABLE IF EXISTS `tblshipposition`;
 CREATE TABLE IF NOT EXISTS `tblshipposition` (
   `spID` int(11) NOT NULL AUTO_INCREMENT,
   `spLength` int(11) NOT NULL,
@@ -91,7 +110,6 @@ DELETE FROM `tblshipposition`;
 
 
 -- Exportiere Struktur von Tabelle leavenoshipsunburned.tbluser
-DROP TABLE IF EXISTS `tbluser`;
 CREATE TABLE IF NOT EXISTS `tbluser` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `role` int(11) unsigned zerofill NOT NULL DEFAULT '00000000000',
@@ -110,23 +128,23 @@ CREATE TABLE IF NOT EXISTS `tbluser` (
 DELETE FROM `tbluser`;
 /*!40000 ALTER TABLE `tbluser` DISABLE KEYS */;
 INSERT INTO `tbluser` (`id`, `role`, `timestamp`, `ELO`, `loginName`, `totalOppELO`, `ingameName`, `password`, `freigeschaltet`) VALUES
-	(84, 00000000000, '1455544267015', 0, 'a', NULL, 'a', 'd9df475247cac44b8e735a1e5', NULL);
+	(84, 00000000000, '1455544267015', 1000, 'a', NULL, 'a', 'd9df475247cac44b8e735a1e5', NULL);
 INSERT INTO `tbluser` (`id`, `role`, `timestamp`, `ELO`, `loginName`, `totalOppELO`, `ingameName`, `password`, `freigeschaltet`) VALUES
-	(85, 00000000000, '1455545612527', 0, 'b', NULL, 'b', '0e7eb6c8d0ad66d65ee228bf9', NULL);
+	(85, 00000000000, '1455545612527', 1000, 'b', NULL, 'b', '0e7eb6c8d0ad66d65ee228bf9', NULL);
 INSERT INTO `tbluser` (`id`, `role`, `timestamp`, `ELO`, `loginName`, `totalOppELO`, `ingameName`, `password`, `freigeschaltet`) VALUES
-	(86, 00000000000, '1455545758182', 0, 'c', NULL, 'c', 'abd463199a2ed476cadcfea34', NULL);
+	(86, 00000000000, '1455545758182', 1000, 'c', NULL, 'c', 'abd463199a2ed476cadcfea34', NULL);
 INSERT INTO `tbluser` (`id`, `role`, `timestamp`, `ELO`, `loginName`, `totalOppELO`, `ingameName`, `password`, `freigeschaltet`) VALUES
-	(87, 00000000000, '1455545795614', 0, 'd', NULL, 'd', '60382b4cbbf4d084ef215a9e1', NULL);
+	(87, 00000000000, '1455545795614', 1000, 'd', NULL, 'd', '60382b4cbbf4d084ef215a9e1', NULL);
 INSERT INTO `tbluser` (`id`, `role`, `timestamp`, `ELO`, `loginName`, `totalOppELO`, `ingameName`, `password`, `freigeschaltet`) VALUES
-	(88, 00000000000, '1455545944229', 0, 'f', NULL, 'f', '6ec8ecef6474826aee26188b3', NULL);
+	(88, 00000000000, '1455545944229', 1000, 'f', NULL, 'f', '6ec8ecef6474826aee26188b3', NULL);
 INSERT INTO `tbluser` (`id`, `role`, `timestamp`, `ELO`, `loginName`, `totalOppELO`, `ingameName`, `password`, `freigeschaltet`) VALUES
 	(89, 00000000000, '1455546153531', 1000, 'as', NULL, 'as', '7dcd461e6102b21960019e425', NULL);
 INSERT INTO `tbluser` (`id`, `role`, `timestamp`, `ELO`, `loginName`, `totalOppELO`, `ingameName`, `password`, `freigeschaltet`) VALUES
 	(90, 00000000000, '1455546185279', 2500, 'ab', NULL, 'ab', '824ea3081c95a7937351c4bdc9956eeb', b'1');
 INSERT INTO `tbluser` (`id`, `role`, `timestamp`, `ELO`, `loginName`, `totalOppELO`, `ingameName`, `password`, `freigeschaltet`) VALUES
-	(91, 00000000000, '1455547318036', 0, 'marcus', NULL, 'marcus', 'c94bbd44c39c2b5d1024b2ebb0e13bc3', b'1');
+	(91, 00000000000, '1455547318036', 1000, 'marcus', NULL, 'marcus', 'c94bbd44c39c2b5d1024b2ebb0e13bc3', b'1');
 INSERT INTO `tbluser` (`id`, `role`, `timestamp`, `ELO`, `loginName`, `totalOppELO`, `ingameName`, `password`, `freigeschaltet`) VALUES
-	(92, 00000000000, '1455802885325', 0, 'h', NULL, 'h', '9f4b3baf0ffc8d9ce2828449f1bf7608', b'1');
+	(92, 00000000000, '1455802885325', 1000, 'h', NULL, 'h', '9f4b3baf0ffc8d9ce2828449f1bf7608', b'1');
 INSERT INTO `tbluser` (`id`, `role`, `timestamp`, `ELO`, `loginName`, `totalOppELO`, `ingameName`, `password`, `freigeschaltet`) VALUES
 	(93, 00000000000, '1455894338035', 1000, 'awojnar', 0, 'Alexander Wojnar', '00793acec4e6cf95f3ed14f9d41b74eb', NULL);
 INSERT INTO `tbluser` (`id`, `role`, `timestamp`, `ELO`, `loginName`, `totalOppELO`, `ingameName`, `password`, `freigeschaltet`) VALUES
@@ -137,7 +155,6 @@ INSERT INTO `tbluser` (`id`, `role`, `timestamp`, `ELO`, `loginName`, `totalOppE
 
 
 -- Exportiere Struktur von View leavenoshipsunburned.view_highscore
-DROP VIEW IF EXISTS `view_highscore`;
 -- Erstelle temporäre Tabelle um View Abhängigkeiten zuvorzukommen
 CREATE TABLE `view_highscore` (
 	`id` INT(11) NOT NULL,
@@ -147,7 +164,6 @@ CREATE TABLE `view_highscore` (
 
 
 -- Exportiere Struktur von View leavenoshipsunburned.view_stats
-DROP VIEW IF EXISTS `view_stats`;
 -- Erstelle temporäre Tabelle um View Abhängigkeiten zuvorzukommen
 CREATE TABLE `view_stats` (
 	`id` INT(11) NOT NULL,
@@ -159,14 +175,12 @@ CREATE TABLE `view_stats` (
 
 
 -- Exportiere Struktur von View leavenoshipsunburned.view_highscore
-DROP VIEW IF EXISTS `view_highscore`;
 -- Entferne temporäre Tabelle und erstelle die eigentliche View
 DROP TABLE IF EXISTS `view_highscore`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `view_highscore` AS select `tbluser`.`id` AS `id`,`tbluser`.`ELO` AS `ELO`,`tbluser`.`ingameName` AS `ingameName` from `tbluser` ;
 
 
 -- Exportiere Struktur von View leavenoshipsunburned.view_stats
-DROP VIEW IF EXISTS `view_stats`;
 -- Entferne temporäre Tabelle und erstelle die eigentliche View
 DROP TABLE IF EXISTS `view_stats`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `view_stats` AS select 
