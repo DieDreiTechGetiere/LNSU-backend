@@ -19,13 +19,28 @@ class GameService
         return $this->gameTable->searchGame($id);
     }
     
-    public function checkMatch($id)
+    public function checkMatch($matchID)
     {
-        return $this->gameTable->checkMatch($id);
+        return $this->gameTable->checkMatch($matchID);
     }
     
-    public function cancelMatch($id)
+    public function cancelMatch($matchID)
     {
-        return $this->gameTable->cancelMatch($id);
+        return $this->gameTable->cancelMatch($matchID);
+    }
+    
+    public function endRound($array)
+    {
+        return array();
+    }
+    
+    public function checkRound($matchID)
+    {
+        return array();
+    }
+    
+    public function forfeitGame($matchID)
+    {
+        return array();
     }
 }

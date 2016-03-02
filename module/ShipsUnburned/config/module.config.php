@@ -18,7 +18,8 @@ return array(
             'ShipsUnburned\Controller\Register' => 'ShipsUnburned\Controller\RegisterController',
             'ShipsUnburned\Controller\Dashboard' => 'ShipsUnburned\Controller\DashboardController',
             'ShipsUnburned\Controller\SearchGame' => 'ShipsUnburned\Controller\SearchGameController',
-            'ShipsUnburned\Controller\InactiveUser' => 'ShipsUnburned\Controller\InactiveUserController'
+            'ShipsUnburned\Controller\InactiveUser' => 'ShipsUnburned\Controller\InactiveUserController',
+            'ShipsUnburned\Controller\Game' => 'ShipsUnburned\Controller\GameController'
         ),
     ),
     'router' => array(
@@ -76,7 +77,16 @@ return array(
                         'controller' => 'ShipsUnburned\Controller\SearchGame',
                     ),
                 ),
-            ),             
+            ),   
+            'game' => array(
+                'type'    => 'segment',
+                'options' => array(
+                    'route'    => '/game',
+                    'defaults' => array(
+                        'controller' => 'ShipsUnburned\Controller\Game',
+                    ),
+                ),
+            ),  
         ),
     ),
 ); 
