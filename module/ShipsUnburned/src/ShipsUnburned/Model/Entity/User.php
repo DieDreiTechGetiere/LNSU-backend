@@ -24,6 +24,7 @@ class User implements UserInterface,
     public $role;
     protected $timestamp;
     protected $inputFilter;
+    public $elo;
     
     /**
      * Function to fill the object with data from an array.
@@ -40,6 +41,7 @@ class User implements UserInterface,
         $this->aktiv            = (!empty($array['freigeschaltet'])) ? $array['freigeschaltet'] : null;
         $this->role             = (!empty($array['role'])) ? $array['role'] : null;
         $this->timestamp        = (!empty($array['timestamp'])) ? $array['timestamp'] : null;
+        $this->elo              = (!empty($array['ELO'])) ? $array['ELO'] : 1000;        
     }
     
     // Get and Set functions for the Properties
@@ -133,6 +135,11 @@ class User implements UserInterface,
     
     public function getELO()
     {
-        
+        return $this->elo;
+    } 
+    
+    public function setELO($elo)
+    {
+        $this->elo = $elo;
     } 
 }

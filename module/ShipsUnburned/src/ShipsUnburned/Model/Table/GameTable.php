@@ -27,9 +27,9 @@ class GameTable
         $where = new \Zend\Db\Sql\Where();
         $where
             ->nest()
-            ->equalTo('tblmatch.User1', NULL)
+            ->equalTo('tblmatch.User1', 0)
             ->or
-            ->equalTo('tblmatch.User2', NULL)
+            ->equalTo('tblmatch.User2', 0)
             ->unnest();        
         $select = $sql->select('tblmatch')
                       ->where($where)
@@ -45,7 +45,7 @@ class GameTable
                 //Update that match with current userID and ELO
                 $match = $this->insertUserIDifMatchExists($result, $user);
                 //Match can start
-                return array('match' => json_encode($match),
+                return array('match' => $match,
                              'foundOpponent' => true);                
             }
             else
@@ -53,7 +53,7 @@ class GameTable
                 //Insert new Match with current userID, ELO and Date
                 $match = $this->createNewMatch($user);
                 //Need to wait for an opponent
-                return array('match' => json_encode($match),
+                return array('match' => $match,
                              'foundOpponent' => false);
                 
             }
@@ -115,10 +115,9 @@ class GameTable
                                 'User1ELO' => $user->getELO()));
         }      
         $stmt = $sql->prepareStatementForSqlObject($update);
-        $updatedMatch = $stmt->execute();
-        
+        $stmt->execute();
         //return updated Match
-        return $match->exchangeArray($updatedMatch->getGeneratedValue());
+        return $this->getMatch($match->getID());
     }
     
     /**
@@ -128,19 +127,17 @@ class GameTable
      */
     protected function createNewMatch(User $user)
     {
-        $match = new Match();
-        
         $sql = new Sql($this->dbAdapter);
         $insert = $sql->insert('tblmatch');
         $insert->values(array('User1' => $user->getID(),
                                 'User1ELO' => $user->getELO(),
                                 'Date' => new \Zend\Db\Sql\Expression("NOW()")));
         
-		print_r($insert);
+		
         $stmt = $sql->prepareStatementForSqlObject($insert);
         $newMatch = $stmt->execute();
-        $match->exchangeArray($newMatch->getGeneratedValue());
-        return $match;
+
+        return $this->getMatch($newMatch->getGeneratedValue());;
     }
     
     /**
@@ -160,5 +157,24 @@ class GameTable
         $user = new User();
         $user->exchangeArray($result->current());
         return $user;
+    }
+    
+    /**
+     * Gets Match by ID
+     * @param Integer $id
+     * @return Match match
+     */
+    protected function getMatch($id)
+    {
+        $sql = new Sql($this->dbAdapter);
+        $select = $sql->select('tblmatch');
+        $select->where(array('matchID = ?'=> $id));
+
+        $stmt = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+        
+        $match = new Match();
+        $match->exchangeArray($result->current());
+        return $match;
     }
 }
