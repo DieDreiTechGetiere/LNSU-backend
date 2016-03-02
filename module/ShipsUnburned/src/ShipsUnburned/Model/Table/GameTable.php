@@ -91,7 +91,7 @@ class GameTable
         $stmt = $sql->prepareStatementForSqlObject($delete);
         $result = $stmt->execute();
         
-        if ($result instanceof ResultInterface && $result->isQueryResult())
+        if ($result instanceof ResultInterface)
         {
             return array('canceled' => true);
         }

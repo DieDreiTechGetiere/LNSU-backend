@@ -43,7 +43,6 @@ class SearchGameController extends AbstractRestfulController
         
         if ($request->isGet())
         {
-            $request = json_decode(file_get_contents('php://input'), true);
             $result = $this->gameService->checkMatch($id);
         }
         
