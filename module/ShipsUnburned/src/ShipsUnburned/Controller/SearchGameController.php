@@ -34,7 +34,7 @@ class SearchGameController extends AbstractRestfulController
     }
 
     //PUT Method for polling!
-    public function get($matchID)
+    public function get($id)
     {
         $sm = $this->getServiceLocator();
         $this->gameService = $sm->get('ShipsUnburned\Service\GameService');
@@ -44,19 +44,19 @@ class SearchGameController extends AbstractRestfulController
         if ($request->isGet())
         {
             $request = json_decode(file_get_contents('php://input'), true);
-            $result = $this->gameService->checkMatch($matchID);
+            $result = $this->gameService->checkMatch($id);
         }
         
         return new JsonModel($result);
     }    
     
     //DELETE Method for cancelling a Match
-    public function delete($matchID)
+    public function delete($id)
     {
         $sm = $this->getServiceLocator();
         $this->gameService = $sm->get('ShipsUnburned\Service\GameService');
         
-        $result = $this->gameService->cancelMatch($matchID);
+        $result = $this->gameService->cancelMatch($id);
         
         return new JsonModel($result);
     }
