@@ -119,7 +119,7 @@ class UserTable
     {
         $sql = new Sql($this->dbAdapter);
         $select = $sql->select('tbluser');
-        $select->where('freigeschaltet = 1')
+        $select->where('freigeschaltet = 0')
                ->order('timestamp ASC');        
         
         $stmt= $sql->prepareStatementForSqlObject($select);
