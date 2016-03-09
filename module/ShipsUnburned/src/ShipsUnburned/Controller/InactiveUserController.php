@@ -18,7 +18,7 @@ class InactiveUserController extends AbstractRestfulController
     public function create()
     {
         $sm = $this->getServiceLocator();
-        $this->gameService = $sm->get('ShipsUnburned\Table\UserTable');        
+        $this->userTable = $sm->get('ShipsUnburned\Model\Table\UserTable');        
 
         $request = $this->getRequest();
         
@@ -34,7 +34,7 @@ class InactiveUserController extends AbstractRestfulController
     public function getList()
     {
         $sm = $this->getServiceLocator();
-        $this->gameService = $sm->get('ShipsUnburned\Table\UserTable');
+        $this->userTable = $sm->get('ShipsUnburned\Model\Table\UserTable');
         
         $request = $this->getRequest();
         
