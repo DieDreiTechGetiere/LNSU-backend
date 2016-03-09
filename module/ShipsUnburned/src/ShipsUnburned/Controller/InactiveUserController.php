@@ -24,7 +24,7 @@ class InactiveUserController extends AbstractRestfulController
         
         if ($request->isPost())
         {
-            $request = json_decode(file_get_contents('php://input'), true);
+            $request = json_decode(file_get_contents('php://input'), true);  
             $result = $this->userTable->setUsersActive($request["activate"]);
         }
         return new JsonModel($result);

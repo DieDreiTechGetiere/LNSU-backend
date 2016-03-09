@@ -153,12 +153,11 @@ class UserTable
     public function setUsersActive($array)
     {
         $sql = new Sql($this->dbAdapter);
-        $update = $sql->update('tbluser');
+        $update = $sql->update()->table('tbluser');
         
         //Set active to 1 where id IN(array)
-        $update->set(array('freigeschaltet = ?' => 1))
+        $update->set(array('freigeschaltet' => 1))
                 ->where->in('id', $array);
-        
         $stmt = $sql->prepareStatementForSqlObject($update);
         $result = $stmt->execute();
         
