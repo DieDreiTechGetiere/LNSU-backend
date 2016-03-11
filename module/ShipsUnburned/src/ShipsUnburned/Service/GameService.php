@@ -4,14 +4,19 @@
 namespace ShipsUnburned\Service;
 
 use ShipsUnburned\Model\Table\GameTable;
+use ShipsUnburned\Service\GameValidationService;
+use ShipsUnburned\Model\Entity\Game;
 
 class GameService
 {
     protected $gameTable;
+    protected $gameValidationService;
     
-    public function __construct(GameTable $gameTable)
+    public function __construct(GameTable $gameTable,
+                                GameValidationService $gameValidationService)
     {
         $this->gameTable = $gameTable;
+        $this->gameValidationService = $gameValidationService;
     }
     
     public function searchGame($id)
@@ -29,9 +34,32 @@ class GameService
         return $this->gameTable->cancelMatch($matchID);
     }
     
+    /**
+     * Checks for placementPhase and decides which steps to take next
+     * @param array $array
+     * @return array
+     */
     public function endRound($array)
     {
-        return array();
+        if ($array["placementPhase"] == true)
+        {
+            //Initialize Game and set ships on the gamefield
+            $game = new Game();
+            $game->setGameField()
+                 ->insertShipsIntoGameField($array["ships"]);
+            
+            //If Validation is true then insert an give back repsone
+            if($this->gameValidationService->validatePlacementRound($game))
+            {
+                return $this->gameTable->insertPlacementRound($game, $request["userId"], $request["matchId"]);
+            }
+            //Else return errorobject
+            return array('error' => 'Shipplacement is not valid');
+        }
+        else
+        {
+            return $this->gameValidationService->validateMatchStep();
+        }
     }
     
     public function checkRound($matchID)

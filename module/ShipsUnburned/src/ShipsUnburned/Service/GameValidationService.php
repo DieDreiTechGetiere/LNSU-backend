@@ -4,18 +4,23 @@ namespace ShipsUnburned\Service;
 
 use ShipsUnburned\Model\Entity\Game;
 use ShipsUnburned\Model\Entity\MatchStep;
-use ShipsUnburned\Model\Entity\Placement;
 
 class GameValidationService
 {
+        protected $game;
+    
 	public function validateMatchStep(Game $game, MatchStep $matchStep)
 	{
 		return array();
 	}
 	
-	public function validatePlacementRound(Game $game, Placement $placement)
+	public function validatePlacementRound(Game $game)
 	{
-		return array();
+            $this->game = $game;
+            $this->coordinatesInField();
+            $this->shipsNotOverlapping();
+            $this->spaceBetweenShipsIsValid();
+            $this->numberOfShipsAreValid();
 	}	
 	//General validation
 	protected function coordinatesInField()
