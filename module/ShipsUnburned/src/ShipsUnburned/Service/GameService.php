@@ -51,14 +51,20 @@ class GameService
             //If Validation is true then insert an give back repsone
             if($this->gameValidationService->validatePlacementRound($game))
             {
-                return $this->gameTable->insertPlacementRound($game, $request["userId"], $request["matchId"]);
+                return $this->gameTable->insertPlacementRound($game, $array["userId"], $array["matchId"]);
             }
             //Else return errorobject
             return array('error' => 'Shipplacement is not valid');
         }
         else
         {
-            return $this->gameValidationService->validateMatchStep();
+            //If Validation is true then insert an give back repsone
+            if($this->gameValidationService->validateMatchStep())
+            {
+                return $this->gameTable->insertMatchStep($array["userId"], $array["matchId"]);
+            }
+            //Else return errorobject
+            return array('error' => 'Matchstep is not valid');
         }
     }
     
