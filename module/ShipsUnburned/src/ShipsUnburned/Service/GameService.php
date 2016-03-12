@@ -45,12 +45,13 @@ class GameService
         {
             //Initialize Game and set ships on the gamefield
             $game = new Game();
-            $game->setGameField()
-                 ->insertShipsIntoGameField($array["ships"]);
+            $game->setGameField();
             
             //If Validation is true then insert an give back repsone
-            if($this->gameValidationService->validatePlacementRound($game))
+            if($this->gameValidationService->validatePlacementRound($game, $array["ships"]))
             {
+                //Insert data into Game after Validation!!!
+                $game->insertShipsIntoGameField($array["ships"]);
                 return $this->gameTable->insertPlacementRound($game, $array["userId"], $array["matchId"]);
             }
             //Else return errorobject

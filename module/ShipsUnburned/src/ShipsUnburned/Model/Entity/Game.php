@@ -38,7 +38,7 @@ class Game implements GameInterface
                 //Go through the value/s
                 for ($j = 0; $k < count($array[$i]); $j++)
                 {
-                    //Set Gamefield = 1 where gamefield[$i] and the value of $array[$i][$j]
+                    //Set Gamefield = 1 (Ship) where gamefield[$i] and the value of $array[$i][$j]
                     $gamefield[$i][$array[$i][$j]] = 1;
                 }
             }

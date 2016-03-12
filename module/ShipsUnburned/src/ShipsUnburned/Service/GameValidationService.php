@@ -14,16 +14,20 @@ class GameValidationService
 		return array();
 	}
 	
-	public function validatePlacementRound(Game $game)
+	public function validatePlacementRound(Game $game, array $array)
 	{
             $this->game = $game;
-            $this->coordinatesInField();
+            //Check if coordinates are correct
+            $this->coordinatesInField($array);
+            //insert ships into game
+            $this->game->insertShipsIntoGameField($array);
+            
             $this->shipsNotOverlapping();
             $this->spaceBetweenShipsIsValid();
             $this->numberOfShipsAreValid();
 	}	
 	//General validation
-	protected function coordinatesInField()
+	protected function coordinatesInField(array $array)
 	{
 		//TODO: X and Y < 12!!!
 	}
