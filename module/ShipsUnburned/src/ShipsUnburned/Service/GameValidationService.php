@@ -7,6 +7,12 @@ use ShipsUnburned\Model\Entity\MatchStep;
 
 class GameValidationService
 {
+        //Constants for Ships
+        const SHIP_SIZE_1 = 1;
+        const SHIP_SIZE_2 = 2;
+        const SHIP_SIZE_3 = 3;
+        const SHIP_SIZE_4 = 4;
+    
         protected $game;
     
 	public function validateMatchStep(Game $game, MatchStep $matchStep)
