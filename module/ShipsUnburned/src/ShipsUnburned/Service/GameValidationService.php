@@ -22,15 +22,14 @@ class GameValidationService
 	
 	public function validatePlacementRound(Game $game, array $array)
 	{
-            $this->game = $game;
-            //Check if coordinates are correct
-            $this->coordinatesInField($array);
-            //insert ships into game
-            $this->game->insertShipsIntoGameField($array);
-            
-            $this->shipsNotOverlapping();
-            $this->spaceBetweenShipsIsValid();
-            $this->numberOfShipsAreValid();
+		$this->game = $game;
+		//Check if coordinates are correct
+		$this->coordinatesInField($array);
+		//insert ships into game
+		$this->game->insertShipsIntoGameField($array);
+		
+		$this->spaceBetweenShipsIsValid();
+		$this->numberOfShipsAreValid();
 	}	
 	//General validation
 	protected function coordinatesInField(array $array)
@@ -38,10 +37,24 @@ class GameValidationService
 		//TODO: X and Y < 12!!!
 	}
 	
-	//Placement-Round validations
-	protected function shipsNotOverlapping()
+	protected function findShipByLength()
 	{
-		//TODO: Ships are not allowed to overlap!!!
+		//TODO: Find Ships and use findShipsAndDelete() to delete them
+	}
+	
+	protected function findShipsAndDelete()
+	{
+		for ($i = 0; $i < $this->game::LENGTH; $i++)
+		{
+			for ($j = 0; $j < $this->game::LENGTH; $j++)
+			{
+				//Delete Ship if there is one
+				if ($this->game->gamefield[$i][$j] == 1)
+				{
+					$this->game->deleteShipsFromGameField($i, $j, SHIP_SIZE_1, true);
+				}
+			}
+		}
 	}
 	
 	protected function spaceBetweenShipsIsValid()
