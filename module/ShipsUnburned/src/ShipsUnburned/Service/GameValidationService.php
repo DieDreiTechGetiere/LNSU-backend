@@ -44,9 +44,9 @@ class GameValidationService
 	
 	protected function findShipsAndDelete()
 	{
-		for ($i = 0; $i < $this->game::LENGTH; $i++)
+		for ($i = 0; $i < $this->game->LENGTH; $i++)
 		{
-			for ($j = 0; $j < $this->game::LENGTH; $j++)
+			for ($j = 0; $j < $this->game->LENGTH; $j++)
 			{
 				//Delete Ship if there is one
 				if ($this->game->gamefield[$i][$j] == 1)
