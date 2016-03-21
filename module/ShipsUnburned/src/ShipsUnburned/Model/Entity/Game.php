@@ -5,6 +5,8 @@ namespace ShipsUnburned\Model\Entity;
 
 class Game implements GameInterface
 {
+	const LENGTH = 12;
+	
     public $gamefield;
     
     public function getGameField()
@@ -30,7 +32,7 @@ class Game implements GameInterface
         $gamefield = $this->gamefield;
         
         //Go through the gamefield
-        for ($i = 0; $i < count($gamefield); $i++)
+        for ($i = 0; $i < $this->LENGTH; $i++)
         {
             //When array[$i] has values go into next for loop
             if ($array[$i] != null)
@@ -43,5 +45,28 @@ class Game implements GameInterface
                 }
             }
         }
+		
+		$this->gamefield = $gamefield;
     }
+	
+	public function deleteShipsFromGameField(int x, int y,int length, bool direction)
+	{
+		$gamefield = $this->gamefield;
+		
+		//If direction is true x gets upped
+		for ($i = 1; $i <= length; $i++)
+		{
+			$gamefield[x][y] = 0;
+			if (direction)
+			{
+				x++;
+			}
+			else
+			{
+				y++;
+			}
+		}
+		
+		$this->gamefield = $gamefield;
+	}
 }
