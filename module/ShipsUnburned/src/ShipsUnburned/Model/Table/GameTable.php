@@ -149,7 +149,7 @@ class GameTable
         $stmt = $sql->prepareStatementForSqlObject($insert);
         $newMatch = $stmt->execute();
 
-        return $this->getMatch($newMatch->getGeneratedValue());;
+        return $this->getMatch($newMatch->getGeneratedValue());
     }
     
     /**
@@ -188,5 +188,31 @@ class GameTable
         $match = new Match();
         $match->exchangeArray($result->current());
         return $match;
+    }
+    
+    /*
+
+        TEST FUNCTIONS
+        
+    */
+    
+    public function createTestMatch()
+    {
+        $sql = new Sql($this->dbAdapter);
+        $insert = $sql->insert('tblmatch');
+        $insert->values(array('User1' => 91,
+                                'User1ELO' => 1000,
+                                'Date' => new \Zend\Db\Sql\Expression("NOW()")));
+        
+		
+        $stmt = $sql->prepareStatementForSqlObject($insert);
+        $newMatch = $stmt->execute();
+        
+        if ($newMatch->getAffectedRows() > 0)
+        {
+            return array('success' => true);
+        }
+        
+        return array('success' => false);       
     }
 }
