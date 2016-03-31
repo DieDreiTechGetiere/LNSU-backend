@@ -8,6 +8,8 @@ class Ships implements ShipInterface
     protected $y;
     protected $length;
     protected $direction;
+    protected $coordinatesX = array();
+    protected $coordinatesY = array();    
     
     const RIGHT = 0;
     const DOWN = 1;
@@ -28,6 +30,30 @@ class Ships implements ShipInterface
         }
     }
     
+    /**
+     * generates X and Y Coordinates of the whole ship
+     */
+    public function generateCoordinates()
+    {
+        //For direction Right
+        if($this->direction == 0)
+        {
+            for ($i = 0; $i < $this->length; $i++)
+            {
+                $this->coordinatesX[$i] = $this->x + $i;
+                $this->coordinatesY[$i] = $this->y;
+            }            
+        }
+        //For direction Down
+        else
+        {    
+            for ($i = 0; $i < $this->length; $i++)
+            {
+                $this->coordinatesX[$i] = $this->x;
+                $this->coordinatesY[$i] = $this->y + $i;
+            }
+        }    
+    }
     // Get and Set functions for the Properties
     
     public function getX()

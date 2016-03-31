@@ -44,21 +44,4 @@ class Game implements GameInterface
             }
         }
     }
-	
-    public function deleteShipsFromGameField(int $x, int $y,int $length, bool $direction)
-    {
-        //If direction is true x gets upped
-        for ($i = 1; $i <= $length; $i++)
-        {
-            $this->gamefield[x][y] = 0;
-            if ($direction)
-            {
-                $x++;
-            }
-            else
-            {
-                $y++;
-            }
-        }
-    }
 }

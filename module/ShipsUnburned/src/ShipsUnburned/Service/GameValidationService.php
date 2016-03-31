@@ -15,10 +15,7 @@ class GameValidationService
     const SHIP2_3TIMES = 3;
     const SHIP3_2TIMES = 2;
     const SHIP4_1TIMES = 1;
-    
-    const SHIP_SIZE_1 = 1;
-    const SHIP_SIZE_2 = 2;
-    const SHIP_SIZE_3 = 3;
+
     const SHIP_SIZE_4 = 4;
     
     const SHIP_ERROR_1 = 'number of ships is not correct';
@@ -51,24 +48,15 @@ class GameValidationService
         $this->game->insertShipsIntoGameField($array);
 
         //Find all Ships and fill shipArray with all the ones found
-        $this->findShipsOnGamefield();
-        
-        //Check if the number of ships is correct
-        if ($this->numberOfShipsAreValid() == true)
+        if(!$this->findShipsOnGamefield() == false)
         {
-            if($this->numberOfDifferentShipsIsValid() == true)
+            //Check if the number of ships is correct
+            if ($this->numberOfDifferentShipsIsValid() == true)
             {
-                //TODO: Validate the positions of the ships
-            }
-            else
-            {
-                return array('error' => $this->SHIP_ERROR_1);
-            }
+                return $this->gameTable->insertPlacementPhase();
+            }           
         }
-        else
-        {
-            return array('error' => $this->SHIP_ERROR_1);
-        }
+        return array('error' => $this->SHIP_ERROR_1);
     }
 
     /*
@@ -76,22 +64,11 @@ class GameValidationService
         VALIDATION FUNCTIONS!
 
     */
-
-
-    protected function spaceBetweenShipsIsValid()
-    {
-            //TODO: Ships need one empty space between one another!!!
-    }
-
-    protected function numberOfShipsAreValid()
-    {
-        if (count($this->shipArray) == $this->SHIP_COUNT)
-        {
-            return true;
-        }
-        return false;
-    }
     
+    /**
+     * Check if the number of ships per length are correct
+     * @return boolean
+     */
     protected function numberOfDifferentShipsIsValid()
     {
         $count1 = 0;
@@ -99,7 +76,7 @@ class GameValidationService
         $count3 = 0;
         $count4 = 0;
         
-        //TODO: 4x 1spaceShip, 3x 2spaceShip, 2x 3spaceShip, 1x 4spaceShip
+        //Go through all ships
         for ($i = 0; $i < $this->SHIP_COUNT; $i++)
         {
             //Check the length of each ship and add 1 to the correlating counter
@@ -142,6 +119,7 @@ class GameValidationService
 
     /**
      * find ships and add them to shipArray
+     * @return boolean
      */
     protected function findShipsOnGamefield()
     {
@@ -149,11 +127,20 @@ class GameValidationService
         {
             for ($j = 0; $j < $this->game->LENGTH; $j++)
             {
-                //Delete Ship if there is one
+                //Create Ship if there is one
                 if ($this->game->gamefield[$i][$j] == 1)
                 {
                     //Add created Ships to array
-                    array_push($this->shipArray, $this->createShip($i, $j));
+                    $ship = $this->createShip($i, $j);
+                    
+                    if(!$ship == false)
+                    {
+                        array_push($this->shipArray, $ship);
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
             }
         }
@@ -185,7 +172,18 @@ class GameValidationService
                 } 
             }
             //Create Ship with all the known parameters
-            return new Ship($x, $y, $length, $direction);
+            $ship = new Ship($x, $y, $length, $direction);
+            
+            //populate coordinatesX and coordinatesY
+            $ship->generateCoordinates();
+            
+            //Delete Ship from gamefield
+            $this->deleteShipFromGamefield($ship);
+            
+            if(!$this->checkForUnavailableSpace($ship) == false)
+            {
+                return $ship;
+            }
         }
         //If direction is Down
         else if ($this->checkForDirection($x, $y) == 2)
@@ -203,14 +201,37 @@ class GameValidationService
                 }
             }
             //Create Ship with all the known parameters
-            return new Ship($x, $y, $length, $direction);
+            $ship = new Ship($x, $y, $length, $direction);
+            
+            //populate coordinatesX and coordinatesY
+            $ship->generateCoordinates();
+            
+            //Delete Ship from gamefield
+            $this->deleteShipFromGamefield($ship);
+            
+            if(!$this->checkForUnavailableSpace($ship) == false)
+            {
+                return $ship;
+            }   
         }
         //If the Ship has the Length 1 just create the object
         else
         {
             //Create Ship with all the known parameters
-            return new Ship($x, $y, $length, $direction);               
+            $ship = new Ship($x, $y, $length, $direction);
+            
+            //populate coordinatesX and coordinatesY
+            $ship->generateCoordinates();
+            
+            //Delete Ship from gamefield
+            $this->deleteShipFromGamefield($ship);
+            
+            if(!$this->checkForUnavailableSpace($ship) == false)
+            {
+                return $ship;
+            }              
         }
+        return false;
     }
 
     /**
@@ -234,74 +255,48 @@ class GameValidationService
         }
         return 0;
     }    
+
     /**
-     * Sets blocked space around Ship to 0
-     * @param int $x
-     * @param int $y
-     * @param int $length
+     * Checks for wrong ship placement
+     * @param Ship $ship
+     * @return boolean
      */
-    protected function setUnavailableSpace(int $x, int $y, int $length, int $direction)
+    protected function checkForUnavailableSpace(Ship $ship)
     {
-        if ($length == 1)
+        //Check surrounding of the Ship for other Ship placements
+        for($i = 0; $i <= $ship->length; $i++)
         {
-            $this->game->gamefield[$x - 1][$y]      = 0;
-            $this->game->gamefield[$x + 1][$y]      = 0;
-            $this->game->gamefield[$x - 1][$y - 1]  = 0;
-            $this->game->gamefield[$x + 1][$y - 1]  = 0;
-            $this->game->gamefield[$x - 1][$y + 1]  = 0;
-            $this->game->gamefield[$x + 1][$y + 1]  = 0;
-            $this->game->gamefield[$x][$y - 1]      = 0;
-            $this->game->gamefield[$x][$y + 1]      = 0;
+            $x = $ship->coordinateX[$i]; 
+            $y = $ship->coordinateY[$i];
+            
+            //Check surrounding of the current X and Y coordinate
+            if ($this->game->gamefield[$x - 1][$y - 1] == 1 ||
+                $this->game->gamefield[$x][$y -1] == 1      ||
+                $this->game->gamefield[$x + 1][$y - 1] == 1 ||
+                $this->game->gamefield[$x - 1][$y] == 1     ||
+                $this->game->gamefield[$x - 1][$y + 1] == 1 ||
+                $this->game->gamefield[$x][$y + 1] == 1     ||
+                $this->game->gamefield[$x + 1][$y + 1] == 1 ||
+                $this->game->gamefield[$x + 1][$y] == 1)
+            {
+                return false;
+            }
         }
-        else
+        return true;
+    }
+    
+    /**
+     * Deletes ship from gamefield
+     * @param Ship $ship
+     */
+    protected function deleteShipFromGamefield(Ship $ship)
+    {
+        for($i = 0; $i <= $ship->length; $i++)
         {
-            //Direction Right
-            if($direction == 1)
-            {
-                switch ($length)
-                {
-                    case 2:
-                        $this->game->gamefield[$x - 1][$y]      = 0;
-                        $this->game->gamefield[$x + 2][$y]      = 0;
-                        $this->game->gamefield[$x][$y - 1]      = 0;  
-                        $this->game->gamefield[$x][$y + 1]      = 0;  
-                        $this->game->gamefield[$x - 1][$y - 1]  = 0;
-                        $this->game->gamefield[$x + 1][$y - 1]  = 0;
-                        $this->game->gamefield[$x + 2][$y - 1]  = 0;
-                        $this->game->gamefield[$x + 2][$y + 1]  = 0;                        
-                        $this->game->gamefield[$x - 1][$y + 1]  = 0;
-                        $this->game->gamefield[$x + 1][$y + 1]  = 0;
-                      
-                        break;
-                    case 3:
-                        break;
-                    case 4:
-                        break;
-                } 
-            }
-            //Direction Down
-            else
-            {
-                switch ($length)
-                {
-                    case 2:
-                        $this->game->gamefield[$x - 1][$y]      = 0;
-                        $this->game->gamefield[$x + 1][$y]      = 0;
-                        $this->game->gamefield[$x][$y - 1]      = 0;  
-                        $this->game->gamefield[$x][$y + 2]      = 0;                        
-                        $this->game->gamefield[$x - 1][$y - 1]  = 0;
-                        $this->game->gamefield[$x + 1][$y - 1]  = 0;
-                        $this->game->gamefield[$x + 1][$y + 2]  = 0; 
-                        $this->game->gamefield[$x - 1][$y + 2]  = 0;                        
-                        $this->game->gamefield[$x - 1][$y + 1]  = 0;
-                        $this->game->gamefield[$x + 1][$y + 1]  = 0;
-                        break;
-                    case 3:
-                        break;
-                    case 4:
-                        break;
-                }                
-            }
+            $x = $ship->coordinateX[$i]; 
+            $y = $ship->coordinateY[$i];
+            
+            $this->game->gamefield[$x][$y] = 0;
         }
     }
 }
