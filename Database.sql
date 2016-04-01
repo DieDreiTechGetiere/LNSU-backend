@@ -11,18 +11,19 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Exportiere Struktur von Tabelle leavenoshipsunburned.tblmatch
+DROP TABLE IF EXISTS `tblmatch`;
 CREATE TABLE IF NOT EXISTS `tblmatch` (
   `matchID` int(11) NOT NULL AUTO_INCREMENT,
-  `User1` int(11) NOT NULL,
-  `User2` int(11) NOT NULL,
+  `User1` int(11) NOT NULL DEFAULT '0',
+  `User2` int(11) NOT NULL DEFAULT '0',
   `Date` date NOT NULL,
   `Winner` int(11) NOT NULL,
   `User2ELO` int(11) NOT NULL,
   `User1ELO` int(11) DEFAULT NULL,
   PRIMARY KEY (`matchID`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 
--- Exportiere Daten aus Tabelle leavenoshipsunburned.tblmatch: ~5 rows (ungefähr)
+-- Exportiere Daten aus Tabelle leavenoshipsunburned.tblmatch: ~19 rows (ungefähr)
 DELETE FROM `tblmatch`;
 /*!40000 ALTER TABLE `tblmatch` DISABLE KEYS */;
 INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO`, `User1ELO`) VALUES
@@ -62,11 +63,14 @@ INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO
 INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO`, `User1ELO`) VALUES
 	(23, 91, 97, '2016-03-02', 0, 1000, 1000);
 INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO`, `User1ELO`) VALUES
-	(24, 97, 97, '2016-03-02', 0, 1000, 1000);
+	(25, 91, 97, '2016-03-02', 0, 1000, 1000);
+INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO`, `User1ELO`) VALUES
+	(27, 97, 0, '2016-03-02', 0, 0, 1000);
 /*!40000 ALTER TABLE `tblmatch` ENABLE KEYS */;
 
 
 -- Exportiere Struktur von Tabelle leavenoshipsunburned.tblmatchsteps
+DROP TABLE IF EXISTS `tblmatchsteps`;
 CREATE TABLE IF NOT EXISTS `tblmatchsteps` (
   `msID` int(11) NOT NULL AUTO_INCREMENT,
   `mMatchID` int(11) NOT NULL,
@@ -88,6 +92,7 @@ DELETE FROM `tblmatchsteps`;
 
 
 -- Exportiere Struktur von Tabelle leavenoshipsunburned.tblshipposition
+DROP TABLE IF EXISTS `tblshipposition`;
 CREATE TABLE IF NOT EXISTS `tblshipposition` (
   `spID` int(11) NOT NULL AUTO_INCREMENT,
   `spLength` int(11) NOT NULL,
@@ -110,6 +115,7 @@ DELETE FROM `tblshipposition`;
 
 
 -- Exportiere Struktur von Tabelle leavenoshipsunburned.tbluser
+DROP TABLE IF EXISTS `tbluser`;
 CREATE TABLE IF NOT EXISTS `tbluser` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `role` int(11) unsigned zerofill NOT NULL DEFAULT '00000000000',
@@ -155,6 +161,7 @@ INSERT INTO `tbluser` (`id`, `role`, `timestamp`, `ELO`, `loginName`, `totalOppE
 
 
 -- Exportiere Struktur von View leavenoshipsunburned.view_highscore
+DROP VIEW IF EXISTS `view_highscore`;
 -- Erstelle temporäre Tabelle um View Abhängigkeiten zuvorzukommen
 CREATE TABLE `view_highscore` (
 	`id` INT(11) NOT NULL,
@@ -164,7 +171,9 @@ CREATE TABLE `view_highscore` (
 
 
 -- Exportiere Struktur von View leavenoshipsunburned.view_stats
+DROP VIEW IF EXISTS `view_stats`;
 -- Erstelle temporäre Tabelle um View Abhängigkeiten zuvorzukommen
+
 CREATE TABLE `view_stats` (
 	`id` INT(11) NOT NULL,
 	`totalMatches` BIGINT(22) NOT NULL,
@@ -175,15 +184,17 @@ CREATE TABLE `view_stats` (
 
 
 -- Exportiere Struktur von View leavenoshipsunburned.view_highscore
+DROP VIEW IF EXISTS `view_highscore`;
 -- Entferne temporäre Tabelle und erstelle die eigentliche View
 DROP TABLE IF EXISTS `view_highscore`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `view_highscore` AS select `tbluser`.`id` AS `id`,`tbluser`.`ELO` AS `ELO`,`tbluser`.`ingameName` AS `ingameName` from `tbluser` ;
+CREATE VIEW `view_highscore` AS select `tbluser`.`id` AS `id`,`tbluser`.`ELO` AS `ELO`,`tbluser`.`ingameName` AS `ingameName` from `tbluser` ;
 
 
 -- Exportiere Struktur von View leavenoshipsunburned.view_stats
+DROP VIEW IF EXISTS `view_stats`;
 -- Entferne temporäre Tabelle und erstelle die eigentliche View
 DROP TABLE IF EXISTS `view_stats`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `view_stats` AS select 
+CREATE VIEW `view_stats` AS select 
 	`tbluser`.`id` AS `id`,
 	(count(distinct `m1`.`matchID`) + count(distinct `m2`.`matchID`)) AS `totalMatches`,
 	(count(distinct `win`.`matchID`)) AS `wins`,
