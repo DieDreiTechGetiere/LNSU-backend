@@ -127,7 +127,40 @@ class GameTable
                 return array('error' => 'Database error');
             }
         }
-        return array('success' => 'Everything worked fine');        
+        
+        return $this->checkIfOpponentIsFinishedWithPlacement($matchID, $userID);      
+    }
+    
+    /**
+     * Checks if Opponent is finished with his placement
+     * @param integer $matchID
+     * @param integer $userID
+     * @return array
+     */
+    public function checkIfOpponentIsFinishedWithPlacement($matchID, $userID)
+    {
+        $sql = new Sql($this->dbAdapter);
+        
+        //Check if Opponent has inserted Ships into the Table
+        $where = new \Zend\Db\Sql\Where();
+        $where
+            ->nest()
+            ->notEqualTo('tblshipposition.spUserID', $userID)
+            ->and
+            ->equalTo('tblshipposition.spMatchID', $matchID)
+            ->unnest(); 
+        $select = $sql->select('tblshipposition')
+                      ->where($where);        
+        $stmt = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();  
+        
+        //If I got affected Rows he has inserted so the Match can start
+        if ($result->getAffectedRows() > 0)
+        {
+            return array('OpponentReady' => true);
+        }
+        //Else you should wait
+        return array('OpponentReady' => false);
     }
     
     /**

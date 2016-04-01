@@ -71,9 +71,18 @@ class GameService
         }
     }
     
-    public function checkRound($matchID)
+    public function checkRound($matchID, $userID, $round)
     {
-        return array();
+        //Round 1 means Placementphase
+        if ($round == 1)
+        {
+            return $this->gameTable->checkIfOpponentIsFinishedWithPlacement($matchID, $userID);
+        }
+        //Else MatchStep
+        else
+        {
+            return array();
+        }
     }
     
     public function forfeitGame($matchID)
