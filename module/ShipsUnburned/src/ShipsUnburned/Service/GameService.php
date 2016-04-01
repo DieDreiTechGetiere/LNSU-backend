@@ -11,6 +11,7 @@ class GameService
 {
     protected $gameTable;
     protected $gameValidationService;
+    protected $ships;
     
     public function __construct(GameTable $gameTable,
                                 GameValidationService $gameValidationService)
@@ -47,12 +48,13 @@ class GameService
             $game = new Game();
             $game->setGameField();
             
-            //If Validation is true then insert an give back repsone
-            if($this->gameValidationService->validatePlacementRound($game, $array["ships"]))
+            //Validate the input given by the frontend
+            $this->ships = $this->gameValidationService->validatePlacementRound($game, $array["ships"]);
+            
+            //If it returns an array of ships then insert the data into the db via the gametable
+            if(!$this->ships == false)
             {
-                //Insert data into Game after Validation!!!
-                $game->insertShipsIntoGameField($array["ships"]);
-                return $this->gameTable->insertPlacementRound($game, $array["userId"], $array["matchId"]);
+                return $this->gameTable->insertPlacementRound($array["userId"], $array["matchId"], $this->ships);
             }
             //Else return errorobject
             return array('error' => 'Shipplacement is not valid');

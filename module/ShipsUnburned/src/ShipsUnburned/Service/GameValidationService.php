@@ -17,8 +17,6 @@ class GameValidationService
     const SHIP4_1TIMES = 1;
 
     const SHIP_SIZE_4 = 4;
-    
-    const SHIP_ERROR_1 = 'number of ships is not correct';
 
     protected $shipArray = array();
     protected $game;
@@ -53,10 +51,10 @@ class GameValidationService
             //Check if the number of ships is correct
             if ($this->numberOfDifferentShipsIsValid() == true)
             {
-                return $this->gameTable->insertPlacementPhase();
+                return $this->shipArray;
             }           
         }
-        return array('error' => $this->SHIP_ERROR_1);
+        return false;
     }
 
     /*
