@@ -100,6 +100,37 @@ class GameTable
     }
     
     /**
+     * Inserts all ships into tblshipposition
+     * @param type $userID
+     * @param type $matchID
+     * @param array $ships
+     * @return array
+     */
+    public function insertPlacementPhase($userID, $matchID, array $ships)
+    {
+        $sql = new Sql($this->dbAdapter);
+        $insert = $sql->insert('tblshipposition');
+        //Insert all Ships in the array $ships
+        for($i = 0; $i < count($ships); $i++)
+        {
+            $insert->values(array('spMatchID' => $matchID,
+                                    'spUserID' => $userID,
+                                    'spLength' => $ships[$i]->getLength(),
+                                    'spX' => $ships[$i]->getX(),
+                                    'spY' => $ships[$i]->getY(),
+                                    'spDirection' => $ships[$i]->getDirection()));    
+            $stmt = $sql->prepareStatementForSqlObject($insert);
+            $result = $stmt->execute();     
+            
+            if(!($result instanceof ResultInterface))
+            {
+                return array('error' => 'Database error');
+            }
+        }
+        return array('success' => 'Everything worked fine');        
+    }
+    
+    /**
      * Updates Match by ID
      * @param ResultSet $result
      * @param User $user
