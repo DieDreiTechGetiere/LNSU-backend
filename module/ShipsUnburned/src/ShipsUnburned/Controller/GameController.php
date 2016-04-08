@@ -25,7 +25,7 @@ class GameController extends AbstractRestfulController
 
         $request = $this->getRequest();
         
-        if ($request->isPost())
+        if ($request->isPost())  
         {
             $request = json_decode(file_get_contents('php://input'), true);
             $result = $this->gameService->endRound($request);
@@ -43,7 +43,7 @@ class GameController extends AbstractRestfulController
         
         if ($request->isGet())
         {
-            $result = $this->gameService->checkRound($matcID, $userID, $round);
+            $result = $this->gameService->checkRound($matchID, $userID, $round);
         }
         
         return new JsonModel($result);
