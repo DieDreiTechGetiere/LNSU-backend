@@ -42,7 +42,7 @@ class GameService
      */
     public function endRound($array)
     {
-        if ($array["placementPhase"] == true)
+        if ($array["placementphase"] == true)
         {
             //Initialize Game and set ships on the gamefield
             $game = new Game();
@@ -54,7 +54,7 @@ class GameService
             //If it returns an array of ships then insert the data into the db via the gametable
             if(!$this->ships == false)
             {
-                return $this->gameTable->insertPlacementRound($array["userId"], $array["matchId"], $this->ships);
+                return $this->gameTable->insertPlacementRound($array["userID"], $array["matchID"], $this->ships);
             }
             //Else return errorobject
             return array('error' => 'Shipplacement is not valid');
@@ -64,7 +64,7 @@ class GameService
             //If Validation is true then insert an give back repsone
             if($this->gameValidationService->validateMatchStep())
             {
-                return $this->gameTable->insertMatchStep($array["userId"], $array["matchId"]);
+                return $this->gameTable->insertMatchStep($array["userID"], $array["matchID"]);
             }
             //Else return errorobject
             return array('error' => 'Matchstep is not valid');
