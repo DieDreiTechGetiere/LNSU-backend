@@ -1,18 +1,18 @@
 <?php
 
-namespace Shipsunburned\Model\Entity;
+namespace ShipsUnburned\Model\Entity;
 
-class Ships implements ShipInterface
+class Ship implements ShipInterface
 {
-    protected $x;
-    protected $y;
-    protected $length;
-    protected $direction;
-    protected $coordinatesX = array();
-    protected $coordinatesY = array();    
+    public $x;
+    public $y;
+    public $length;
+    public $direction;
+    public $coordinatesX = array();
+    public $coordinatesY = array();    
     
-    const RIGHT = 0;
-    const DOWN = 1;
+    const RIGHT = 1;
+    const DOWN = 0;
     
     public function __construct($x, $y, $length, $direction)
     {
@@ -22,11 +22,11 @@ class Ships implements ShipInterface
         
         if($direction == 0)
         {
-            $this->direction = $this->RIGHT;
+            $this->direction = self::DOWN;
         }
         else
         {
-            $this->direction = $this->DOWN;
+            $this->direction = self::RIGHT;
         }
     }
     
@@ -36,7 +36,7 @@ class Ships implements ShipInterface
     public function generateCoordinates()
     {
         //For direction Right
-        if($this->direction == 0)
+        if($this->direction == self::RIGHT)
         {
             for ($i = 0; $i < $this->length; $i++)
             {

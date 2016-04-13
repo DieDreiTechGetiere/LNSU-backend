@@ -29,11 +29,14 @@ class Game implements GameInterface
      */
     public function insertShipsIntoGameField(array $array)
     {
+
         //Go through the gamefield X
-        for ($i = 0; $i < $this->LENGTH; $i++)
+        for ($i = 0; $i < self::LENGTH; $i++)
         {
+            
+            
             //Go through the gamefield Y
-            for ($j = 0; $j < $this->LENGTH; $j++)
+            for ($j = 0; $j < self::LENGTH; $j++)
             {
                 //Check if Ship is in that position
                 if($array[$i][$j] == 1)
@@ -43,5 +46,6 @@ class Game implements GameInterface
                 }
             }
         }
+
     }
 }

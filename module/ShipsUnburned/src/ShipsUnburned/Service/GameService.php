@@ -54,7 +54,7 @@ class GameService
             //If it returns an array of ships then insert the data into the db via the gametable
             if(!$this->ships == false)
             {
-                return $this->gameTable->insertPlacementRound($array["userID"], $array["matchID"], $this->ships);
+                return $this->gameTable->insertPlacementPhase($array["userID"], $array["matchID"], $this->ships);
             }
             //Else return errorobject
             return array('error' => 'Shipplacement is not valid');
