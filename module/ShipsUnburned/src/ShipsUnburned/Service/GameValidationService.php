@@ -75,7 +75,7 @@ class GameValidationService
         $count4 = 0;
         
         //Go through all ships
-        for ($i = 0; $i < self::SHIP_COUNT; $i++)
+        for ($i = 0; $i < count($this->shipArray); $i++)
         {
             //Check the length of each ship and add 1 to the correlating counter
             switch ($this->shipArray[$i]->getLength())
