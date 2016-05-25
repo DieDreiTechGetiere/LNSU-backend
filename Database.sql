@@ -78,7 +78,6 @@ CREATE TABLE IF NOT EXISTS `tblmatchsteps` (
   `mState` int(11) NOT NULL,
   `mRoundNumber` int(11) NOT NULL,
   `mRoundFinished` bit(1) NOT NULL,
-  `msDate` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`msID`),
   KEY `fk_Match` (`mMatchID`),
   KEY `fk_User` (`mUserID`),
