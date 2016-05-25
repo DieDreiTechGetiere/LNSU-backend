@@ -11,7 +11,6 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Exportiere Struktur von Tabelle leavenoshipsunburned.tblmatch
-DROP TABLE IF EXISTS `tblmatch`;
 CREATE TABLE IF NOT EXISTS `tblmatch` (
   `matchID` int(11) NOT NULL AUTO_INCREMENT,
   `User1` int(11) NOT NULL DEFAULT '0',
@@ -70,7 +69,6 @@ INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO
 
 
 -- Exportiere Struktur von Tabelle leavenoshipsunburned.tblmatchsteps
-DROP TABLE IF EXISTS `tblmatchsteps`;
 CREATE TABLE IF NOT EXISTS `tblmatchsteps` (
   `msID` int(11) NOT NULL AUTO_INCREMENT,
   `mMatchID` int(11) NOT NULL,
@@ -78,6 +76,9 @@ CREATE TABLE IF NOT EXISTS `tblmatchsteps` (
   `mRow` int(11) NOT NULL,
   `mColumn` int(11) NOT NULL,
   `mState` int(11) NOT NULL,
+  `mRoundNumber` int(11) NOT NULL,
+  `mRoundFinished` bit(1) NOT NULL,
+  `msDate` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`msID`),
   KEY `fk_Match` (`mMatchID`),
   KEY `fk_User` (`mUserID`),
@@ -92,14 +93,13 @@ DELETE FROM `tblmatchsteps`;
 
 
 -- Exportiere Struktur von Tabelle leavenoshipsunburned.tblshipposition
-DROP TABLE IF EXISTS `tblshipposition`;
 CREATE TABLE IF NOT EXISTS `tblshipposition` (
   `spID` int(11) NOT NULL AUTO_INCREMENT,
   `spLength` int(11) NOT NULL,
   `spMatchID` int(11) NOT NULL,
   `spUserID` int(11) NOT NULL,
-  `spStartCol` int(11) NOT NULL,
-  `spStartRow` int(11) NOT NULL,
+  `spX` int(11) NOT NULL,
+  `spY` int(11) NOT NULL,
   `spDirection` int(11) NOT NULL,
   PRIMARY KEY (`spID`),
   KEY `fk_spMatch` (`spMatchID`),
@@ -115,7 +115,6 @@ DELETE FROM `tblshipposition`;
 
 
 -- Exportiere Struktur von Tabelle leavenoshipsunburned.tbluser
-DROP TABLE IF EXISTS `tbluser`;
 CREATE TABLE IF NOT EXISTS `tbluser` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `role` int(11) unsigned zerofill NOT NULL DEFAULT '00000000000',
@@ -161,7 +160,6 @@ INSERT INTO `tbluser` (`id`, `role`, `timestamp`, `ELO`, `loginName`, `totalOppE
 
 
 -- Exportiere Struktur von View leavenoshipsunburned.view_highscore
-DROP VIEW IF EXISTS `view_highscore`;
 -- Erstelle temporäre Tabelle um View Abhängigkeiten zuvorzukommen
 CREATE TABLE `view_highscore` (
 	`id` INT(11) NOT NULL,
@@ -171,9 +169,7 @@ CREATE TABLE `view_highscore` (
 
 
 -- Exportiere Struktur von View leavenoshipsunburned.view_stats
-DROP VIEW IF EXISTS `view_stats`;
 -- Erstelle temporäre Tabelle um View Abhängigkeiten zuvorzukommen
-
 CREATE TABLE `view_stats` (
 	`id` INT(11) NOT NULL,
 	`totalMatches` BIGINT(22) NOT NULL,
@@ -184,17 +180,15 @@ CREATE TABLE `view_stats` (
 
 
 -- Exportiere Struktur von View leavenoshipsunburned.view_highscore
-DROP VIEW IF EXISTS `view_highscore`;
 -- Entferne temporäre Tabelle und erstelle die eigentliche View
 DROP TABLE IF EXISTS `view_highscore`;
-CREATE VIEW `view_highscore` AS select `tbluser`.`id` AS `id`,`tbluser`.`ELO` AS `ELO`,`tbluser`.`ingameName` AS `ingameName` from `tbluser` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `view_highscore` AS select `tbluser`.`id` AS `id`,`tbluser`.`ELO` AS `ELO`,`tbluser`.`ingameName` AS `ingameName` from `tbluser` ;
 
 
 -- Exportiere Struktur von View leavenoshipsunburned.view_stats
-DROP VIEW IF EXISTS `view_stats`;
 -- Entferne temporäre Tabelle und erstelle die eigentliche View
 DROP TABLE IF EXISTS `view_stats`;
-CREATE VIEW `view_stats` AS select 
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` VIEW `view_stats` AS select 
 	`tbluser`.`id` AS `id`,
 	(count(distinct `m1`.`matchID`) + count(distinct `m2`.`matchID`)) AS `totalMatches`,
 	(count(distinct `win`.`matchID`)) AS `wins`,
