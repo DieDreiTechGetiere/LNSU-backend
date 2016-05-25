@@ -169,6 +169,10 @@ class GameValidationService
                 {
                     $length++;
                 } 
+                else
+                {
+                    break;
+                }
             }
             //Create Ship with all the known parameters
             $ship = new Ship($x, $y, $length, $direction);
@@ -198,6 +202,10 @@ class GameValidationService
                 {
                     $length++;                        
                 }
+                else
+                {
+                    break;
+                }                
             }
             //Create Ship with all the known parameters
             $ship = new Ship($x, $y, $length, $direction);
