@@ -404,7 +404,7 @@ class GameTable
               ->and->equalTo('tblmatchsteps.mMatchID', $matchID)
               ->and->equalTo('tblmatchsteps.mState', true)
               ->unnest();
-        $select = $sql->select('tblmatchsteps')->columns(array('COUNT(mState)'))
+        $select = $sql->select()->columns(array('COUNT(tblmatchsteps.mState)'))
                       ->where($where);
         
         $stmt = $sql->prepareStatementForSqlObject($select);
