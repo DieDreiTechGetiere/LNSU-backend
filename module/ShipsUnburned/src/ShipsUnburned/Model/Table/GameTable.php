@@ -7,14 +7,18 @@ use Zend\Db\Adapter\AdapterInterface;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use ShipsUnburned\Model\Entity\Match;
 use ShipsUnburned\Model\Entity\User;
+use ShipsUnburned\Model\Entity\Ship;
+use ShipsUnburned\Service\ShipService;
 
 class GameTable
 {   
     protected $dbAdapter;
+    protected $shipService;
     
     public function __construct(AdapterInterface $dbAdapter)
     {
         $this->dbAdapter = $dbAdapter;
+        $this->shipService = new ShipService();
     }
     
     public function searchGame($id)
@@ -131,6 +135,27 @@ class GameTable
         return $this->checkIfOpponentIsFinishedWithPlacement($matchID, $userID);      
     }
     
+    public function insertMatchStep($userID, $matchID, $x, $y)
+    {
+        $isHit = $this->checkIfShipIsHit($userID, $matchID, $x, $y);
+        $isFinished = false;
+        
+        if($isHit == false)
+        {
+            $isFinished = true;
+        }
+        
+        $sql = new Sql($this->dbAdapter);
+        $insert = $sql->insert('tblmatchsteps')
+                ->values(array('mMatchID' => $matchID,
+                                'mUserID' => $userID,
+                                'mRow' => $x,
+                                'mColumn' => $y,
+                                'mState' => $isHit,
+                                'mRoundFinished' => $isFinished));
+        
+    }
+    
     /**
      * Checks if Opponent is finished with his placement
      * @param integer $matchID
@@ -218,6 +243,30 @@ class GameTable
                      'OpponentWon' => false,
                      'Hits' => $hits);
     }   
+    
+    protected function checkIfShipIsHit($userID, $matchID, $x, $y)
+    {
+        $sql = new Sql($this->dbAdapter);
+        $where = new \Zend\Db\Sql\Where();
+        $where->nest()
+              ->notEqualTo('tblshipposition.spUserID', $userID)
+              ->and->equalTo('tblshipposition.spMatchID', $matchID)
+              ->and->nest()->equalTo('tblshipposition.spX', $x)
+                    ->or->equalTo('tblshipposition.spY', $y)
+              ->unnest()->unnest();
+        
+        $select = $sql->select('tblshipposition')->where($where);
+        $stmt = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute(); 
+        
+        $ship = new Ship();
+        $ship->exchangeArray($result->current());
+        
+        if ($this->shipService->checkIfShipGotHit($ship, $x, $y) == false)
+        {
+            
+        }
+    }
     
     /**
      * Updates Match by ID
@@ -325,7 +374,7 @@ class GameTable
               ->equalTo('tblmatchsteps.mUserID', $userID)
               ->and->equalTo('tblmatchsteps.mMatchID', $matchID)
               ->unnest();
-        $select = $sql->select('tblmatchsteps')->columns(array('MAX(msID)'))
+        $select = $sql->select()->columns(array('MAX(tblmatchsteps.msID)'))
                       ->where($where);  
 
         $stmt = $sql->prepareStatementForSqlObject($select);
