@@ -13,16 +13,16 @@
 -- Exportiere Struktur von Tabelle leavenoshipsunburned.tblmatch
 CREATE TABLE IF NOT EXISTS `tblmatch` (
   `matchID` int(11) NOT NULL AUTO_INCREMENT,
-  `User1` int(11) NOT NULL,
-  `User2` int(11) NOT NULL,
+  `User1` int(11) NOT NULL DEFAULT '0',
+  `User2` int(11) NOT NULL DEFAULT '0',
   `Date` date NOT NULL,
   `Winner` int(11) NOT NULL,
   `User2ELO` int(11) NOT NULL,
   `User1ELO` int(11) DEFAULT NULL,
   PRIMARY KEY (`matchID`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 
--- Exportiere Daten aus Tabelle leavenoshipsunburned.tblmatch: ~5 rows (ungefähr)
+-- Exportiere Daten aus Tabelle leavenoshipsunburned.tblmatch: ~19 rows (ungefähr)
 DELETE FROM `tblmatch`;
 /*!40000 ALTER TABLE `tblmatch` DISABLE KEYS */;
 INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO`, `User1ELO`) VALUES
@@ -62,7 +62,9 @@ INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO
 INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO`, `User1ELO`) VALUES
 	(23, 91, 97, '2016-03-02', 0, 1000, 1000);
 INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO`, `User1ELO`) VALUES
-	(24, 97, 97, '2016-03-02', 0, 1000, 1000);
+	(25, 91, 97, '2016-03-02', 0, 1000, 1000);
+INSERT INTO `tblmatch` (`matchID`, `User1`, `User2`, `Date`, `Winner`, `User2ELO`, `User1ELO`) VALUES
+	(27, 97, 0, '2016-03-02', 0, 0, 1000);
 /*!40000 ALTER TABLE `tblmatch` ENABLE KEYS */;
 
 
@@ -74,6 +76,8 @@ CREATE TABLE IF NOT EXISTS `tblmatchsteps` (
   `mRow` int(11) NOT NULL,
   `mColumn` int(11) NOT NULL,
   `mState` int(11) NOT NULL,
+  `mRoundNumber` int(11) NOT NULL,
+  `mRoundFinished` bit(1) NOT NULL,
   PRIMARY KEY (`msID`),
   KEY `fk_Match` (`mMatchID`),
   KEY `fk_User` (`mUserID`),
@@ -93,8 +97,8 @@ CREATE TABLE IF NOT EXISTS `tblshipposition` (
   `spLength` int(11) NOT NULL,
   `spMatchID` int(11) NOT NULL,
   `spUserID` int(11) NOT NULL,
-  `spStartCol` int(11) NOT NULL,
-  `spStartRow` int(11) NOT NULL,
+  `spX` int(11) NOT NULL,
+  `spY` int(11) NOT NULL,
   `spDirection` int(11) NOT NULL,
   PRIMARY KEY (`spID`),
   KEY `fk_spMatch` (`spMatchID`),
