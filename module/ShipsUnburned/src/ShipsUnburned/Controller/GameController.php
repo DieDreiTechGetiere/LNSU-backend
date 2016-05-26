@@ -34,7 +34,7 @@ class GameController extends AbstractRestfulController
     }
 
     //PUT Method for polling while waiting!
-    public function get($matchID, $userID, $round)
+    public function get($params)
     {
         $sm = $this->getServiceLocator();
         $this->gameService = $sm->get('ShipsUnburned\Service\GameService');
@@ -43,7 +43,10 @@ class GameController extends AbstractRestfulController
         
         if ($request->isGet())
         {
-            $result = $this->gameService->checkRound($matchID, $userID, $round);
+            $exploded = explode(":", $params);
+            
+            //matchid userid round
+            $result = $this->gameService->checkRound($exploded[0], $exploded[1], $exploded[2]);
         }
         
         return new JsonModel($result);
