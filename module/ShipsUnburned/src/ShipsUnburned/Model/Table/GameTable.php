@@ -8,7 +8,9 @@ use Zend\Db\Adapter\Driver\ResultInterface;
 use ShipsUnburned\Model\Entity\Match;
 use ShipsUnburned\Model\Entity\User;
 use ShipsUnburned\Model\Entity\Ship;
+use ShipsUnburned\Model\Entity\Hit;
 use ShipsUnburned\Service\ShipService;
+use Zend\Db\Sql\Expression;
 
 class GameTable
 {   
@@ -197,7 +199,7 @@ class GameTable
      */
     public function checkIfOpponentIsFinishedWithMatchStep($matchID, $userID)
     {
-        $lastMSID = $this->getLastMatchStepID($userID);
+        $lastMSID = $this->getLastMatchStepID($userID, $matchID);
         
         $sql = new Sql($this->dbAdapter);
         
@@ -205,8 +207,8 @@ class GameTable
         $where = new \Zend\Db\Sql\Where();
         $where
             ->nest()
-            ->notEqualTo('tblmatchsteps.spUserID', $userID)
-            ->and->equalTo('tblmatchsteps.spMatchID', $matchID)
+            ->notEqualTo('tblmatchsteps.mUserID', $userID)
+            ->and->equalTo('tblmatchsteps.mMatchID', $matchID)
             ->and->greaterThan('tblmatchsteps.msID', $lastMSID)
             ->and->equalTo('tblmatchsteps.mRoundFinished', true)
             ->unnest(); 
@@ -222,7 +224,7 @@ class GameTable
             $opponentID = $opponent['mUserID'];
             if ($this->checkForWin($matchID, $opponentID) == true)
             {
-                $hits = getAllHitShips($matchID, $opponentID, $lastMSID);
+                $hits = $this->getAllHitShips($matchID, $opponentID, $lastMSID);
                 
                 $this->setMatchWinner($opponentID, $matchID);
                 
@@ -231,13 +233,13 @@ class GameTable
                              'Hits' => $hits);
             }
             
-            $hits = getAllHitShips($matchID, $opponentID, $lastMSID);
+            $hits = $this->getAllHitShips($matchID, $opponentID, $lastMSID);
             return array('OpponentReady' => true,
                          'OpponentWon' => false,
                          'Hits' => $hits);
         }
         
-        $hits = getAllHitShips($matchID, $opponentID, $lastMSID);
+        $hits = $this->getAllHitShips($matchID, $opponentID, $lastMSID);
         //Else you should wait
         return array('OpponentReady' => false,
                      'OpponentWon' => false,
@@ -374,16 +376,19 @@ class GameTable
               ->equalTo('tblmatchsteps.mUserID', $userID)
               ->and->equalTo('tblmatchsteps.mMatchID', $matchID)
               ->unnest();
-        $select = $sql->select()->columns(array('MAX(tblmatchsteps.msID)'))
+        $select = $sql->select('tblmatchsteps')
+                ->columns(array('maxMSID' => new Expression('MAX(msID)')))
                       ->where($where);  
 
         $stmt = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
+        
+        
 
         //If I dont have a MatchStepID return -1
-        if ($result->current() == null)
-        {
-            $result = -1;
+        if ($result->current()["maxMSID"] == null)
+        {  
+            return -1;
         }
         
         return $result->current();
@@ -428,7 +433,7 @@ class GameTable
      */
     protected function getAllHitShips($matchID, $opponentID, $lastMSID)
     {
-        $sql = new Sql($this-dbAdapter);
+        $sql = new Sql($this->dbAdapter);
         $where = new \Zend\Db\Sql\Where();
         $where->nest()->equalTo('tblmatchsteps.mUserID', $opponentID)
               ->and->equalTo('tblmatchsteps.mMatchID', $matchID)
@@ -442,6 +447,11 @@ class GameTable
         $hits = array();
         $newHit = new Hit();
         $currentResult = $result->current();
+        
+        if ($currentResult['mRow'] == null || $currentResult['mColumn'] == null)
+        {
+            return array();
+        }
         
         $newHit->setX($currentResult['mRow']);
         $newHit->setY($currentResult['mColumn']);
