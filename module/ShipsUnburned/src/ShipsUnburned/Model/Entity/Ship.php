@@ -29,7 +29,7 @@ class Ship implements ShipInterface
             $this->direction = self::RIGHT;
         }
     }
-    
+
     public function exchangeArray($array)
     {
         $this->x                    = (!empty($array['spX'])) ? $array['spX'] : null;

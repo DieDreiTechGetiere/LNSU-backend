@@ -217,7 +217,7 @@ class GameTable
         return array('OpponentReady' => false,
                      'OpponentWon' => false,
                      'Hits' => $hits);
-    }    
+    }   
     
     /**
      * Updates Match by ID
