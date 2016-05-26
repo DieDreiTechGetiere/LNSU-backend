@@ -4,18 +4,23 @@
 namespace ShipsUnburned\Service;
 
 use ShipsUnburned\Model\Table\GameTable;
+use ShipsUnburned\Model\Table\ELOTable;
 use ShipsUnburned\Service\GameValidationService;
 use ShipsUnburned\Model\Entity\Game;
 
 class GameService
 {
     protected $gameTable;
+    protected $eloTable;
     protected $gameValidationService;
+    protected $ships;
     
     public function __construct(GameTable $gameTable,
-                                GameValidationService $gameValidationService)
+                                GameValidationService $gameValidationService,
+                                ELOTable $eloTable)
     {
         $this->gameTable = $gameTable;
+        $this->eloTable = $eloTable;
         $this->gameValidationService = $gameValidationService;
     }
     
@@ -41,18 +46,19 @@ class GameService
      */
     public function endRound($array)
     {
-        if ($array["placementPhase"] == true)
+        if ($array["placementphase"] == true)
         {
             //Initialize Game and set ships on the gamefield
             $game = new Game();
             $game->setGameField();
             
-            //If Validation is true then insert an give back repsone
-            if($this->gameValidationService->validatePlacementRound($game, $array["ships"]))
+            //Validate the input given by the frontend
+            $this->ships = $this->gameValidationService->validatePlacementRound($game, $array["ships"]);
+            
+            //If it returns an array of ships then insert the data into the db via the gametable
+            if(!$this->ships == false)
             {
-                //Insert data into Game after Validation!!!
-                $game->insertShipsIntoGameField($array["ships"]);
-                return $this->gameTable->insertPlacementRound($game, $array["userId"], $array["matchId"]);
+                return $this->gameTable->insertPlacementPhase($array["userID"], $array["matchID"], $this->ships);
             }
             //Else return errorobject
             return array('error' => 'Shipplacement is not valid');
@@ -62,16 +68,40 @@ class GameService
             //If Validation is true then insert an give back repsone
             if($this->gameValidationService->validateMatchStep())
             {
-                return $this->gameTable->insertMatchStep($array["userId"], $array["matchId"]);
+                return $this->gameTable->insertMatchStep($array["userID"], $array["matchID"], $array["x"], $array["y"]);
             }
             //Else return errorobject
             return array('error' => 'Matchstep is not valid');
         }
     }
     
-    public function checkRound($matchID)
+    public function checkRound($matchID, $userID, $round)
     {
-        return array();
+        //Round 1 means Placementphase
+        if ($round == 1)
+        {
+            return $this->gameTable->checkIfOpponentIsFinishedWithPlacement($matchID, $userID);
+        }
+        //Else MatchStep
+        else
+        {
+            $result = $this->gameTable->checkIfOpponentIsFinishedWithMatchStep($matchID, $userID);
+            
+            if ($result['OpponentWon'] == false)
+            {
+                return $result;
+            }
+            //ELO Berechnung und Gewinner setzen
+            else
+            {
+                $newELO = $this->eloTable->calculateNewELO($matchID, $userID);
+                
+                return array('OpponentReady' => $result['OpponentReady'],
+                             'OpponentWon' => $result['OpponentWon'],
+                             'Hits' => $result['Hits'],
+                             'NewELO' => $newELO);
+            }
+        }
     }
     
     public function forfeitGame($matchID)

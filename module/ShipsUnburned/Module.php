@@ -7,6 +7,7 @@ use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use ShipsUnburned\Model\Table\UserTable;
 use ShipsUnburned\Model\Table\DashboardTable;
 use ShipsUnburned\Model\Table\GameTable;
+use ShipsUnburned\Model\Table\ELOTable;
 use ShipsUnburned\Service\PasswordService;
 
 class Module implements 
@@ -51,6 +52,11 @@ class Module implements
                     $table = new GameTable($tableGateway);
                     return $table;
                 },  
+                'ShipsUnburned\Model\Table\ELOTable' => function($sm) {
+                    $tableGateway = $sm->get('Zend\Db\Adapter\Adapter');
+                    $table = new ELOTable($tableGateway);
+                    return $table;
+                },                        
             ),
         );           
     }

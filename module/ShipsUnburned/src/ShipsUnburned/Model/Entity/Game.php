@@ -5,7 +5,7 @@ namespace ShipsUnburned\Model\Entity;
 
 class Game implements GameInterface
 {
-	const LENGTH = 12;
+    const LENGTH = 12;
 	
     public $gamefield;
     
@@ -29,44 +29,23 @@ class Game implements GameInterface
      */
     public function insertShipsIntoGameField(array $array)
     {
-        $gamefield = $this->gamefield;
-        
-        //Go through the gamefield
-        for ($i = 0; $i < $this->LENGTH; $i++)
+
+        //Go through the gamefield X
+        for ($i = 0; $i < self::LENGTH; $i++)
         {
-            //When array[$i] has values go into next for loop
-            if ($array[$i] != null)
+            
+            
+            //Go through the gamefield Y
+            for ($j = 0; $j < self::LENGTH; $j++)
             {
-                //Go through the value/s
-                for ($j = 0; $k < count($array[$i]); $j++)
+                //Check if Ship is in that position
+                if($array[$i][$j] == 1)
                 {
-                    //Set Gamefield = 1 (Ship) where gamefield[$i] and the value of $array[$i][$j]
-                    $gamefield[$i][$array[$i][$j]] = 1;
+                    //Set gamefield to 1 if Ship exists
+                    $this->gamefield[$i][$j] = 1;
                 }
             }
         }
-		
-		$this->gamefield = $gamefield;
+
     }
-	
-	public function deleteShipsFromGameField(int $x, int $y,int $length, bool $direction)
-	{
-		$gamefield = $this->gamefield;
-		
-		//If direction is true x gets upped
-		for ($i = 1; $i <= $length; $i++)
-		{
-			$gamefield[x][y] = 0;
-			if ($direction)
-			{
-				$x++;
-			}
-			else
-			{
-				$y++;
-			}
-		}
-		
-		$this->gamefield = $gamefield;
-	}
 }

@@ -100,6 +100,126 @@ class GameTable
     }
     
     /**
+     * Inserts all ships into tblshipposition
+     * @param type $userID
+     * @param type $matchID
+     * @param array $ships
+     * @return array
+     */
+    public function insertPlacementPhase($userID, $matchID, array $ships)
+    {
+        $sql = new Sql($this->dbAdapter);
+        $insert = $sql->insert('tblshipposition');
+        //Insert all Ships in the array $ships
+        for($i = 0; $i < count($ships); $i++)
+        {
+            $insert->values(array('spMatchID' => $matchID,
+                                    'spUserID' => $userID,
+                                    'spLength' => $ships[$i]->getLength(),
+                                    'spX' => $ships[$i]->getX(),
+                                    'spY' => $ships[$i]->getY(),
+                                    'spDirection' => $ships[$i]->getDirection()));    
+            $stmt = $sql->prepareStatementForSqlObject($insert);
+            $result = $stmt->execute();     
+            
+            if(!($result instanceof ResultInterface))
+            {
+                return array('error' => 'Database error');
+            }
+        }
+        
+        return $this->checkIfOpponentIsFinishedWithPlacement($matchID, $userID);      
+    }
+    
+    /**
+     * Checks if Opponent is finished with his placement
+     * @param integer $matchID
+     * @param integer $userID
+     * @return array
+     */
+    public function checkIfOpponentIsFinishedWithPlacement($matchID, $userID)
+    {
+        $sql = new Sql($this->dbAdapter);
+        
+        //Check if Opponent has inserted Ships into the Table
+        $where = new \Zend\Db\Sql\Where();
+        $where
+            ->nest()
+            ->notEqualTo('tblshipposition.spUserID', $userID)
+            ->and
+            ->equalTo('tblshipposition.spMatchID', $matchID)
+            ->unnest(); 
+        $select = $sql->select('tblshipposition')
+                      ->where($where);        
+        $stmt = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();  
+        
+        //If I got affected Rows he has inserted so the Match can start
+        if ($result->getAffectedRows() > 0)
+        {
+            return array('OpponentReady' => true,
+                         'OpponentWon' => false);
+        }
+        //Else you should wait
+        return array('OpponentReady' => false,
+                     'OpponentWon' => false);
+    }
+    /**
+     * Check if Opponent has Finished his MatchStep(s)
+     * @param type $matchID
+     * @param type $userID
+     * @return type
+     */
+    public function checkIfOpponentIsFinishedWithMatchStep($matchID, $userID)
+    {
+        $lastMSID = $this->getLastMatchStepID($userID);
+        
+        $sql = new Sql($this->dbAdapter);
+        
+        //Check if Opponent has inserted a MatchStep that is finished
+        $where = new \Zend\Db\Sql\Where();
+        $where
+            ->nest()
+            ->notEqualTo('tblmatchsteps.spUserID', $userID)
+            ->and->equalTo('tblmatchsteps.spMatchID', $matchID)
+            ->and->greaterThan('tblmatchsteps.msID', $lastMSID)
+            ->and->equalTo('tblmatchsteps.mRoundFinished', true)
+            ->unnest(); 
+        $select = $sql->select('tblmatchsteps')
+                      ->where($where);        
+        $stmt = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();  
+        
+        //If I got affected Rows he has inserted so the Match can start
+        if ($result->getAffectedRows() > 0)
+        {
+            $opponent = $result->current();
+            $opponentID = $opponent['mUserID'];
+            if ($this->checkForWin($matchID, $opponentID) == true)
+            {
+                $hits = getAllHitShips($matchID, $opponentID, $lastMSID);
+                
+                $this->setMatchWinner($opponentID, $matchID);
+                
+                return array('OpponentReady' => true,
+                             'OpponentWon' => true,
+                             'Hits' => $hits);
+            }
+            
+            $hits = getAllHitShips($matchID, $opponentID, $lastMSID);
+            return array('OpponentReady' => true,
+                         'OpponentWon' => false,
+                         'Hits' => $hits);
+        }
+        
+        $hits = getAllHitShips($matchID, $opponentID, $lastMSID);
+        //Else you should wait
+        return array('OpponentReady' => false,
+                     'OpponentWon' => false,
+                     'Hits' => $hits);
+    }    
+    
+    /**
      * Updates Match by ID
      * @param ResultSet $result
      * @param User $user
@@ -149,7 +269,7 @@ class GameTable
         $stmt = $sql->prepareStatementForSqlObject($insert);
         $newMatch = $stmt->execute();
 
-        return $this->getMatch($newMatch->getGeneratedValue());;
+        return $this->getMatch($newMatch->getGeneratedValue());
     }
     
     /**
@@ -179,6 +299,7 @@ class GameTable
     protected function getMatch($id)
     {
         $sql = new Sql($this->dbAdapter);
+        
         $select = $sql->select('tblmatch');
         $select->where(array('matchID = ?'=> $id));
 
@@ -188,5 +309,153 @@ class GameTable
         $match = new Match();
         $match->exchangeArray($result->current());
         return $match;
+    }
+    /**
+     * Gets Last MatchStepID of current Match and User
+     * @param type $userID
+     * @param type $matchID
+     * @return type
+     */
+    protected function getLastMatchStepID($userID, $matchID)
+    {
+        $sql = new Sql($this->dbAdapter);
+        
+        $where = new \Zend\Db\Sql\Where();
+        $where->nest()
+              ->equalTo('tblmatchsteps.mUserID', $userID)
+              ->and->equalTo('tblmatchsteps.mMatchID', $matchID)
+              ->unnest();
+        $select = $sql->select('tblmatchsteps')->columns(array('MAX(msID)'))
+                      ->where($where);  
+
+        $stmt = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+
+        //If I dont have a MatchStepID return -1
+        if ($result->current() == null)
+        {
+            $result = -1;
+        }
+        
+        return $result->current();
+    }
+    /**
+     * Checks if $userID has won the Match
+     * @param type $matchID
+     * @param type $userID
+     * @return boolean
+     */
+    protected function checkForWin($matchID, $userID)
+    {
+        $sql = new Sql($this-dbAdapter);
+        
+        $where = new \Zend\Db\Sql\Where();
+        $where->nest()
+              ->equalTo('tblmatchsteps.mUserID', $userID)
+              ->and->equalTo('tblmatchsteps.mMatchID', $matchID)
+              ->and->equalTo('tblmatchsteps.mState', true)
+              ->unnest();
+        $select = $sql->select('tblmatchsteps')->columns(array('COUNT(mState)'))
+                      ->where($where);
+        
+        $stmt = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+        
+        //If he hit 20 times
+        if ($result->current == 20)
+        {
+            return true;
+        }
+        
+        return false;
+        
+    }
+    /**
+     * Get all Coordinates of the ships that got hit
+     * @param type $matchID
+     * @param type $opponentID
+     * @param type $lastMSID
+     * @return array
+     */
+    protected function getAllHitShips($matchID, $opponentID, $lastMSID)
+    {
+        $sql = new Sql($this-dbAdapter);
+        $where = new \Zend\Db\Sql\Where();
+        $where->nest()->equalTo('tblmatchsteps.mUserID', $opponentID)
+              ->and->equalTo('tblmatchsteps.mMatchID', $matchID)
+              ->and->equalTo('tblmatchsteps.mState', true)
+              ->and->greaterThan('tblmatchsteps.msID', $lastMSID)->unnest();
+        $select = $sql->select('tblmatchsteps')->where($where);
+        
+        $stmt = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+        
+        $hits = array();
+        $newHit = new Hit();
+        $currentResult = $result->current();
+        
+        $newHit->setX($currentResult['mRow']);
+        $newHit->setY($currentResult['mColumn']);
+        
+        array_push($hits, $newHit);
+        
+        for ($count = $result->count() - 1; $count > 0; $count--)
+        {
+            $nextResult = $result->next();
+            $nextHit = new Hit();
+            
+            $nextHit->setX($nextResult['mRow']);
+            $nextHit->setY($nextResult['mColumn']);
+            
+            array_push($hits, $nextHit);
+        }
+        
+        return $hits;
+    }
+    /**
+     * Set Winner Column to $userID
+     * @param type $userID
+     * @param type $matchID
+     */
+    protected function setMatchWinner($userID, $matchID)
+    {
+        $sql = new Sql($this-dbAdapter);
+        $where = new \Zend\Db\Sql\Where();
+        
+        $where->nest()
+              ->equalTo('tblmatch.matchID', $matchID)
+              -unnest();
+        
+        $update = $sql->update('tblmatch')->where($where);
+        $update->set(array('Winner' => $userID));    
+        
+        $stmt = $sql->prepareStatementForSqlObject($update);
+        $stmt->execute();        
+    }
+    
+    /*
+
+        TEST FUNCTIONS
+        
+    */
+    
+    public function createTestMatch()
+    {
+        $sql = new Sql($this->dbAdapter);
+        $insert = $sql->insert('tblmatch');
+        $insert->values(array('User1' => 91,
+                                'User1ELO' => 1000,
+                                'Date' => new \Zend\Db\Sql\Expression("NOW()")));
+        
+		
+        $stmt = $sql->prepareStatementForSqlObject($insert);
+        $newMatch = $stmt->execute();
+        
+        if ($newMatch->getAffectedRows() > 0)
+        {
+            return array('success' => true);
+        }
+        
+        return array('success' => false);       
     }
 }
