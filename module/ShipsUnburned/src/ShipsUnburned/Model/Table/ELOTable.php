@@ -48,9 +48,23 @@ class ELOTable
         $result = $stmt->execute();
         
         $OpponentELO = $this->getOpponentELOByMatchID($matchID, $userID);
+        $newTotalOppELO = (int)$result->current() + (int)$OpponentELO;
         
-        return (int)$result->current() + (int)$OpponentELO;
+        $this->insertNewTotalOppELO($userID, $newTotalOppELO);
         
+        return $newTotalOppELO;
+        
+    }
+    
+    protected function insertNewTotalOppELO($userID, $newTotalOppELO)
+    {
+        $sql = new Sql($this->dbAdapter);
+        $update = $sql
+                ->update('tbluser')
+                ->set(array('totalOppELO = ?' => $newTotalOppELO))
+                ->where(array('id = ?' => $userID));
+        $stmt = $sql->prepareStatementForSqlObject($update);
+        $result = $stmt->execute();
     }
     /**
      * Returns ELO of the Opponent from Match
