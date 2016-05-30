@@ -238,14 +238,48 @@ class GameTable
                          'OpponentWon' => false,
                          'Hits' => $hits);
         }
-        
         $hits = $this->getAllHitShips($matchID, $opponentID, $lastMSID);
+        $miss = $this->getLastMiss($matchID, $opponentID, $lastMSID);
+        
         //Else you should wait
         return array('OpponentReady' => false,
                      'OpponentWon' => false,
-                     'Hits' => $hits);
-    }   
+                     'Hits' => $hits,
+                     'Miss' => $miss);
+    }  
+    /**
+     * Gets the last MatchStep and returns it as an array
+     * @param type $matchID
+     * @param type $opponentID
+     * @param type $lastMSID
+     * @return array
+     */
+    protected function getLastMiss($matchID, $opponentID, $lastMSID)
+    {
+        $sql = new Sql($this->dbAdapter);
+        $where = new \Zend\Db\Sql\Where();
+        $where->nest()->equalTo('tblmatchsteps.mUserID', $opponentID)
+              ->and->equalTo('tblmatchsteps.mMatchID', $matchID)
+              ->and->equalTo('tblmatchsteps.mState', false)
+              ->and->greaterThan('tblmatchsteps.msID', $lastMSID)->unnest();
+        $select = $sql->select('tblmatchsteps')->where($where);
+        
+        $stmt = $sql->prepareStatementForSqlObject($select);
+        $result = $stmt->execute();
+        
+        $miss = array('x' => $result->current()['mRow'],
+                      'y' => $result->current()['mColumn']);
+        
+        return $miss;
+    }
     
+    /**
+     * Checks if any Ship got Hit in this Round
+     * @param type $userID
+     * @param type $matchID
+     * @param type $x
+     * @param type $y
+     */
     protected function checkIfShipIsHit($userID, $matchID, $x, $y)
     {
         $sql = new Sql($this->dbAdapter);
