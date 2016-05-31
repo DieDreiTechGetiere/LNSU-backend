@@ -26,10 +26,19 @@ class GameValidationService
         MAIN FUNCTIONS!
 
     */
-    
-    public function validateMatchStep(Game $game, MatchStep $matchStep)
+    /**
+     * Check if X and Y are in the boundarys of the Grid
+     * @param type $x
+     * @param type $y
+     * @return boolean
+     */
+    public function validateMatchStep($x, $y)
     {
-        return array();
+        if($x <= 11 && $x >= 0 && $y <= 11 && $y >= 0)
+        {
+            return true;
+        }
+        return false;
     }
 
     /**
