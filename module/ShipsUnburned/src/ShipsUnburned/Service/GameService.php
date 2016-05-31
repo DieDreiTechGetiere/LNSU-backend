@@ -66,7 +66,7 @@ class GameService
         else
         {
             //If Validation is true then insert an give back repsone
-            if($this->gameValidationService->validateMatchStep())
+            if($this->gameValidationService->validateMatchStep($array["x"], $array["y"]))
             {
                 return $this->gameTable->insertMatchStep($array["userID"], $array["matchID"], $array["x"], $array["y"]);
             }
