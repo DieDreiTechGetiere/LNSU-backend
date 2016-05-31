@@ -155,7 +155,10 @@ class GameTable
                                 'mColumn' => $y,
                                 'mState' => $isHit,
                                 'mRoundFinished' => $isFinished));
+        $stmt = $sql->prepareStatementForSqlObject($insert);
+        $stmt->execute();
         
+        return array('hit' => $isHit);
     }
     
     /**
