@@ -9,7 +9,7 @@ class Ship implements ShipInterface
     public $length;
     public $direction;
     public $coordinatesX = array();
-    public $coordinatesY = array();    
+    public $coordinatesY = array();   
     
     const RIGHT = 1;
     const DOWN = 0;

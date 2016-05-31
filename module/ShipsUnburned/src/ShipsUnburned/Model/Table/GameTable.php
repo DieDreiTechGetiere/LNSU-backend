@@ -300,8 +300,20 @@ class GameTable
         
         if ($this->shipService->checkIfShipGotHit($ship, $x, $y) == false)
         {
-            
+            for ($count = $result->count() - 1; $count > 0; $count--)
+            {
+                $nextResult = $result->next();
+                $ship = new Ship();
+                $ship->exchangeArray($result->current());
+                
+                if($this->shipService->checkIfShipGotHit($ship, $x, $y) == true)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
+        return true;
     }
     
     /**

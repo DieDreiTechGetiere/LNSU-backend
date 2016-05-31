@@ -15,4 +15,31 @@ namespace ShipsUnburned\Service;
  */
 class ShipService 
 {
+    public function checkIfShipGotHit($ship, $x, $y)
+    {
+        $ship->generateCoordinates();
+        
+        //X or Y is being Hit now determine if the other coordinate is Hit
+        if ($x == $ship->getX())
+        {
+            for($i = 0; $i < $ship->length; $i++)
+            {
+                if($ship->coordinatesY[$i] == $y)
+                {
+                    return true;
+                }
+            }
+        }
+        else
+        {
+            for($i = 0; $i < $ship->length; $i++)
+            {
+                if($ship->coordinatesX[$i] == $y)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 }
