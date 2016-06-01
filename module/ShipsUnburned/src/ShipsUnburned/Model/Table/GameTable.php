@@ -315,17 +315,21 @@ class GameTable
         $stmt = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute(); 
         
-        $ship = new Ship();
-        $ship->exchangeArray($result->current());
+        $newResult = $result->current();
         
+        $ship = new Ship($newResult["spX"], 
+                         $newResult["spY"], 
+                         $newResult["spLength"], 
+                         $newResult["spDirection"]);
         if ($this->shipService->checkIfShipGotHit($ship, $x, $y) == false)
         {
             for ($count = $result->count() - 1; $count > 0; $count--)
             {
                 $nextResult = $result->next();
-                $ship = new Ship();
-                $ship->exchangeArray($result->current());
-                
+                $ship = new Ship($nextResult["spX"],
+                                 $nextResult["spY"],
+                                 $nextResult["spLength"],
+                                 $nextResult["spDirection"]);
                 if($this->shipService->checkIfShipGotHit($ship, $x, $y) == true)
                 {
                     return true;
@@ -467,7 +471,7 @@ class GameTable
      */
     protected function checkForWin($matchID, $userID)
     {
-        $sql = new Sql($this-dbAdapter);
+        $sql = new Sql($this->dbAdapter);
         
         $where = new \Zend\Db\Sql\Where();
         $where->nest()

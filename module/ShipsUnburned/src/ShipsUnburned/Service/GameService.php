@@ -69,6 +69,7 @@ class GameService
             if($this->gameValidationService->validateMatchStep($array["x"], $array["y"]))
             {
                 $result = $this->gameTable->insertMatchStep($array["userID"], $array["matchID"], $array["x"], $array["y"]);
+                
                 if ($result['YouWon'] == false)
                 {
                     return $result;
@@ -77,7 +78,6 @@ class GameService
                 else
                 {
                     $newELO = $this->eloTable->calculateNewELO($array["userID"], $array["matchID"]);
-                    
                     return array('YouWon' => $result['YouWon'],
                                  'IsHit' => $result['IsHit'],
                                  'NewELO' => $newELO);
