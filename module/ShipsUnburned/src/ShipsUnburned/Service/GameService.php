@@ -68,7 +68,20 @@ class GameService
             //If Validation is true then insert an give back repsone
             if($this->gameValidationService->validateMatchStep($array["x"], $array["y"]))
             {
-                return $this->gameTable->insertMatchStep($array["userID"], $array["matchID"], $array["x"], $array["y"]);
+                $result = $this->gameTable->insertMatchStep($array["userID"], $array["matchID"], $array["x"], $array["y"]);
+                if ($result['YouWon'] == false)
+                {
+                    return $result;
+                }
+                //ELO Berechnung und Gewinner setzen
+                else
+                {
+                    $newELO = $this->eloTable->calculateNewELO($array["userID"], $array["matchID"]);
+                    
+                    return array('YouWon' => $result['YouWon'],
+                                 'IsHit' => $result['IsHit'],
+                                 'NewELO' => $newELO);
+                }
             }
             //Else return errorobject
             return array('error' => 'Matchstep is not valid');
