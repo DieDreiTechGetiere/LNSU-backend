@@ -141,8 +141,9 @@ class GameTable
     {
         $isHit = $this->checkIfShipIsHit($userID, $matchID, $x, $y);
         $isFinished = false;
+        $won = $this->checkForWin($matchID, $userID);
         
-        if($isHit == false)
+        if($isHit == false || $won == true)
         {
             $isFinished = true;
         }
@@ -158,7 +159,9 @@ class GameTable
         $stmt = $sql->prepareStatementForSqlObject($insert);
         $stmt->execute();
         
-        return array('hit' => $isHit);
+        //TODO: Noch mal anschauen
+        return array('YouWon' => $won,
+        	     'IsHit' => $isHit);
     }
     
     /**
