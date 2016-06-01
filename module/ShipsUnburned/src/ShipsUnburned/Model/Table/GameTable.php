@@ -22,7 +22,11 @@ class GameTable
         $this->dbAdapter = $dbAdapter;
         $this->shipService = new ShipService();
     }
-    
+    /**
+     * Starts a Matchsearch
+     * @param int $id
+     * @return array
+     */
     public function searchGame($id)
     {
         $user = $this->getUser($id);
@@ -65,7 +69,11 @@ class GameTable
             }
         }
     }
-    
+    /**
+     * Checks if you found an Opponent
+     * @param int $id
+     * @return array
+     */
     public function checkMatch($id)
     {   
         $match = $this->getMatch($id);
@@ -136,7 +144,14 @@ class GameTable
         
         return $this->checkIfOpponentIsFinishedWithPlacement($matchID, $userID);      
     }
-    
+    /**
+     * Inserts Matchstep after checking if you hit or not
+     * @param int $userID
+     * @param int $matchID
+     * @param int $x
+     * @param int $y
+     * @return array
+     */
     public function insertMatchStep($userID, $matchID, $x, $y)
     {
         $isHit = $this->checkIfShipIsHit($userID, $matchID, $x, $y);
@@ -159,7 +174,6 @@ class GameTable
         $stmt = $sql->prepareStatementForSqlObject($insert);
         $stmt->execute();
         
-        //TODO: Noch mal anschauen
         return array('YouWon' => $won,
         	     'IsHit' => $isHit);
     }
@@ -461,14 +475,15 @@ class GameTable
               ->and->equalTo('tblmatchsteps.mMatchID', $matchID)
               ->and->equalTo('tblmatchsteps.mState', true)
               ->unnest();
-        $select = $sql->select()->columns(array('COUNT(tblmatchsteps.mState)'))
+        $select = $sql->select()->columns(array('countState' => new Expression('COUNT(mState)')))
                       ->where($where);
         
         $stmt = $sql->prepareStatementForSqlObject($select);
         $result = $stmt->execute();
+        $count = $result->current();
         
         //If he hit 20 times
-        if ($result->current == 20)
+        if ($count["countState"] == 20)
         {
             return true;
         }
