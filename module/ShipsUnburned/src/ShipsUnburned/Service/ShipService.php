@@ -17,29 +17,31 @@ class ShipService
 {
     public function checkIfShipGotHit($ship, $x, $y)
     {
-        $ship->generateCoordinates();
+        $newShip = NULL;
+        $newShip = $ship;
+        $newShip->generateCoordinates();
         
         //X or Y is being Hit now determine if the other coordinate is Hit
-        if ($x == $ship->getX())
+        if ($x == $newShip->getX())
         {
-            for($i = 0; $i < $ship->length; $i++)
+            for($i = 0; $i < $newShip->length; $i++)
             {
-                if($ship->coordinatesY[$i] == $y)
+                if($newShip->coordinatesY[$i] == $y)
                 {
-                    return true;
+                    return 1;
                 }
             }
         }
-        else
+        elseif ($y == $newShip->getY())
         {
-            for($i = 0; $i < $ship->length; $i++)
+            for($i = 0; $i < $newShip->length; $i++)
             {
-                if($ship->coordinatesX[$i] == $y)
+                if($newShip->coordinatesX[$i] == $y)
                 {
-                    return true;
+                    return 1;
                 }
             }
         }
-        return false;
+        return 0;
     }
 }
