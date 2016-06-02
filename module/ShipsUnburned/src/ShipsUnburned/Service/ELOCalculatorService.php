@@ -7,8 +7,8 @@ class ELOCalculatorService
 {
     public function calculateNewELO($totalOppELO, $wins, $loses)
     {
-        $totalMatches = $wins + $loses;
-        $newELO = ($totalOppELO + 400 * ($wins - $loses)) / $totalMatches;
+        $totalMatches = (int)$wins + (int)$loses;
+        $newELO = ((int)$totalOppELO + 400 * ((int)$wins - (int)$loses)) / $totalMatches;
         return $newELO;        
     }
 }
