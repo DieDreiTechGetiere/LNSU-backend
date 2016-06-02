@@ -15,11 +15,13 @@ class Match implements MatchInterface
      */
     public $id;
     public $user1;
+    public $user1Name;
+    public $user2Name;
     public $user2;
     public $date;
     public $winner;
-    protected $user1ELO;
-    protected $user2ELO;
+    public $user1ELO;
+    public $user2ELO;
     
     /**
      * Function to fill the object with data from an array.

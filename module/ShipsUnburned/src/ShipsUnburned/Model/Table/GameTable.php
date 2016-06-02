@@ -273,9 +273,11 @@ class GameTable
             }
             
             $hits = $this->getAllHitShips($matchID, $oppID, $lastMSID);
+            $miss = $this->getLastMiss($matchID, $oppID, $lastMSID);
             return array('OpponentReady' => true,
                          'OpponentWon' => false,
-                         'Hits' => $hits);
+                         'Hits' => $hits,
+                         'Miss' => $miss);
         }
         $hits = $this->getAllHitShips($matchID, $oppID, $lastMSID);
         $miss = $this->getLastMiss($matchID, $oppID, $lastMSID);
