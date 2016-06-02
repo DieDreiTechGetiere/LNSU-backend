@@ -187,7 +187,6 @@ class GameTable
     
     public function updateMatchstepAfterWin($matchID, $userID, $x, $y)
     {   
-        echo $matchID . ' ' . $userID . ' ' . $x . ' ' . $y;
         $sql = new Sql($this->dbAdapter);
         $update = $sql->update('tblmatchsteps')
                       ->where(array('mMatchID = ?' => $matchID,
@@ -251,7 +250,7 @@ class GameTable
         $where = new \Zend\Db\Sql\Where();
         $where
             ->nest()
-            ->notEqualTo('tblmatchsteps.mUserID', $oppID)
+            ->notEqualTo('tblmatchsteps.mUserID', $userID)
             ->and->equalTo('tblmatchsteps.mMatchID', $matchID)
             ->and->greaterThan('tblmatchsteps.msID', $lastMSID)
             ->and->equalTo('tblmatchsteps.mRoundFinished', 1)
@@ -263,6 +262,7 @@ class GameTable
         //If I got affected Rows he has inserted so the Match can start
         if ($result->getAffectedRows() > 0)
         {
+
             if ($this->checkForWin($matchID, $oppID) == true)
             {
                 $hits = $this->getAllHitShips($matchID, $oppID, $lastMSID);

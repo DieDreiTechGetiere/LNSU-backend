@@ -65,7 +65,7 @@ class ELOTable
                 ->set(array('totalOppELO' => $newTotalOppELO))
                 ->where(array('id = ?' => $userID));
         $stmt = $sql->prepareStatementForSqlObject($update);
-        $result = $stmt->execute();
+        $stmt->execute();
         
     }
     /**
