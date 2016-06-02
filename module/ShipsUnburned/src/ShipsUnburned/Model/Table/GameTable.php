@@ -173,6 +173,11 @@ class GameTable
         $stmt = $sql->prepareStatementForSqlObject($insert);
         $stmt->execute();
         
+        if ($won == true)
+        {
+             $this->setMatchWinner($userID, $matchID);
+        }
+        
         return array('YouWon' => $won,
         	     'IsHit' => $isHit);
     }
@@ -242,8 +247,6 @@ class GameTable
             if ($this->checkForWin($matchID, $oppID) == true)
             {
                 $hits = $this->getAllHitShips($matchID, $oppID, $lastMSID);
-                
-                $this->setMatchWinner($oppID, $matchID);
                 
                 return array('OpponentReady' => true,
                              'OpponentWon' => true,
