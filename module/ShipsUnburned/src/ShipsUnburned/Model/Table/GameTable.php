@@ -156,8 +156,8 @@ class GameTable
     {
         $isHit = $this->checkIfShipIsHit($userID, $matchID, $x, $y);
         $isFinished = false;
-        $won = $this->checkForWin($matchID, $userID);
-        if($isHit == false || $won == true)
+       
+        if($isHit == false)
         {
             $isFinished = true;
         }
@@ -172,17 +172,34 @@ class GameTable
                                 'mRoundFinished' => $isFinished));
         $stmt = $sql->prepareStatementForSqlObject($insert);
         $stmt->execute();
-        
-        echo $won;
+      
+
+        $won = $this->checkForWin($matchID, $userID);
         if ($won == true)
         {
+             $this->updateMatchstepAfterWin($matchID, $userID, $x, $y);
              $this->setMatchWinner($userID, $matchID);
         }
         
         return array('YouWon' => $won,
-        	     'IsHit' => $isHit);
+               'IsHit' => $isHit);
     }
     
+    public function updateMatchstepAfterWin($matchID, $userID, $x, $y)
+    {  
+        $sql = new Sql($this->dbAdapter);
+        $update = $sql->update('tblmatchsteps')
+                      ->where(array('mMatchID = ?' => $matchID,
+                                    'mUserID = ?' => $userID,
+                                    'mState = ?' => 1,
+                                    'mRoundFinished = ?' => 0,
+                                    'mRow = ?' => $x,
+                                    'mColumn = ?' => $y));
+       $update->set(array('mRoundFinished' => 1));  
+       $stmt = $sql->prepareStatementForSqlObject($update);
+       $stmt->execute();
+    }
+  
     /**
      * Checks if Opponent is finished with his placement
      * @param integer $matchID
@@ -200,7 +217,7 @@ class GameTable
             ->notEqualTo('tblshipposition.spUserID', $userID)
             ->and
             ->equalTo('tblshipposition.spMatchID', $matchID)
-            ->unnest(); 
+            ->unnest();
         $select = $sql->select('tblshipposition')
                       ->where($where);        
         $stmt = $sql->prepareStatementForSqlObject($select);
@@ -237,7 +254,7 @@ class GameTable
             ->and->equalTo('tblmatchsteps.mMatchID', $matchID)
             ->and->greaterThan('tblmatchsteps.msID', $lastMSID)
             ->and->equalTo('tblmatchsteps.mRoundFinished', 1)
-            ->unnest(); 
+            ->unnest();
         $select = $sql->select('tblmatchsteps')
                       ->where($where);        
         $stmt = $sql->prepareStatementForSqlObject($select);
@@ -323,13 +340,13 @@ class GameTable
         
         $select = $sql->select('tblshipposition')->where($where);
         $stmt = $sql->prepareStatementForSqlObject($select);
-        $result = $stmt->execute(); 
+        $result = $stmt->execute();
         
         $newResult = $result->current();
         $ship = NULL;
-        $ship = new Ship($newResult["spX"], 
-                         $newResult["spY"], 
-                         $newResult["spLength"], 
+        $ship = new Ship($newResult["spX"],
+                         $newResult["spY"],
+                         $newResult["spLength"],
                          $newResult["spDirection"]);
         //print_r($ship);
         //echo $x . ' ' . $y;
@@ -402,7 +419,7 @@ class GameTable
                                 'User1ELO' => $user->getELO(),
                                 'Date' => new \Zend\Db\Sql\Expression("NOW()")));
         
-		
+    
         $stmt = $sql->prepareStatementForSqlObject($insert);
         $newMatch = $stmt->execute();
 
@@ -621,7 +638,7 @@ class GameTable
                                 'User1ELO' => 1000,
                                 'Date' => new \Zend\Db\Sql\Expression("NOW()")));
         
-		
+    
         $stmt = $sql->prepareStatementForSqlObject($insert);
         $newMatch = $stmt->execute();
         
