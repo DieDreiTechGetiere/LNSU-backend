@@ -186,7 +186,8 @@ class GameTable
     }
     
     public function updateMatchstepAfterWin($matchID, $userID, $x, $y)
-    {  
+    {   
+        echo $matchID . ' ' . $userID . ' ' . $x . ' ' . $y;
         $sql = new Sql($this->dbAdapter);
         $update = $sql->update('tblmatchsteps')
                       ->where(array('mMatchID = ?' => $matchID,
@@ -195,9 +196,9 @@ class GameTable
                                     'mRoundFinished = ?' => 0,
                                     'mRow = ?' => $x,
                                     'mColumn = ?' => $y));
-       $update->set(array('mRoundFinished' => 1));  
+       $update->set(array('mRoundFinished' => 1));   
        $stmt = $sql->prepareStatementForSqlObject($update);
-       $stmt->execute();
+       $result = $stmt->execute();
     }
   
     /**
@@ -258,7 +259,7 @@ class GameTable
         $select = $sql->select('tblmatchsteps')
                       ->where($where);        
         $stmt = $sql->prepareStatementForSqlObject($select);
-        $result = $stmt->execute();  
+        $result = $stmt->execute();
         //If I got affected Rows he has inserted so the Match can start
         if ($result->getAffectedRows() > 0)
         {
