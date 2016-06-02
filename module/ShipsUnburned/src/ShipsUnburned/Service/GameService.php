@@ -77,7 +77,7 @@ class GameService
                 //ELO Berechnung und Gewinner setzen
                 else
                 {
-                    $newELO = $this->eloTable->calculateNewELO($array["userID"], $array["matchID"]);
+                    $newELO = $this->eloTable->calculateNewELO($array["matchID"], $array["userID"]);
                     return array('YouWon' => $result['YouWon'],
                                  'IsHit' => $result['IsHit'],
                                  'NewELO' => $newELO);
