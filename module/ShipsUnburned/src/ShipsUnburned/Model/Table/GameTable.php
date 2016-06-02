@@ -327,9 +327,9 @@ class GameTable
                          $newResult["spY"], 
                          $newResult["spLength"], 
                          $newResult["spDirection"]);
-        print_r($ship);
-        echo $x . ' ' . $y;
-        print_r($this->shipService->checkIfShipGotHit($ship, $x, $y));
+        //print_r($ship);
+        //echo $x . ' ' . $y;
+        //print_r($this->shipService->checkIfShipGotHit($ship, $x, $y));
         if ($this->shipService->checkIfShipGotHit($ship, $x, $y) == false)
         {
             for ($count = $result->count() - 1; $count > 0; $count--)
