@@ -4,6 +4,7 @@ namespace ShipsUnburned\Model\Table;
 
 use Zend\Db\Sql\Sql;
 use Zend\Db\Adapter\AdapterInterface;
+use ShipsUnburned\Model\Entity\Match;
 
 class ELOTable
 {
