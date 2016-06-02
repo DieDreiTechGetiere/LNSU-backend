@@ -573,7 +573,8 @@ class GameTable
         $update->set(array('Winner' => $userID));    
         
         $stmt = $sql->prepareStatementForSqlObject($update);
-        $stmt->execute();        
+        $stmt->execute();  
+        
     }
     
     public function getOpponentID($matchID, $userID)
