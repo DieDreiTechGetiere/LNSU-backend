@@ -28,7 +28,7 @@ class ShipService
             {
                 if($newShip->coordinatesY[$i] == $y)
                 {
-                    return 1;
+                    return true;
                 }
             }
         }
@@ -38,10 +38,10 @@ class ShipService
             {
                 if($newShip->coordinatesX[$i] == $y)
                 {
-                    return 1;
+                    return true;
                 }
             }
         }
-        return 0;
+        return false;
     }
 }
