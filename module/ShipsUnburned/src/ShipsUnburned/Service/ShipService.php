@@ -36,7 +36,7 @@ class ShipService
         {
             for($i = 0; $i < $newShip->length; $i++)
             {
-                if($newShip->coordinatesX[$i] == $y)
+                if($newShip->coordinatesX[$i] == $x)
                 {
                     return true;
                 }
