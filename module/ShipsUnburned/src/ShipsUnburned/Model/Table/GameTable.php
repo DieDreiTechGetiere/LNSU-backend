@@ -173,6 +173,7 @@ class GameTable
         $stmt = $sql->prepareStatementForSqlObject($insert);
         $stmt->execute();
         
+        echo $won;
         if ($won == true)
         {
              $this->setMatchWinner($userID, $matchID);
